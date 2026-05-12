@@ -5,11 +5,11 @@ Config zsh, git et outils — gérée via [chezmoi](https://chezmoi.io).
 ## Sur une nouvelle machine
 
 ```bash
-# Une seule commande :
-bash -c "$(curl -fsLS https://raw.githubusercontent.com/livepixelz/dotfiles/main/install.sh)"
+# Cloner le repo (privé — SSH requis) :
+git clone git@github.com:livepixelz/dotfiles.git ~/.local/share/chezmoi
 
-# Ou si le repo est déjà cloné :
-bash install.sh
+# Puis lancer le script d'install :
+bash ~/.local/share/chezmoi/install.sh
 ```
 
 Le script installe chezmoi, tous les outils (starship, nvm, fnm, pyenv, fzf, zoxide, eza, bat, fd, rg, lazygit, tmux), les plugins zsh, puis applique les dotfiles.
