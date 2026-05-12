@@ -191,6 +191,11 @@ alias focus="log stream --predicate 'subsystem == \"com.apple.AppKit\"' --style 
 # Easter egg
 alias 🍺="git checkout -b drunk"
 
+# ── Atuin (historique enrichi) ───────────────────────────────────────────────
+if command -v atuin >/dev/null 2>&1; then
+  eval "$(atuin init zsh)"
+fi
+
 # ── Secrets & overrides locaux ────────────────────────────────────────────────
 # Fichier non versionné : OPENAI_API_KEY, MISTRAL_API_KEY, POSTGRES_URL, VPS alias…
 [ -f "$HOME/.zsh_secrets" ] && source "$HOME/.zsh_secrets"

@@ -120,6 +120,12 @@ else
   fi
 fi
 
+# ── Atuin ────────────────────────────────────────────────────────────────────
+if ! command -v atuin >/dev/null 2>&1; then
+  info "Installation de atuin..."
+  curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh || true
+fi
+
 # ── NVM (commun macOS + Linux) ────────────────────────────────────────────────
 if [ ! -d "$HOME/.nvm" ]; then
   info "Installation de nvm..."
