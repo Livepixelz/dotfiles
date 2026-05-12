@@ -16,6 +16,8 @@ if ! command -v chezmoi >/dev/null 2>&1; then
   else
     sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
     export PATH="$HOME/.local/bin:$PATH"
+    # Persister le PATH pour les sessions futures
+    grep -q '.local/bin' ~/.bashrc || echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
   fi
 fi
 
