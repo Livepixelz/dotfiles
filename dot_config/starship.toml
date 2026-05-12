@@ -1,0 +1,87 @@
+# Starship — config taillée dev frontend (livepixelz)
+
+format = """
+$directory\
+$git_branch\
+$git_status\
+$nodejs\
+$python\
+$docker_context\
+$cmd_duration\
+$line_break\
+$character"""
+
+# ── Dossier courant ───────────────────────────────────────────────────────────
+[directory]
+style = "bold blue"
+truncation_length = 4
+truncate_to_repo = true
+read_only = " 󰌾"
+
+# ── Git ───────────────────────────────────────────────────────────────────────
+[git_branch]
+symbol = " "
+style = "bold purple"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+format = '([$all_status$ahead_behind]($style) )'
+style = "bold red"
+conflicted = "⚡"
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+untracked = "?${count}"
+stashed = "󰏗 "
+modified = "!${count}"
+staged = "+${count}"
+renamed = "»${count}"
+deleted = "✘${count}"
+
+# ── Node.js ───────────────────────────────────────────────────────────────────
+[nodejs]
+symbol = " "
+style = "bold green"
+format = "[$symbol$version]($style) "
+# N'affiche que si package.json présent dans le dossier courant ou parent
+detect_files = ["package.json", ".nvmrc", ".node-version"]
+
+# ── Python ────────────────────────────────────────────────────────────────────
+[python]
+symbol = " "
+style = "bold yellow"
+format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+detect_files = ["pyproject.toml", "requirements.txt", ".python-version", "Pipfile"]
+
+# ── Docker ────────────────────────────────────────────────────────────────────
+[docker_context]
+symbol = " "
+style = "bold blue"
+format = "[$symbol$context]($style) "
+only_with_files = true
+detect_files = ["docker-compose.yml", "docker-compose.yaml", "Dockerfile"]
+
+# ── Durée d'exécution ─────────────────────────────────────────────────────────
+[cmd_duration]
+min_time = 2_000        # affiche seulement si > 2 secondes
+style = "bold yellow"
+format = "[󱑆 $duration]($style) "
+
+# ── Prompt character ──────────────────────────────────────────────────────────
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold green)"
+
+# ── Modules désactivés (gardent le prompt rapide) ─────────────────────────────
+[package]
+disabled = true
+
+[rust]
+disabled = true
+
+[golang]
+disabled = true
+
+[java]
+disabled = true
