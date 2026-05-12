@@ -8,33 +8,6 @@ info()    { printf "\033[0;34m[dotfiles]\033[0m %s\n" "$*"; }
 success() { printf "\033[0;32m[dotfiles]\033[0m %s\n" "$*"; }
 warn()    { printf "\033[0;33m[dotfiles]\033[0m %s\n" "$*"; }
 
-# ── Config utilisateur ───────────────────────────────────────────────────────
-if [ ! -f "$HOME/.config/chezmoi/chezmoi.toml" ]; then
-  info "Configuration initiale..."
-  read -rp "Ton nom Git : " git_name
-  read -rp "Ton email Git : " git_email
-  mkdir -p "$HOME/.config/chezmoi"
-  cat > "$HOME/.config/chezmoi/chezmoi.toml" << EOF
-[data]
-  name  = "$git_name"
-  email = "$git_email"
-EOF
-  success "Config chezmoi créée."
-fi
-
-# ── chezmoi ───────────────────────────────────────────────────────────────────
-if ! command -v chezmoi >/dev/null 2>&1; then
-  info "Installation de chezmoi..."
-  if [[ "$OS" == "Darwin" ]]; then
-    brew install chezmoi
-  else
-    sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
-    export PATH="$HOME/.local/bin:$PATH"
-    # Persister le PATH pour les sessions futures
-    grep -q '.local/bin' ~/.bashrc || echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
-  fi
-fi
-
 # ── Homebrew (macOS) / apt (Linux) ────────────────────────────────────────────
 if [[ "$OS" == "Darwin" ]]; then
   if ! command -v brew >/dev/null 2>&1; then
@@ -44,33 +17,24 @@ if [[ "$OS" == "Darwin" ]]; then
   fi
   info "Installation des outils via Homebrew..."
   brew install \
-    starship \
-    nvm \
-    fnm \
-    pyenv \
-    fzf \
-    zoxide \
-    eza \
-    bat \
-    fd \
-    ripgrep \
-    jq \
-    tmux \
-    lazygit \
-    fortune \
-    cowsay \
-    git-lfs \
+    chezmoi starship nvm fnm pyenv fzf zoxide eza bat fd ripgrep \
+    jq tmux lazygit fortune cowsay git-lfs \
     2>/dev/null || brew upgrade \
-    starship fnm pyenv fzf zoxide eza bat fd ripgrep jq tmux lazygit 2>/dev/null || true
+    chezmoi starship fnm pyenv fzf zoxide eza bat fd ripgrep jq tmux lazygit 2>/dev/null || true
 
 else
   # Linux (Ubuntu/Debian)
   info "Mise à jour apt..."
   sudo apt-get update -qq
-  sudo apt-get install -y \
-    curl wget git jq tmux zsh \
-    build-essential libssl-dev \
-    || true
+  sudo apt-get install -y curl wget git jq tmux zsh build-essential libssl-dev || true
+
+  # chezmoi
+  if ! command -v chezmoi >/dev/null 2>&1; then
+    info "Installation de chezmoi..."
+    sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
+    export PATH="$HOME/.local/bin:$PATH"
+    grep -q '.local/bin' ~/.bashrc || echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+  fi
 
   # Starship
   if ! command -v starship >/dev/null 2>&1; then
@@ -91,7 +55,7 @@ else
   fi
 
   # fzf
-  if ! command -v fzf >/dev/null 2>&1; then
+  if [ ! -d "$HOME/.fzf" ]; then
     info "Installation de fzf..."
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
     ~/.fzf/install --all --no-bash --no-fish
@@ -116,23 +80,22 @@ else
   fi
 
   # bat
-  if ! command -v bat >/dev/null 2>&1; then
+  if ! command -v bat >/dev/null 2>&1 && ! command -v batcat >/dev/null 2>&1; then
     info "Installation de bat..."
     sudo apt-get install -y bat || true
-    # Sur Ubuntu bat s'appelle parfois batcat
-    if ! command -v bat >/dev/null 2>&1 && command -v batcat >/dev/null 2>&1; then
-      mkdir -p ~/.local/bin
-      ln -sf "$(command -v batcat)" ~/.local/bin/bat
-    fi
+  fi
+  if ! command -v bat >/dev/null 2>&1 && command -v batcat >/dev/null 2>&1; then
+    mkdir -p ~/.local/bin
+    ln -sf "$(command -v batcat)" ~/.local/bin/bat
   fi
 
   # fd
-  if ! command -v fd >/dev/null 2>&1; then
+  if ! command -v fd >/dev/null 2>&1 && ! command -v fdfind >/dev/null 2>&1; then
     sudo apt-get install -y fd-find || true
-    if ! command -v fd >/dev/null 2>&1 && command -v fdfind >/dev/null 2>&1; then
-      mkdir -p ~/.local/bin
-      ln -sf "$(command -v fdfind)" ~/.local/bin/fd
-    fi
+  fi
+  if ! command -v fd >/dev/null 2>&1 && command -v fdfind >/dev/null 2>&1; then
+    mkdir -p ~/.local/bin
+    ln -sf "$(command -v fdfind)" ~/.local/bin/fd
   fi
 
   # ripgrep
@@ -148,6 +111,13 @@ else
       | tar xz -C /tmp lazygit
     sudo install /tmp/lazygit /usr/local/bin/lazygit
   fi
+
+  # Zsh comme shell par défaut
+  if [ "$SHELL" != "/usr/bin/zsh" ] && command -v zsh >/dev/null 2>&1; then
+    info "Passage à zsh comme shell par défaut..."
+    chsh -s /usr/bin/zsh
+    warn "Shell changé — déconnecte-toi et reconnecte-toi en SSH pour que zsh soit actif."
+  fi
 fi
 
 # ── NVM (commun macOS + Linux) ────────────────────────────────────────────────
@@ -156,7 +126,7 @@ if [ ! -d "$HOME/.nvm" ]; then
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 fi
 
-# ── Plugins zsh (fast-syntax-highlighting, zsh-autosuggestions) ───────────────
+# ── Plugins zsh ───────────────────────────────────────────────────────────────
 ZSH_CUSTOM="$HOME/.zsh"
 mkdir -p "$ZSH_CUSTOM"
 
@@ -172,15 +142,33 @@ if [ ! -d "$ZSH_CUSTOM/zsh-autosuggestions" ]; then
     "$ZSH_CUSTOM/zsh-autosuggestions"
 fi
 
-# ── Appliquer les dotfiles via chezmoi ────────────────────────────────────────
+# ── Config chezmoi (nom + email Git) ─────────────────────────────────────────
+if [ ! -f "$HOME/.config/chezmoi/chezmoi.toml" ]; then
+  info "Configuration initiale..."
+  read -rp "Ton nom Git : " git_name
+  read -rp "Ton email Git : " git_email
+  mkdir -p "$HOME/.config/chezmoi"
+  cat > "$HOME/.config/chezmoi/chezmoi.toml" << EOF
+[data]
+  name  = "$git_name"
+  email = "$git_email"
+EOF
+  success "Config chezmoi créée."
+fi
+
+# ── Appliquer les dotfiles ────────────────────────────────────────────────────
 info "Application des dotfiles..."
 chezmoi apply --force
 
 # ── .zsh_secrets ─────────────────────────────────────────────────────────────
 if [ ! -f "$HOME/.zsh_secrets" ]; then
-  warn ".zsh_secrets absent — copie le template et remplis tes tokens :"
-  warn "  cp ~/.zsh_secrets.example ~/.zsh_secrets && \$EDITOR ~/.zsh_secrets"
+  warn ".zsh_secrets absent — crée-le depuis le template :"
+  warn "  cp ~/.zsh_secrets.example ~/.zsh_secrets && nano ~/.zsh_secrets"
 fi
 
 success "Installation terminée 🎉"
-success "Lance : source ~/.zshrc"
+if [[ "$OS" != "Darwin" ]]; then
+  success "Déconnecte-toi et reconnecte-toi en SSH pour activer zsh."
+else
+  success "Lance : source ~/.zshrc"
+fi
