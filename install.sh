@@ -120,6 +120,18 @@ else
   fi
 fi
 
+# ── Yazi ─────────────────────────────────────────────────────────────────────
+if ! command -v yazi >/dev/null 2>&1; then
+  info "Installation de yazi..."
+  if [[ "$OS" == "Darwin" ]]; then
+    brew install yazi || true
+  else
+    curl --proto '=https' --tlsv1.2 -LsSf \
+      https://github.com/sxyazi/yazi/releases/latest/download/yazi-x86_64-unknown-linux-musl.tar.gz \
+      | tar xz -C /tmp && sudo install /tmp/yazi-x86_64-unknown-linux-musl/yazi /usr/local/bin/yazi || true
+  fi
+fi
+
 # ── Atuin ────────────────────────────────────────────────────────────────────
 if ! command -v atuin >/dev/null 2>&1; then
   info "Installation de atuin..."

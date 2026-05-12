@@ -191,6 +191,19 @@ alias focus="log stream --predicate 'subsystem == \"com.apple.AppKit\"' --style 
 # Easter egg
 alias 🍺="git checkout -b drunk"
 
+# ── Yazi (explorateur de fichiers) ───────────────────────────────────────────
+if command -v yazi >/dev/null 2>&1; then
+  # y : lance yazi et change de dossier en quittant (q)
+  y() {
+    local tmp cwd
+    tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+    yazi "$@" --cwd-file="$tmp"
+    cwd="$(cat "$tmp")"
+    [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && cd "$cwd"
+    rm -f "$tmp"
+  }
+fi
+
 # ── Atuin (historique enrichi) ───────────────────────────────────────────────
 if command -v atuin >/dev/null 2>&1; then
   eval "$(atuin init zsh)"
