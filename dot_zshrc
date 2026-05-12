@@ -1,0 +1,223 @@
+HOST_NAME=lvpxlz
+
+export PATH=$PATH:$HOME/bin:$HOME/.local/bin
+
+# ── Histoire ──────────────────────────────────────────────────────────────────
+export HISTSIZE=50000
+export SAVEHIST=10000
+export HISTFILE="$HOME/.zsh_history"
+
+# ── Couleurs ──────────────────────────────────────────────────────────────────
+export CLICOLOR=1
+export LSCOLORS=GxFxCxDxBxegedabagaced
+
+txtred='\e[0;31m'
+txtgrn='\e[0;32m'
+bldgrn='\e[1;32m'
+bldpur='\e[1;35m'
+txtrst='\e[0m'
+
+# ── Prompt (fallback si starship absent) ─────────────────────────────────────
+emojis=("👾" "🌐" "🎲" "🌍" "🐉" "🌵")
+EMOJI=${emojis[$RANDOM % ${#emojis[@]}]}
+
+print_before_the_prompt() {
+  local dir vcs_prompt
+  dir=${PWD/"$HOME"/"~"}
+  if command -v vcprompt >/dev/null 2>&1; then
+    vcs_prompt="$(vcprompt)"
+  fi
+  printf "\n $txtred%s: $bldpur%s $txtgrn%s\n$txtrst" "$HOST_NAME" "$dir" "$vcs_prompt"
+}
+
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd print_before_the_prompt
+
+if ! command -v starship >/dev/null 2>&1; then
+  PROMPT="$EMOJI > "
+fi
+
+# ── Fun ───────────────────────────────────────────────────────────────────────
+if command -v fortune >/dev/null 2>&1 && command -v cowsay >/dev/null 2>&1; then
+  fortune | cowsay -f tux
+fi
+
+# ── Fonctions ─────────────────────────────────────────────────────────────────
+function mkcd() { mkdir "$1" && cd "$1"; }
+
+# BallDontLie API (NBA)
+bdl() {
+  local key base="https://api.balldontlie.io/v1"
+  key=$(grep BALLDONTLIE_API_KEY ~/.env 2>/dev/null | cut -d= -f2)
+  if [[ -z "$1" || "$1" == "help" ]]; then
+    echo "Usage: bdl <resource> [params]"
+    echo "  players  teams  games  stats  season_averages  injuries  standings  box_scores"
+    echo "Ex: bdl players search=luka | bdl games seasons[]=2024 team_ids[]=5"
+    return 0
+  fi
+  local resource="$1"; shift
+  http --ignore-stdin GET "$base/$resource" Authorization:"$key" "$@"
+}
+
+# ── Homebrew (macOS) ──────────────────────────────────────────────────────────
+if [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+  export PATH="/opt/homebrew/opt/openssl@1.1/bin:$PATH"
+fi
+
+# ── NVM (lazy load) ───────────────────────────────────────────────────────────
+export NVM_DIR="$HOME/.nvm"
+load_nvm() {
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
+  unset -f load_nvm node npm npx pnpm yarn corepack
+}
+node()     { load_nvm; node "$@"; }
+npm()      { load_nvm; npm "$@"; }
+npx()      { load_nvm; npx "$@"; }
+pnpm()     { load_nvm; pnpm "$@"; }
+yarn()     { load_nvm; yarn "$@"; }
+corepack() { load_nvm; corepack "$@"; }
+
+# ── fnm ───────────────────────────────────────────────────────────────────────
+if command -v fnm >/dev/null 2>&1; then
+  eval "$(fnm env --use-on-cd --shell zsh)"
+fi
+
+# ── pyenv ─────────────────────────────────────────────────────────────────────
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+if command -v pyenv >/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+
+# ── bun ───────────────────────────────────────────────────────────────────────
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+# ── fzf ───────────────────────────────────────────────────────────────────────
+if command -v fzf >/dev/null 2>&1; then
+  source <(fzf --zsh)
+fi
+
+# ── zoxide (remplace cd) ──────────────────────────────────────────────────────
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
+  alias cd="z"
+fi
+
+# ── Aliases ───────────────────────────────────────────────────────────────────
+
+# Navigation
+alias hoop='cd ~/code/hoopmetrics'
+alias site="cd ~/Sites/lvpxlz-portfolio/"
+alias three="cd ~/Sites/threejs-journey/"
+
+# Editeur
+alias a='code .'
+alias co='code .'
+alias profile="code ~/.zshrc"
+alias sprofile="source ~/.zshrc"
+
+# Shell
+alias c="clear"
+alias o="open ."
+alias l="ls"
+alias ll="ls -alG"
+
+# ls amélioré (eza si dispo, sinon ls natif)
+if command -v eza >/dev/null 2>&1; then
+  alias ls="eza --icons"
+  alias ll="eza -la --icons --git"
+  alias lt="eza --tree --icons -L 2"
+fi
+
+# cat amélioré
+if command -v bat >/dev/null 2>&1; then
+  alias cat="bat"
+fi
+
+# find/grep améliorés
+if command -v fd >/dev/null 2>&1;  then alias find="fd"; fi
+if command -v rg >/dev/null 2>&1;  then alias grep="rg"; fi
+
+# JSON
+alias json="jq ."
+
+# Python
+alias python="python3"
+
+# pnpm / Node
+alias ns='pnpm start'
+alias start='pnpm start'
+alias nr='pnpm run'
+alias run='pnpm run'
+alias nis='pnpm i -S'
+
+# reveal-md
+alias reveal-md="reveal-md --theme night --highlight-theme hybrid --port 1337"
+
+# tmux
+alias t="tmux"
+alias ta="tmux attach || tmux new"
+
+# lazygit
+alias lg="lazygit"
+
+# Git
+alias ga='git add'
+alias gaa='git add .'
+alias gaaa='git add -A'
+alias gc='git commit'
+alias gcm='git commit -m'
+alias gd='git --no-pager diff'
+alias gi='git init'
+alias gl='git --no-pager log'
+alias gcl='git clone'
+alias gco='git switch'
+alias gcb='git switch -c'
+alias gst='git status -sb'
+alias gbl='git branch -l'
+alias gp='git pull'
+alias gpsh='git push'
+alias gup='git fetch --prune --all && git status -sb'
+alias gss='git status -s'
+alias gs='echo ""; echo "*********************************************"; echo -e "   DO NOT FORGET TO PULL BEFORE COMMITTING"; echo "*********************************************"; echo ""; git status'
+
+# macOS focus debug
+alias focus="log stream --predicate 'subsystem == \"com.apple.AppKit\"' --style compact | grep -i 'activate\|frontmost\|becomeKey'"
+
+# Easter egg
+alias 🍺="git checkout -b drunk"
+
+# ── Secrets & overrides locaux ────────────────────────────────────────────────
+# Fichier non versionné : OPENAI_API_KEY, MISTRAL_API_KEY, POSTGRES_URL, VPS alias…
+[ -f "$HOME/.zsh_secrets" ] && source "$HOME/.zsh_secrets"
+
+# ── Plugins zsh ───────────────────────────────────────────────────────────────
+[ -f "$HOME/.zsh/fast-syntax-highlighting/F-Sy-H.plugin.zsh" ] && source "$HOME/.zsh/fast-syntax-highlighting/F-Sy-H.plugin.zsh"
+[ -f "$HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" ] && source "$HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
+[ -f "$HOME/.zsh/history.zsh" ]     && source "$HOME/.zsh/history.zsh"
+[ -f "$HOME/.zsh/key-bindings.zsh" ] && source "$HOME/.zsh/key-bindings.zsh"
+[ -f "$HOME/.zsh/completion.zsh" ]  && source "$HOME/.zsh/completion.zsh"
+
+# ── Complétion ────────────────────────────────────────────────────────────────
+autoload -Uz compinit
+typeset -i updated_at
+updated_at=$(date +'%j' -r ~/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null || echo 0)
+if [ "$(date +'%j')" != "$updated_at" ]; then
+  compinit -i
+else
+  compinit -C -i
+fi
+zmodload -i zsh/complist
+
+# ── Starship ──────────────────────────────────────────────────────────────────
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init zsh)"
+fi
+
+# ── pipx / envman ─────────────────────────────────────────────────────────────
+export PATH="$PATH:$HOME/.local/bin"
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
