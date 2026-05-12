@@ -16,11 +16,11 @@ Le script installe chezmoi, tous les outils (starship, nvm, fnm, pyenv, fzf, zox
 
 ## Après l'install
 
-Crée ton fichier de secrets local (jamais versionné) :
+Une fois `install.sh` terminé, il aura déposé `~/.zsh_secrets.example`. Crée ton fichier de secrets local (jamais versionné) :
 
 ```bash
 cp ~/.zsh_secrets.example ~/.zsh_secrets
-$EDITOR ~/.zsh_secrets   # colle tes API keys, IP VPS, etc.
+nano ~/.zsh_secrets   # colle tes API keys, alias VPS, etc.
 source ~/.zshrc
 ```
 
