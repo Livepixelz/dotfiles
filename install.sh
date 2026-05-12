@@ -8,6 +8,20 @@ info()    { printf "\033[0;34m[dotfiles]\033[0m %s\n" "$*"; }
 success() { printf "\033[0;32m[dotfiles]\033[0m %s\n" "$*"; }
 warn()    { printf "\033[0;33m[dotfiles]\033[0m %s\n" "$*"; }
 
+# ── Config utilisateur ───────────────────────────────────────────────────────
+if [ ! -f "$HOME/.config/chezmoi/chezmoi.toml" ]; then
+  info "Configuration initiale..."
+  read -rp "Ton nom Git : " git_name
+  read -rp "Ton email Git : " git_email
+  mkdir -p "$HOME/.config/chezmoi"
+  cat > "$HOME/.config/chezmoi/chezmoi.toml" << EOF
+[data]
+  name  = "$git_name"
+  email = "$git_email"
+EOF
+  success "Config chezmoi créée."
+fi
+
 # ── chezmoi ───────────────────────────────────────────────────────────────────
 if ! command -v chezmoi >/dev/null 2>&1; then
   info "Installation de chezmoi..."
