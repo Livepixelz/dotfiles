@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Bootstrap dotfiles livepixelz — macOS & Ubuntu/Debian
 # Usage : bash install.sh
-set -euo pipefail
+set -uo pipefail
 
 OS="$(uname -s)"
 info()    { printf "\033[0;34m[dotfiles]\033[0m %s\n" "$*"; }
@@ -44,7 +44,8 @@ if [[ "$OS" == "Darwin" ]]; then
     fortune \
     cowsay \
     git-lfs \
-    || true
+    2>/dev/null || brew upgrade \
+    starship fnm pyenv fzf zoxide eza bat fd ripgrep jq tmux lazygit 2>/dev/null || true
 
 else
   # Linux (Ubuntu/Debian)
