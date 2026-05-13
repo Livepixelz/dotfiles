@@ -136,6 +136,11 @@ fi
 if ! command -v atuin >/dev/null 2>&1; then
   info "Installation de atuin..."
   curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh || true
+  # Le script atuin installe dans ~/.atuin/bin — symlink pour le rendre global
+  if [ -f "$HOME/.atuin/bin/atuin" ]; then
+    sudo ln -sf "$HOME/.atuin/bin/atuin" /usr/local/bin/atuin || \
+      ln -sf "$HOME/.atuin/bin/atuin" "$HOME/.local/bin/atuin"
+  fi
 fi
 
 # ── NVM (commun macOS + Linux) ────────────────────────────────────────────────
