@@ -197,6 +197,7 @@ alias tfa='terraform apply'
 
 # ── Aliases — Divers ─────────────────────────────────────────────────────────
 alias reveal-md="reveal-md --theme night --highlight-theme hybrid --port 1337"
+alias aliases='alias | sort | bat --language=zsh --style=plain'
 
 # macOS focus debug
 alias focus="log stream --predicate 'subsystem == \"com.apple.AppKit\"' --style compact | grep -i 'activate\|frontmost\|becomeKey'"
