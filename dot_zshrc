@@ -1,49 +1,63 @@
 HOST_NAME=lvpxlz
 
-export PATH=$PATH:$HOME/bin:$HOME/.local/bin
+# ── PATH ──────────────────────────────────────────────────────────────────────
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+export PATH="$HOME/.warden/bin:$PATH"
+eval "$(direnv hook zsh)"
+
+# ── 1Password SSH Agent ───────────────────────────────────────────────────────
+export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 
 # ── Histoire ──────────────────────────────────────────────────────────────────
 export HISTSIZE=50000
-export SAVEHIST=10000
+export SAVEHIST=50000
 export HISTFILE="$HOME/.zsh_history"
+setopt HIST_IGNORE_DUPS HIST_IGNORE_SPACE SHARE_HISTORY
 
 # ── Couleurs ──────────────────────────────────────────────────────────────────
 export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
 
-txtred='\e[0;31m'
-txtgrn='\e[0;32m'
-bldgrn='\e[1;32m'
-bldpur='\e[1;35m'
-txtrst='\e[0m'
-
-# ── Prompt (fallback si starship absent) ─────────────────────────────────────
-emojis=("👾" "🌐" "🎲" "🌍" "🐉" "🌵")
-EMOJI=${emojis[$RANDOM % ${#emojis[@]}]}
-
-print_before_the_prompt() {
-  local dir vcs_prompt
-  dir=${PWD/"$HOME"/"~"}
-  if command -v vcprompt >/dev/null 2>&1; then
-    vcs_prompt="$(vcprompt)"
-  fi
-  printf "\n $txtred%s: $bldpur%s $txtgrn%s\n$txtrst" "$HOST_NAME" "$dir" "$vcs_prompt"
-}
-
-autoload -Uz add-zsh-hook
-add-zsh-hook precmd print_before_the_prompt
-
+# ── Prompt ────────────────────────────────────────────────────────────────────
 if ! command -v starship >/dev/null 2>&1; then
+  emojis=("👾" "🌐" "🎲" "🌍" "🐉" "🌵")
+  EMOJI=${emojis[$RANDOM % ${#emojis[@]}]}
+
+  txtred='\e[0;31m'
+  bldpur='\e[1;35m'
+  txtgrn='\e[0;32m'
+  txtrst='\e[0m'
+
+  print_before_the_prompt() {
+    local dir vcs_prompt
+    dir=${PWD/"$HOME"/"~"}
+    if command -v vcprompt >/dev/null 2>&1; then
+      vcs_prompt="$(vcprompt)"
+    fi
+    printf "\n $txtred%s: $bldpur%s $txtgrn%s\n$txtrst" "$HOST_NAME" "$dir" "$vcs_prompt"
+  }
+  autoload -Uz add-zsh-hook
+  add-zsh-hook precmd print_before_the_prompt
   PROMPT="$EMOJI > "
 fi
 
 # ── Fun ───────────────────────────────────────────────────────────────────────
-if command -v fortune >/dev/null 2>&1 && command -v cowsay >/dev/null 2>&1; then
-  fortune | cowsay -f tux
+if command -v fortune >/dev/null 2>&1; then
+  tip=$(fortune webdev)
+  width=60
+  line=$(printf '─%.0s' {1..$width})
+  echo ""
+  echo "  \033[1;33m🏀 Tip-off du jour\033[0m"
+  echo "  \033[0;90m┌${line}┐\033[0m"
+  echo "$tip" | fold -s -w $width | while IFS= read -r l; do
+    printf "  \033[0;90m│\033[0m %-${width}s \033[0;90m│\033[0m\n" "$l"
+  done
+  echo "  \033[0;90m└${line}┘\033[0m"
+  echo ""
 fi
 
 # ── Fonctions ─────────────────────────────────────────────────────────────────
-function mkcd() { mkdir "$1" && cd "$1"; }
+function mkcd() { mkdir -p "$1" && cd "$1"; }
 
 # BallDontLie API (NBA)
 bdl() {
@@ -107,30 +121,39 @@ if command -v zoxide >/dev/null 2>&1; then
   alias cd="z"
 fi
 
-# ── Aliases ───────────────────────────────────────────────────────────────────
-
-# Navigation
+# ── Aliases — Navigation projets ─────────────────────────────────────────────
+alias ccd='cd ~/code/clutchdata'
+alias hm='cd ~/code/hoopmetrics'
 alias hoop='cd ~/code/hoopmetrics'
+alias bnd='cd ~/code/bender'
+alias inf='cd ~/code/infra'
+alias lpt='cd ~/code/lp-tools'
+alias rayc='cd ~/code/raycast'
+alias strt='cd ~/code/startup'
 alias site="cd ~/Sites/lvpxlz-portfolio/"
 alias three="cd ~/Sites/threejs-journey/"
+alias shots='cd ~/code/shottracker'
 
-# Editeur
+# ── Aliases — Éditeur ─────────────────────────────────────────────────────────
 alias a='code .'
 alias co='code .'
+alias zed.='zed .'
 alias profile="code ~/.zshrc"
 alias sprofile="source ~/.zshrc"
+alias starconf="code ~/.config/starship.toml"
 
-# Shell
+# ── Aliases — Shell ───────────────────────────────────────────────────────────
 alias c="clear"
 alias o="open ."
 alias l="ls"
 alias ll="ls -alG"
 
-# ls amélioré (eza si dispo, sinon ls natif)
+# ls amélioré (eza si dispo)
 if command -v eza >/dev/null 2>&1; then
   alias ls="eza --icons"
   alias ll="eza -la --icons --git"
   alias lt="eza --tree --icons -L 2"
+  alias ltt="eza --tree --icons -L 3"
 fi
 
 # cat amélioré
@@ -139,33 +162,38 @@ if command -v bat >/dev/null 2>&1; then
 fi
 
 # find/grep améliorés
-if command -v fd >/dev/null 2>&1;  then alias find="fd"; fi
-if command -v rg >/dev/null 2>&1;  then alias grep="rg"; fi
+if command -v fd  >/dev/null 2>&1; then alias find="fd"; fi
+if command -v rg  >/dev/null 2>&1; then alias grep="rg"; fi
+if command -v glow >/dev/null 2>&1; then alias md="glow"; fi
 
 # JSON
 alias json="jq ."
 
 # Python
 alias python="python3"
+alias venv="python3 -m venv .venv && source .venv/bin/activate"
+alias activate="source .venv/bin/activate"
 
 # pnpm / Node
 alias ns='pnpm start'
 alias start='pnpm start'
 alias nr='pnpm run'
 alias run='pnpm run'
+alias ni='pnpm install'
 alias nis='pnpm i -S'
-
-# reveal-md
-alias reveal-md="reveal-md --theme night --highlight-theme hybrid --port 1337"
+alias nid='pnpm i -D'
+alias nb='pnpm build'
+alias nd='pnpm dev'
 
 # tmux
 alias t="tmux"
 alias ta="tmux attach || tmux new"
+alias tl="tmux list-sessions"
 
 # lazygit
 alias lg="lazygit"
 
-# Git
+# ── Aliases — Git ─────────────────────────────────────────────────────────────
 alias ga='git add'
 alias gaa='git add .'
 alias gaaa='git add -A'
@@ -183,7 +211,24 @@ alias gp='git pull'
 alias gpsh='git push'
 alias gup='git fetch --prune --all && git status -sb'
 alias gss='git status -s'
+alias glg='git log --oneline --graph --decorate -20'
+alias gundo='git reset --soft HEAD~1'
+alias gwip='git add -A && git commit -m "wip"'
+
 alias gs='echo ""; echo "*********************************************"; echo -e "   DO NOT FORGET TO PULL BEFORE COMMITTING"; echo "*********************************************"; echo ""; git status'
+
+# ── Aliases — Infra / DevOps ─────────────────────────────────────────────────
+alias vps1='ssh vps1'
+alias vps2='ssh vps2'
+alias tf='terraform'
+alias tfi='terraform init'
+alias tfp='terraform plan'
+alias tfa='terraform apply'
+
+# ── Aliases — Divers ─────────────────────────────────────────────────────────
+alias reveal-md="reveal-md --theme night --highlight-theme hybrid --port 1337"
+alias status='~/scripts/status.sh'
+alias morning='~/scripts/morning.sh'
 
 # macOS focus debug
 alias focus="log stream --predicate 'subsystem == \"com.apple.AppKit\"' --style compact | grep -i 'activate\|frontmost\|becomeKey'"
@@ -193,7 +238,6 @@ alias 🍺="git checkout -b drunk"
 
 # ── Yazi (explorateur de fichiers) ───────────────────────────────────────────
 if command -v yazi >/dev/null 2>&1; then
-  # y : lance yazi et change de dossier en quittant (q)
   y() {
     local tmp cwd
     tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
@@ -204,21 +248,21 @@ if command -v yazi >/dev/null 2>&1; then
   }
 fi
 
-# ── Atuin (historique enrichi) ───────────────────────────────────────────────
+# ── Atuin (historique enrichi) ────────────────────────────────────────────────
+[ -s "$HOME/.atuin/bin/env" ] && source "$HOME/.atuin/bin/env"
 if command -v atuin >/dev/null 2>&1; then
   eval "$(atuin init zsh)"
 fi
 
 # ── Secrets & overrides locaux ────────────────────────────────────────────────
-# Fichier non versionné : OPENAI_API_KEY, MISTRAL_API_KEY, POSTGRES_URL, VPS alias…
 [ -f "$HOME/.zsh_secrets" ] && source "$HOME/.zsh_secrets"
 
 # ── Plugins zsh ───────────────────────────────────────────────────────────────
 [ -f "$HOME/.zsh/fast-syntax-highlighting/F-Sy-H.plugin.zsh" ] && source "$HOME/.zsh/fast-syntax-highlighting/F-Sy-H.plugin.zsh"
 [ -f "$HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" ] && source "$HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
-[ -f "$HOME/.zsh/history.zsh" ]     && source "$HOME/.zsh/history.zsh"
+[ -f "$HOME/.zsh/history.zsh" ]      && source "$HOME/.zsh/history.zsh"
 [ -f "$HOME/.zsh/key-bindings.zsh" ] && source "$HOME/.zsh/key-bindings.zsh"
-[ -f "$HOME/.zsh/completion.zsh" ]  && source "$HOME/.zsh/completion.zsh"
+[ -f "$HOME/.zsh/completion.zsh" ]   && source "$HOME/.zsh/completion.zsh"
 
 # ── Complétion ────────────────────────────────────────────────────────────────
 autoload -Uz compinit
@@ -237,5 +281,7 @@ if command -v starship >/dev/null 2>&1; then
 fi
 
 # ── pipx / envman ─────────────────────────────────────────────────────────────
-export PATH="$PATH:$HOME/.local/bin"
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+
+# ── Zoxide ───────────────────────────────────────────────────────────────────
+eval "$(zoxide init zsh)"

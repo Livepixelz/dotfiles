@@ -85,3 +85,10 @@ disabled = true
 
 [java]
 disabled = true
+
+# ── Bun ───────────────────────────────────────────────────────────────────────
+[bun]
+symbol = "🍞 "
+style = "bold yellow"
+format = "[$symbol$version]($style) "
+detect_files = ["bun.lockb", "bunfig.toml"]
