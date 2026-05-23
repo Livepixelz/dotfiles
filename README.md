@@ -8,9 +8,45 @@
                                               by @Livepixelz 👁️‍🗨️
 ```
 
+![preview](assets/preview.png)
+
 > macOS-first · zsh · chezmoi · opinionated
 
 My personal dev environment. One command to go from a fresh machine to a fully working setup.
+
+```
+╭─────────────────────────────────────────────────────────────────────────────╮
+│                                                                             │
+│  ~/code/my-project  on  main ✔  via  ⬢ v26.2.0  via 🐍 v3.14.5            │
+│  ❯ ll                                                                       │
+│                                                                             │
+│  drwxr-xr-x  ● src          ─── 3 hours ago                                │
+│  drwxr-xr-x  ● node_modules ─── 2 days ago                                 │
+│  .rw-r--r--  ● package.json ─── 3 hours ago                                │
+│  .rw-r--r--  ● README.md    ─── 1 day ago                                  │
+│  .rw-r--r--  ● tsconfig.json── 5 days ago                                  │
+│                                                                             │
+│  ~/code/my-project  on  main ✔                                              │
+│  ❯ cat src/index.ts                                                         │
+│                                                                             │
+│    1  import { createApp } from 'vue'          ← syntax highlighted         │
+│    2  import App from './App.vue'              ← line numbers               │
+│    3                                           ← git diff indicators        │
+│    4  createApp(App).mount('#app')                                          │
+│                                                                             │
+│  ~/code/my-project  on  main ✔                                              │
+│  ❯ z proj  ──▶  jumped to ~/code/my-project   ← zoxide frecency magic      │
+│                                                                             │
+│  ~/code/my-project  on  main ✔                                              │
+│  ❯ lg                           ← lazygit opens here                       │
+│                                                                             │
+│  ┌ Branches ────┐ ┌ Commits ──────────────────────────────────────────┐    │
+│  │ * main       │ │ abc1234 feat: add dashboard view           2h ago │    │
+│  │   feat/auth  │ │ def5678 fix: mobile nav overlap            1d ago │    │
+│  └──────────────┘ └───────────────────────────────────────────────────┘    │
+│                                                                             │
+╰─────────────────────────────────────────────────────────────────────────────╯
+```
 
 ---
 
