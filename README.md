@@ -65,21 +65,27 @@ That's it. The script handles everything — tools, plugins, runtimes, dotfiles.
 
 ## 🔒 Private config
 
-`.zshrc` automatically sources `~/.zsh_private` if it exists. This file is **never committed** — put anything machine-specific or sensitive in there.
+`.zshrc` automatically sources `~/.zsh_secrets` if it exists. This file is **never committed** — put anything sensitive or machine-specific in there: API keys, SSH config, private aliases.
+
+A template is included to get started:
 
 ```bash
-touch ~/.zsh_private
+cp ~/.local/share/chezmoi/dot_zsh_secrets.example ~/.zsh_secrets
 ```
 
 ```zsh
-# ~/.zsh_private — not versioned
+# ~/.zsh_secrets — not versioned
 
+# SSH agent (e.g. 1Password)
 export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 
+# API keys
+export OPENAI_API_KEY="sk-..."
+export ANTHROPIC_API_KEY="sk-ant-..."
+
+# Private aliases
 alias vps1='ssh user@1.2.3.4'
 alias work='cd ~/code/my-project'
-
-export OPENAI_API_KEY="sk-..."
 ```
 
 ---
