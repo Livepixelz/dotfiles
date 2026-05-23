@@ -115,11 +115,6 @@ if command -v fzf >/dev/null 2>&1; then
   source <(fzf --zsh)
 fi
 
-# ── zoxide (remplace cd) ──────────────────────────────────────────────────────
-if command -v zoxide >/dev/null 2>&1; then
-  eval "$(zoxide init zsh)"
-  alias cd="z"
-fi
 
 # ── Aliases — Navigation projets ─────────────────────────────────────────────
 alias ccd='cd ~/code/clutchdata'
@@ -285,3 +280,4 @@ fi
 
 # ── Zoxide ───────────────────────────────────────────────────────────────────
 eval "$(zoxide init zsh)"
+alias cd="z"
