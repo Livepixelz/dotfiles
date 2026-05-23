@@ -1,4 +1,4 @@
-# dotfiles
+# 🏠 dotfiles
 
 > macOS-first · zsh · chezmoi · opinionated
 
@@ -6,7 +6,7 @@ My personal dev environment. One command to go from a fresh machine to a fully w
 
 ---
 
-## Install
+## ⚡ Install
 
 ```bash
 git clone git@github.com:Livepixelz/dotfiles.git ~/.local/share/chezmoi
@@ -17,9 +17,9 @@ That's it. The script handles everything — tools, plugins, runtimes, dotfiles.
 
 ---
 
-## What's inside
+## 📦 What's inside
 
-### Shell
+### 🐚 Shell
 | | |
 |---|---|
 | [zsh](https://zsh.org) | Shell |
@@ -30,7 +30,7 @@ That's it. The script handles everything — tools, plugins, runtimes, dotfiles.
 | [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting) | Syntax colors as you type |
 | [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) | Fish-like suggestions from history |
 
-### CLI replacements
+### 🔁 CLI replacements
 | Instead of | Use | Why |
 |---|---|---|
 | `ls` | [eza](https://github.com/eza-community/eza) | Icons, git status, tree view |
@@ -40,7 +40,7 @@ That's it. The script handles everything — tools, plugins, runtimes, dotfiles.
 | `cd` | [zoxide](https://github.com/ajeetdsouza/zoxide) | Learns your habits |
 | `top` | [btop](https://github.com/aristocratsearch/btop) | Beautiful, actually readable |
 
-### Dev tools
+### 🛠️ Dev tools
 | | |
 |---|---|
 | [mise](https://mise.jdx.dev) | Runtime manager — node, python, and more |
@@ -53,7 +53,7 @@ That's it. The script handles everything — tools, plugins, runtimes, dotfiles.
 
 ---
 
-## Private config
+## 🔒 Private config
 
 `.zshrc` automatically sources `~/.zsh_private` if it exists. This file is **never committed** — put anything machine-specific or sensitive in there.
 
@@ -74,7 +74,7 @@ export OPENAI_API_KEY="sk-..."
 
 ---
 
-## Daily workflow
+## 🔄 Daily workflow
 
 ```bash
 chezmoi edit ~/.zshrc   # edit a dotfile
@@ -85,7 +85,7 @@ chezmoi cd              # open the repo
 
 ---
 
-## Tracked files
+## 📁 Tracked files
 
 | Repo | Home |
 |---|---|
@@ -97,7 +97,7 @@ chezmoi cd              # open the repo
 
 ---
 
-## macOS vs Linux
+## 🐧 macOS vs Linux
 
 - Homebrew on macOS, apt + official installers on Linux
 - `bat` → `batcat` on Ubuntu (symlinked automatically)
