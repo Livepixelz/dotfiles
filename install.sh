@@ -18,9 +18,11 @@ if [[ "$OS" == "Darwin" ]]; then
   info "Installation des outils via Homebrew..."
   brew install \
     chezmoi starship nvm fnm pyenv fzf zoxide eza bat fd ripgrep \
-    jq tmux lazygit fortune cowsay git-lfs \
+    jq yq tmux lazygit fortune cowsay git-lfs \
+    git-delta btop fastfetch mise \
     2>/dev/null || brew upgrade \
-    chezmoi starship fnm pyenv fzf zoxide eza bat fd ripgrep jq tmux lazygit 2>/dev/null || true
+    chezmoi starship fnm pyenv fzf zoxide eza bat fd ripgrep jq yq tmux lazygit \
+    git-delta btop fastfetch mise 2>/dev/null || true
 
 else
   # Linux (Ubuntu/Debian)
@@ -118,6 +120,41 @@ else
     chsh -s /usr/bin/zsh
     warn "Shell changé — déconnecte-toi et reconnecte-toi en SSH pour que zsh soit actif."
   fi
+fi
+
+# ── git-delta (Linux) ────────────────────────────────────────────────────────
+if [[ "$OS" != "Darwin" ]] && ! command -v delta >/dev/null 2>&1; then
+  info "Installation de git-delta..."
+  DELTA_VERSION=$(curl -s "https://api.github.com/repos/dandavison/delta/releases/latest" | grep '"tag_name"' | sed 's/.*"\([^"]*\)".*/\1/')
+  curl -fsSL "https://github.com/dandavison/delta/releases/download/${DELTA_VERSION}/delta-${DELTA_VERSION}-x86_64-unknown-linux-musl.tar.gz" \
+    | tar xz -C /tmp && sudo install "/tmp/delta-${DELTA_VERSION}-x86_64-unknown-linux-musl/delta" /usr/local/bin/delta || true
+fi
+
+# ── btop (Linux) ──────────────────────────────────────────────────────────────
+if [[ "$OS" != "Darwin" ]] && ! command -v btop >/dev/null 2>&1; then
+  info "Installation de btop..."
+  sudo apt-get install -y btop || true
+fi
+
+# ── fastfetch (Linux) ─────────────────────────────────────────────────────────
+if [[ "$OS" != "Darwin" ]] && ! command -v fastfetch >/dev/null 2>&1; then
+  info "Installation de fastfetch..."
+  sudo add-apt-repository -y ppa:zhangsongcui3371/fastfetch 2>/dev/null || true
+  sudo apt-get update -qq && sudo apt-get install -y fastfetch || true
+fi
+
+# ── mise (Linux) ──────────────────────────────────────────────────────────────
+if ! command -v mise >/dev/null 2>&1; then
+  info "Installation de mise..."
+  curl https://mise.run | sh || true
+fi
+
+# ── yq (Linux) ────────────────────────────────────────────────────────────────
+if [[ "$OS" != "Darwin" ]] && ! command -v yq >/dev/null 2>&1; then
+  info "Installation de yq..."
+  YQ_VERSION=$(curl -s "https://api.github.com/repos/mikefarah/yq/releases/latest" | grep '"tag_name"' | sed 's/.*"v\([^"]*\)".*/\1/')
+  sudo curl -fsSL "https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_amd64" \
+    -o /usr/local/bin/yq && sudo chmod +x /usr/local/bin/yq || true
 fi
 
 # ── Yazi ─────────────────────────────────────────────────────────────────────
