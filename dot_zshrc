@@ -6,7 +6,6 @@ export PATH="$HOME/.warden/bin:$PATH"
 eval "$(direnv hook zsh)"
 
 # ── 1Password SSH Agent ───────────────────────────────────────────────────────
-export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 
 # ── Histoire ──────────────────────────────────────────────────────────────────
 export HISTSIZE=50000
@@ -116,18 +115,6 @@ if command -v fzf >/dev/null 2>&1; then
 fi
 
 
-# ── Aliases — Navigation projets ─────────────────────────────────────────────
-alias ccd='cd ~/code/clutchdata'
-alias hm='cd ~/code/hoopmetrics'
-alias hoop='cd ~/code/hoopmetrics'
-alias bnd='cd ~/code/bender'
-alias inf='cd ~/code/infra'
-alias lpt='cd ~/code/lp-tools'
-alias rayc='cd ~/code/raycast'
-alias strt='cd ~/code/startup'
-alias site="cd ~/Sites/lvpxlz-portfolio/"
-alias three="cd ~/Sites/threejs-journey/"
-alias shots='cd ~/code/shottracker'
 
 # ── Aliases — Éditeur ─────────────────────────────────────────────────────────
 alias a='code .'
@@ -213,8 +200,6 @@ alias gwip='git add -A && git commit -m "wip"'
 alias gs='echo ""; echo "*********************************************"; echo -e "   DO NOT FORGET TO PULL BEFORE COMMITTING"; echo "*********************************************"; echo ""; git status'
 
 # ── Aliases — Infra / DevOps ─────────────────────────────────────────────────
-alias vps1='ssh vps1'
-alias vps2='ssh vps2'
 alias tf='terraform'
 alias tfi='terraform init'
 alias tfp='terraform plan'
@@ -222,8 +207,6 @@ alias tfa='terraform apply'
 
 # ── Aliases — Divers ─────────────────────────────────────────────────────────
 alias reveal-md="reveal-md --theme night --highlight-theme hybrid --port 1337"
-alias status='~/scripts/status.sh'
-alias morning='~/scripts/morning.sh'
 
 # macOS focus debug
 alias focus="log stream --predicate 'subsystem == \"com.apple.AppKit\"' --style compact | grep -i 'activate\|frontmost\|becomeKey'"
@@ -277,6 +260,9 @@ fi
 
 # ── pipx / envman ─────────────────────────────────────────────────────────────
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+
+# ── Config privée (non versionnée) ───────────────────────────────────────────
+[[ -f ~/.zsh_private ]] && source ~/.zsh_private
 
 # ── Zoxide ───────────────────────────────────────────────────────────────────
 eval "$(zoxide init zsh)"
