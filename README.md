@@ -1,75 +1,93 @@
 # dotfiles
 
-Config zsh, git et outils CLI — gérée via [chezmoi](https://chezmoi.io).
+> macOS-first · zsh · chezmoi · opinionated
 
-macOS-first, compatible Linux (Ubuntu/Debian).
+My personal dev environment. One command to go from a fresh machine to a fully working setup.
 
-## Ce qui est inclus
+---
 
-| Outil | Rôle |
-|---|---|
-| [starship](https://starship.rs) | Prompt shell |
-| [zoxide](https://github.com/ajeetdsouza/zoxide) | `cd` intelligent |
-| [atuin](https://atuin.sh) | Historique shell enrichi |
-| [fzf](https://github.com/junegunn/fzf) | Fuzzy finder |
-| [eza](https://github.com/eza-community/eza) | `ls` amélioré |
-| [bat](https://github.com/sharkdp/bat) | `cat` avec syntax highlighting |
-| [fd](https://github.com/sharkdp/fd) | `find` plus rapide |
-| [ripgrep](https://github.com/BurntSushi/ripgrep) | `grep` plus rapide |
-| [lazygit](https://github.com/jesseduffield/lazygit) | Git TUI |
-| [git-delta](https://github.com/dandavison/delta) | Diff git avec highlighting |
-| [btop](https://github.com/aristocratsearch/btop) | Moniteur système |
-| [fastfetch](https://github.com/fastfetch-cli/fastfetch) | System info |
-| [mise](https://mise.jdx.dev) | Gestionnaire de runtimes (node, python…) |
-| [yazi](https://github.com/sxyazi/yazi) | Explorateur de fichiers terminal |
-| [tmux](https://github.com/tmux/tmux) | Multiplexer terminal |
-
-## Installation
+## Install
 
 ```bash
 git clone git@github.com:Livepixelz/dotfiles.git ~/.local/share/chezmoi
 bash ~/.local/share/chezmoi/install.sh
 ```
 
-Le script installe tous les outils, les plugins zsh, et applique les dotfiles via chezmoi.
+That's it. The script handles everything — tools, plugins, runtimes, dotfiles.
 
-## Config privée — à créer manuellement
+---
 
-Le `.zshrc` source automatiquement `~/.zsh_private` s'il existe. Ce fichier n'est **pas** versionné — c'est là que tu mets tout ce qui est spécifique à ta machine ou trop personnel pour un repo public.
+## What's inside
+
+### Shell
+| | |
+|---|---|
+| [zsh](https://zsh.org) | Shell |
+| [starship](https://starship.rs) | Prompt — fast, minimal, context-aware |
+| [atuin](https://atuin.sh) | Shell history with search, sync, and stats |
+| [zoxide](https://github.com/ajeetdsouza/zoxide) | Smarter `cd` — jump to any dir by frecency |
+| [fzf](https://github.com/junegunn/fzf) | Fuzzy finder wired into everything |
+| [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting) | Syntax colors as you type |
+| [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) | Fish-like suggestions from history |
+
+### CLI replacements
+| Instead of | Use | Why |
+|---|---|---|
+| `ls` | [eza](https://github.com/eza-community/eza) | Icons, git status, tree view |
+| `cat` | [bat](https://github.com/sharkdp/bat) | Syntax highlighting, line numbers |
+| `find` | [fd](https://github.com/sharkdp/fd) | Faster, respects `.gitignore` |
+| `grep` | [ripgrep](https://github.com/BurntSushi/ripgrep) | Much faster, sane defaults |
+| `cd` | [zoxide](https://github.com/ajeetdsouza/zoxide) | Learns your habits |
+| `top` | [btop](https://github.com/aristocratsearch/btop) | Beautiful, actually readable |
+
+### Dev tools
+| | |
+|---|---|
+| [mise](https://mise.jdx.dev) | Runtime manager — node, python, and more |
+| [lazygit](https://github.com/jesseduffield/lazygit) | Git TUI — never type `git rebase` again |
+| [git-delta](https://github.com/dandavison/delta) | Diff with syntax highlighting |
+| [yazi](https://github.com/sxyazi/yazi) | Terminal file explorer with previews |
+| [tmux](https://github.com/tmux/tmux) | Terminal multiplexer |
+| [fastfetch](https://github.com/fastfetch-cli/fastfetch) | System info on terminal open |
+| [direnv](https://direnv.net) | Per-directory env vars |
+
+---
+
+## Private config
+
+`.zshrc` automatically sources `~/.zsh_private` if it exists. This file is **never committed** — put anything machine-specific or sensitive in there.
 
 ```bash
 touch ~/.zsh_private
 ```
 
-Exemple de contenu :
-
 ```zsh
-# SSH Agent (ex: 1Password)
+# ~/.zsh_private — not versioned
+
 export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 
-# Navigation projets
-alias work='cd ~/code/mon-projet'
-
-# Infra
 alias vps1='ssh user@1.2.3.4'
+alias work='cd ~/code/my-project'
 
-# API keys
 export OPENAI_API_KEY="sk-..."
 ```
 
-## Workflow quotidien
+---
+
+## Daily workflow
 
 ```bash
-chezmoi edit ~/.zshrc     # éditer
-chezmoi diff              # voir les changements
-chezmoi apply             # appliquer
-chezmoi cd                # aller dans le repo
-git add -A && git commit -m "..." && git push
+chezmoi edit ~/.zshrc   # edit a dotfile
+chezmoi diff            # preview changes
+chezmoi apply           # apply to home dir
+chezmoi cd              # open the repo
 ```
 
-## Fichiers trackés
+---
 
-| Source | Destination |
+## Tracked files
+
+| Repo | Home |
 |---|---|
 | `dot_zshrc` | `~/.zshrc` |
 | `dot_gitconfig.tmpl` | `~/.gitconfig` |
@@ -77,8 +95,10 @@ git add -A && git commit -m "..." && git push
 | `dot_config/starship.toml` | `~/.config/starship.toml` |
 | `dot_zsh/` | `~/.zsh/` |
 
+---
+
 ## macOS vs Linux
 
-- Homebrew sur macOS, apt + installers officiels sur Linux
-- `bat` peut s'appeler `batcat` sur Ubuntu (symlink créé auto)
-- `fd` peut s'appeler `fdfind` sur Ubuntu (symlink créé auto)
+- Homebrew on macOS, apt + official installers on Linux
+- `bat` → `batcat` on Ubuntu (symlinked automatically)
+- `fd` → `fdfind` on Ubuntu (symlinked automatically)
