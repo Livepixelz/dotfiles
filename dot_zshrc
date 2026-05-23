@@ -251,9 +251,6 @@ fi
 # ── pipx / envman ─────────────────────────────────────────────────────────────
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 
-# ── Config privée (non versionnée) ───────────────────────────────────────────
-[[ -f ~/.zsh_private ]] && source ~/.zsh_private
-
 # ── Zoxide ───────────────────────────────────────────────────────────────────
 eval "$(zoxide init zsh)"
 alias cd="z"
