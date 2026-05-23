@@ -1,5 +1,16 @@
 HOST_NAME=lvpxlz
 
+# ── Complétion (doit être en premier) ────────────────────────────────────────
+autoload -Uz compinit
+typeset -i updated_at
+updated_at=$(date +'%j' -r ~/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null || echo 0)
+if [ "$(date +'%j')" != "$updated_at" ]; then
+  compinit -i
+else
+  compinit -C -i
+fi
+zmodload -i zsh/complist
+
 # ── PATH ──────────────────────────────────────────────────────────────────────
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 export PATH="$HOME/.warden/bin:$PATH"
