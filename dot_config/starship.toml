@@ -1,5 +1,9 @@
 # Starship — config taillée dev frontend (livepixelz)
 
+# Délai max pour les commandes externes (ex: node -v). Défaut starship = 500ms,
+# trop court au cold start → warning "command timed out".
+command_timeout = 1000
+
 format = """
 $directory\
 $git_branch\
