@@ -57,7 +57,7 @@ That's it. The script handles everything — tools, plugins, runtimes, dotfiles.
 | [lazygit](https://github.com/jesseduffield/lazygit) | Git TUI — never type `git rebase` again |
 | [git-delta](https://github.com/dandavison/delta) | Diff with syntax highlighting |
 | [yazi](https://github.com/sxyazi/yazi) | Terminal file explorer with previews |
-| [tmux](https://github.com/tmux/tmux) | Terminal multiplexer |
+| [zellij](https://github.com/zellij-org/zellij) | Terminal multiplexer — layouts Vue & Zend inclus |
 | [fastfetch](https://github.com/fastfetch-cli/fastfetch) | System info on terminal open |
 | [direnv](https://direnv.net) | Per-directory env vars |
 

@@ -1,0 +1,39 @@
+// Layout zellij — projet Zend Framework / Laminas (PHP)
+// Lancer depuis la racine du projet : zellij --layout zend
+layout {
+    tab name="dev" focus=true {
+        pane split_direction="vertical" {
+            pane name="editor" size="60%"
+            pane split_direction="horizontal" {
+                // `composer serve` du skeleton ZF/Laminas :
+                // php -S 0.0.0.0:8080 -t public/
+                pane name="server" {
+                    command "composer"
+                    args "serve"
+                }
+                pane name="shell"
+            }
+        }
+    }
+    tab name="test" {
+        // Démarré suspendu : Entrée pour lancer phpunit (composer test)
+        pane name="phpunit" {
+            command "composer"
+            args "test"
+            start_suspended true
+        }
+    }
+    tab name="logs" {
+        // Adapte le chemin de log à ton projet si besoin
+        pane name="logs" {
+            command "tail"
+            args "-f" "data/log/application.log"
+            start_suspended true
+        }
+    }
+    tab name="git" {
+        pane name="lazygit" {
+            command "lazygit"
+        }
+    }
+}

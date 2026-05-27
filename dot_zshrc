@@ -156,10 +156,10 @@ alias nid='pnpm i -D'
 alias nb='pnpm build'
 alias nd='pnpm dev'
 
-# tmux
-alias t="tmux"
-alias ta="tmux attach || tmux new"
-alias tl="tmux list-sessions"
+# zellij
+alias t="zellij"
+alias ta="zellij attach || zellij"
+alias tl="zellij list-sessions"
 
 # lazygit
 alias lg="lazygit"

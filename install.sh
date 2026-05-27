@@ -18,17 +18,17 @@ if [[ "$OS" == "Darwin" ]]; then
   info "Installation des outils via Homebrew..."
   brew install \
     chezmoi starship nvm fnm pyenv fzf zoxide eza bat fd ripgrep \
-    jq yq tmux lazygit fortune cowsay git-lfs \
+    jq yq zellij lazygit fortune cowsay git-lfs \
     git-delta btop fastfetch mise \
     2>/dev/null || brew upgrade \
-    chezmoi starship fnm pyenv fzf zoxide eza bat fd ripgrep jq yq tmux lazygit \
+    chezmoi starship fnm pyenv fzf zoxide eza bat fd ripgrep jq yq zellij lazygit \
     git-delta btop fastfetch mise 2>/dev/null || true
 
 else
   # Linux (Ubuntu/Debian)
   info "Mise à jour apt..."
   sudo apt-get update -qq
-  sudo apt-get install -y curl wget git jq tmux zsh build-essential libssl-dev || true
+  sudo apt-get install -y curl wget git jq zsh build-essential libssl-dev || true
 
   # chezmoi
   if ! command -v chezmoi >/dev/null 2>&1; then
@@ -155,6 +155,18 @@ if [[ "$OS" != "Darwin" ]] && ! command -v yq >/dev/null 2>&1; then
   YQ_VERSION=$(curl -s "https://api.github.com/repos/mikefarah/yq/releases/latest" | grep '"tag_name"' | sed 's/.*"v\([^"]*\)".*/\1/')
   sudo curl -fsSL "https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_amd64" \
     -o /usr/local/bin/yq && sudo chmod +x /usr/local/bin/yq || true
+fi
+
+# ── Zellij ───────────────────────────────────────────────────────────────────
+if ! command -v zellij >/dev/null 2>&1; then
+  info "Installation de zellij..."
+  if [[ "$OS" == "Darwin" ]]; then
+    brew install zellij || true
+  else
+    curl --proto '=https' --tlsv1.2 -LsSf \
+      https://github.com/zellij-org/zellij/releases/latest/download/zellij-x86_64-unknown-linux-musl.tar.gz \
+      | tar xz -C /tmp && sudo install /tmp/zellij /usr/local/bin/zellij || true
+  fi
 fi
 
 # ── Yazi ─────────────────────────────────────────────────────────────────────
