@@ -14,7 +14,7 @@ zmodload -i zsh/complist
 # ── PATH ──────────────────────────────────────────────────────────────────────
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 export PATH="$HOME/.warden/bin:$PATH"
-eval "$(direnv hook zsh)"
+command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
 
 # ── 1Password SSH Agent ───────────────────────────────────────────────────────
 
@@ -53,17 +53,19 @@ fi
 
 # ── Fun ───────────────────────────────────────────────────────────────────────
 if command -v fortune >/dev/null 2>&1; then
-  tip=$(fortune webdev)
-  width=60
-  line=$(printf '─%.0s' {1..$width})
-  echo ""
-  echo "  \033[1;33m🏀 Tip-off du jour\033[0m"
-  echo "  \033[0;90m┌${line}┐\033[0m"
-  echo "$tip" | fold -s -w $width | while IFS= read -r l; do
-    printf "  \033[0;90m│\033[0m %-${width}s \033[0;90m│\033[0m\n" "$l"
-  done
-  echo "  \033[0;90m└${line}┘\033[0m"
-  echo ""
+  tip=$(fortune sports 2>/dev/null)
+  if [[ -n "$tip" ]]; then
+    width=60
+    line=$(printf '─%.0s' {1..$width})
+    echo ""
+    echo "  \033[1;33m🏀 Tip-off du jour\033[0m"
+    echo "  \033[0;90m┌${line}┐\033[0m"
+    echo "$tip" | expand | fold -s -w $width | while IFS= read -r l; do
+      printf "  \033[0;90m│\033[0m %-${width}s \033[0;90m│\033[0m\n" "$l"
+    done
+    echo "  \033[0;90m└${line}┘\033[0m"
+    echo ""
+  fi
 fi
 
 # ── Fonctions ─────────────────────────────────────────────────────────────────
