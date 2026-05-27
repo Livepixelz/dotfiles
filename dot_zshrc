@@ -107,12 +107,11 @@ fi
 
 
 # ── Aliases — Éditeur ─────────────────────────────────────────────────────────
-alias a='code .'
-alias co='code .'
-alias zed.='zed .'
-alias profile="code ~/.zshrc"
+alias a='zed .'
+alias co='zed .'
+alias profile="zed ~/.zshrc"
 alias sprofile="source ~/.zshrc"
-alias starconf="code ~/.config/starship.toml"
+alias starconf="zed ~/.config/starship.toml"
 
 # ── Aliases — Shell ───────────────────────────────────────────────────────────
 alias c="clear"
