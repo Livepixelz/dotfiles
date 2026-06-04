@@ -58,27 +58,37 @@ dui_footer() {
 }
 
 # Spinner for background tasks: dui_spin "label" some-command args...
+# Falls back to plain "→ label … ✓" when stdout isn't a tty.
 dui_spin() {
   local label="$1"; shift
+  local log="/tmp/.dui-spin.$$"
+  if [ ! -t 1 ]; then
+    "$@" >"$log" 2>&1; local rc=$?
+    if (( rc == 0 )); then
+      print -P "  ${DUI[green]}${DICO[ok]}${DUI[r]} $label"
+    else
+      print -P "  ${DUI[red]}${DICO[err]}${DUI[r]} $label"
+      tail -8 "$log" | sed 's/^/      /'
+    fi
+    rm -f "$log"; return $rc
+  fi
   local spinner_chars="⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
-  local pid
-  ("$@") >/tmp/.dui-spin.$$ 2>&1 &
-  pid=$!
-  local i=0
+  ("$@") >"$log" 2>&1 &
+  local pid=$! i=0
   while kill -0 $pid 2>/dev/null; do
     local c="${spinner_chars:$((i % ${#spinner_chars})):1}"
-    printf "\r  ${(%)DUI[cyan]}${c}${(%)DUI[r]} %s" "$label"
+    printf "\r\033[K  ${(%)DUI[cyan]}${c}${(%)DUI[r]} %s" "$label"
     sleep 0.08
     ((i++))
   done
   wait $pid; local rc=$?
   if (( rc == 0 )); then
-    printf "\r  ${(%)DUI[green]}${DICO[ok]}${(%)DUI[r]} %s\n" "$label"
+    printf "\r\033[K  ${(%)DUI[green]}${DICO[ok]}${(%)DUI[r]} %s\n" "$label"
   else
-    printf "\r  ${(%)DUI[red]}${DICO[err]}${(%)DUI[r]} %s\n" "$label"
-    cat /tmp/.dui-spin.$$ | sed 's/^/      /'
+    printf "\r\033[K  ${(%)DUI[red]}${DICO[err]}${(%)DUI[r]} %s\n" "$label"
+    tail -8 "$log" | sed 's/^/      /'
   fi
-  rm -f /tmp/.dui-spin.$$
+  rm -f "$log"
   return $rc
 }
 

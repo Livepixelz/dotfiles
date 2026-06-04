@@ -127,52 +127,70 @@ _dots_doctor() {
   fi
 }
 
-# ── update ────────────────────────────────────────────────────────────────────
+# ── update / pull / push (quiet by default, `-v` for full logs) ───────────────
 _dots_update() {
+  local verbose=0
+  [[ "${1:-}" == "-v" || "${1:-}" == "--verbose" ]] && verbose=1
   dui_header "dots update" "chezmoi + brew + mise"
-  dui_step "chezmoi update"
-  chezmoi update -v 2>&1 | sed 's/^/      /'
-  if command -v brew >/dev/null 2>&1; then
-    dui_step "brew upgrade"
-    brew upgrade --quiet 2>&1 | tail -3 | sed 's/^/      /'
+
+  if (( verbose )); then
+    dui_step "chezmoi sync"; chezmoi update -v 2>&1 | sed 's/^/      /'
+    if command -v brew >/dev/null 2>&1; then dui_step "brew upgrade"; brew upgrade 2>&1 | sed 's/^/      /'; fi
+    if command -v mise >/dev/null 2>&1; then dui_step "mise upgrade"; mise upgrade 2>&1 | sed 's/^/      /'; fi
+  else
+    dui_spin "syncing chezmoi" chezmoi update
+    if command -v brew >/dev/null 2>&1; then
+      local pending=$(brew outdated --quiet 2>/dev/null | wc -l | tr -d ' ')
+      if (( pending > 0 )); then
+        dui_spin "upgrading $pending brew package(s)" brew upgrade --quiet
+      else
+        dui_ok "brew up-to-date"
+      fi
+    fi
+    if command -v mise >/dev/null 2>&1; then
+      dui_spin "syncing mise runtimes" mise upgrade --quiet
+    fi
   fi
-  if command -v mise >/dev/null 2>&1; then
-    dui_step "mise upgrade"
-    mise upgrade --quiet 2>&1 | tail -3 | sed 's/^/      /'
-  fi
+
   rm -f "$HOME/.cache/dotfiles-check.stamp"
   dui_notify "dotfiles" "system updated"
   dui_footer "system is fresh"
 }
 
-# ── pull / push ───────────────────────────────────────────────────────────────
 _dots_pull() {
+  local verbose=0
+  [[ "${1:-}" == "-v" || "${1:-}" == "--verbose" ]] && verbose=1
   dui_header "dots pull"
-  dui_step "fetching + applying"
-  chezmoi update -v 2>&1 | sed 's/^/      /'
-  dui_notify "dotfiles" "pulled latest from origin"
+  if (( verbose )); then
+    chezmoi update -v 2>&1 | sed 's/^/      /'
+  else
+    dui_spin "fetching + applying" chezmoi update
+  fi
+  dui_notify "dotfiles" "pulled from origin"
   dui_footer "in sync with origin"
 }
 
 _dots_push() {
   local repo="$HOME/.local/share/chezmoi"
   dui_header "dots push"
-  dui_step "chezmoi re-add"
-  chezmoi re-add 2>&1 | sed 's/^/      /'
+  dui_spin "re-adding local changes" chezmoi re-add
   if [ -z "$(git -C "$repo" status -s)" ]; then
     dui_info "nothing to commit"
     dui_footer "already in sync"
     return
   fi
-  dui_section "Diff preview"
+  dui_section "Changes"
   git -C "$repo" status -s | sed 's/^/      /'
   local msg="${*:-chore(config): sync from local}"
-  dui_step "commit + push"
-  git -C "$repo" add -A
-  git -C "$repo" commit -m "$msg" 2>&1 | sed 's/^/      /'
-  git -C "$repo" push 2>&1 | sed 's/^/      /'
-  dui_notify "dotfiles" "pushed to origin"
-  dui_footer "synced to origin/master"
+  dui_spin "commit + push" sh -c "
+    git -C '$repo' add -A &&
+    git -C '$repo' commit -m '$msg' &&
+    git -C '$repo' push
+  "
+  local short=$(git -C "$repo" rev-parse --short HEAD)
+  dui_ok "pushed ${DUI[orange]}$short${DUI[r]} to origin/master"
+  dui_notify "dotfiles" "pushed $short"
+  dui_footer
 }
 
 # ── stats / backup / welcome ──────────────────────────────────────────────────

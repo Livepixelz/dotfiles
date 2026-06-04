@@ -9,6 +9,7 @@ tap "tursodatabase/tap"
 brew "act", args: ["HEAD"]
 brew "jpeg-xl"
 brew "aom"
+brew "atuin"
 brew "bash"
 brew "bat"
 brew "btop"
