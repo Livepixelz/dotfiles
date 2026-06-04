@@ -28,7 +28,7 @@ DICO[arrow]="→"
 DICO[dot]="·"
 DICO[bullet]="•"
 DICO[chevron]="❯"
-DICO[heart]="⏣"
+DICO[sigil]="⏣"
 DICO[spark]="✦"
 
 # ── Output primitives ─────────────────────────────────────────────────────────
@@ -53,7 +53,7 @@ dui_step()  { print -P "  ${DUI[purple]}${DICO[chevron]}${DUI[r]} $1"; }
 dui_footer() {
   local msg="${1:-done}"
   print -P ""
-  print -P "  ${DUI[green]}${DICO[heart]}${DUI[r]} ${DUI[dim]}$msg${DUI[r]}"
+  print -P "  ${DUI[green]}${DICO[sigil]}${DUI[r]} ${DUI[dim]}$msg${DUI[r]}"
   print -P ""
 }
 
