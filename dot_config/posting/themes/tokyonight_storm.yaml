@@ -1,0 +1,20 @@
+name: tokyonight_storm
+primary: "#7aa2f7"
+secondary: "#bb9af7"
+accent: "#7dcfff"
+background: "#24283b"
+surface: "#1f2335"
+error: "#f7768e"
+success: "#9ece6a"
+warning: "#e0af68"
+
+syntax:
+  json_key: "#7dcfff"
+  json_string: "#9ece6a"
+  json_number: "#ff9e64"
+  json_boolean: "#bb9af7"
+  json_null: "#f7768e"
+
+variable: "#bb9af7"
+url: "#7aa2f7"
+method: "#9ece6a"

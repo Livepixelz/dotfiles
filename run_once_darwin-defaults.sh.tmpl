@@ -1,0 +1,61 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/usr/bin/env bash
+# Sensible macOS defaults — runs ONCE on first chezmoi apply.
+# Re-runs only if this file's hash changes (rename to bump).
+set -euo pipefail
+
+echo "→ applying macOS defaults..."
+
+# ── Dock ──────────────────────────────────────────────────────────────────────
+defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock autohide-delay -float 0
+defaults write com.apple.dock autohide-time-modifier -float 0.2
+defaults write com.apple.dock tilesize -int 42
+defaults write com.apple.dock show-recents -bool false
+defaults write com.apple.dock minimize-to-application -bool true
+defaults write com.apple.dock mru-spaces -bool false
+
+# ── Finder ────────────────────────────────────────────────────────────────────
+defaults write com.apple.finder AppleShowAllFiles -bool true
+defaults write com.apple.finder ShowPathbar -bool true
+defaults write com.apple.finder ShowStatusBar -bool true
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"   # search current folder
+defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"   # list view
+defaults write com.apple.finder _FXSortFoldersFirst -bool true
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+# ── Screenshots ───────────────────────────────────────────────────────────────
+mkdir -p "$HOME/Pictures/Screenshots"
+defaults write com.apple.screencapture location -string "$HOME/Pictures/Screenshots"
+defaults write com.apple.screencapture type -string "png"
+defaults write com.apple.screencapture disable-shadow -bool true
+
+# ── Keyboard ──────────────────────────────────────────────────────────────────
+defaults write NSGlobalDomain KeyRepeat -int 2
+defaults write NSGlobalDomain InitialKeyRepeat -int 15
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false   # repeat instead of accents popup
+defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
+
+# ── Trackpad ──────────────────────────────────────────────────────────────────
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+defaults write NSGlobalDomain com.apple.trackpad.scaling -float 2.0
+
+# ── Safari / Web ──────────────────────────────────────────────────────────────
+defaults write com.apple.Safari IncludeDevelopMenu -bool true 2>/dev/null || true
+
+# ── UI/UX divers ──────────────────────────────────────────────────────────────
+defaults write NSGlobalDomain NSWindowResizeTime -float 0.001
+defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false   # save to disk by default
+
+# Apply changes
+killall Dock 2>/dev/null || true
+killall Finder 2>/dev/null || true
+killall SystemUIServer 2>/dev/null || true
+
+echo "✓ macOS defaults applied"
+{{- end -}}

@@ -1,0 +1,38 @@
+# Managed by chezmoi — edit the template at private_dot_ssh/config.tmpl
+
+# OrbStack (Linux VMs locales)
+Include ~/.orbstack/ssh/config
+
+Host gitlab.com
+  HostName gitlab.com
+  IdentityFile ~/.ssh/id_ed25519
+
+{{- if .vps1_ip }}
+
+Host vps1
+  HostName {{ .vps1_ip }}
+  User {{ .vps_user }}
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+{{- end }}
+{{- if .vps2_ip }}
+
+Host vps2
+  HostName {{ .vps2_ip }}
+  User {{ .vps_user }}
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+{{- end }}
+{{- if .storagebox }}
+
+Host storagebox
+  HostName {{ .storagebox }}
+  User {{ .storagebox_user }}
+  Port 23
+{{- end }}
+
+Host *
+  IdentityAgent "${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+  ServerAliveInterval 60
+  ServerAliveCountMax 3
+  AddKeysToAgent yes

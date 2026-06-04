@@ -3,8 +3,26 @@
 	name = {{ .name }}
 [core]
 	excludesfile = ~/.gitignore_global
+	pager = delta
 [init]
 	defaultBranch = master
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	line-numbers = true
+	syntax-theme = tokyonight_storm
+	side-by-side = false
+[merge]
+	conflictstyle = zdiff3
+[diff]
+	colorMoved = default
+[pull]
+	rebase = true
+[push]
+	autoSetupRemote = true
+[rerere]
+	enabled = true
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f

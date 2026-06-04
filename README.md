@@ -129,14 +129,40 @@ dots-push     # chezmoi re-add, then commit + push (optional message arg)
 | `dot_config/zed/settings.json` | `~/.config/zed/settings.json` |
 | `dot_zsh/` | `~/.zsh/` |
 
-### 🎨 App themes & preferences
+### 🎨 App themes & preferences — Tokyo Night Storm everywhere
 
-Tracked: **Posting** (HTTP TUI client), **Zed** (editor settings only — not workspace state, extensions cache, or DB).
+| App | Theme |
+|---|---|
+| Ghostty | `tokyonight_storm` (built-in) |
+| Zed | Tokyo Night Storm (built-in family) |
+| btop | `tokyonight_storm.theme` (bundled) |
+| bat | `tokyonight_storm.tmTheme` (bundled, rebuilt via `run_onchange_after_bat-cache.sh`) |
+| zellij | `tokyonight_storm.kdl` (bundled) |
+| Posting | `tokyonight_storm.yaml` (bundled) |
+| lazygit | full theme in `config.yml` |
+| git-delta | uses bat's `tokyonight_storm` syntax theme |
+| fzf | palette via `FZF_DEFAULT_OPTS` in zshrc |
 
-Not tracked yet (intentionally):
-- **Ghostty** — no custom config yet; add `dot_config/ghostty/config` when needed
-- **Raycast** — state lives in encrypted SQLite + macOS `defaults`. Use a `run_once_` script with `defaults write com.raycast.macos …` instead of versioning the DB
-- **Obsidian** — real settings live in `.obsidian/` per vault, not globally. Version them inside each vault
+Not tracked (intentionally):
+- **Raycast** — state lives in encrypted SQLite. Use `run_once_darwin-defaults.sh` for `defaults write com.raycast.macos …` if needed
+- **Obsidian** — real settings live in `.obsidian/` per vault. Version them inside each vault
+
+### 🍺 Brewfile
+
+`Brewfile` is generated via `brew bundle dump --force`. To reinstall the full stack on a new machine:
+
+```bash
+brew bundle --file=~/.local/share/chezmoi/Brewfile
+```
+
+Refresh the file when adding packages:
+```bash
+brew bundle dump --file=~/.local/share/chezmoi/Brewfile --force
+```
+
+### 🍎 macOS defaults
+
+`run_once_darwin-defaults.sh.tmpl` applies sensible defaults (Dock, Finder, screenshots, keyboard repeat, trackpad) on **first apply only**. Bump the filename to re-run.
 
 ---
 

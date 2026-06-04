@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Rebuild bat's syntax/theme cache when themes change.
+# hash: {{ include "dot_config/bat/themes/tokyonight_storm.tmTheme" | sha256sum }}
+set -euo pipefail
+command -v bat >/dev/null 2>&1 || exit 0
+bat cache --build >/dev/null 2>&1 || true
+echo "✓ bat cache rebuilt"

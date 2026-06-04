@@ -1,3 +1,8 @@
 [data]
-  name  = {{ promptOnce "Ton nom Git" | quote }}
-  email = {{ promptOnce "Ton email Git" | quote }}
+  name       = {{ promptStringOnce . "name"       "Ton nom Git" | quote }}
+  email      = {{ promptStringOnce . "email"      "Ton email Git" | quote }}
+  vps1_ip    = {{ promptStringOnce . "vps1_ip"    "IP du VPS1 (prod)"           ""  | quote }}
+  vps2_ip    = {{ promptStringOnce . "vps2_ip"    "IP du VPS2 (staging/CI)"     ""  | quote }}
+  vps_user   = {{ promptStringOnce . "vps_user"   "Utilisateur SSH des VPS"     "root" | quote }}
+  storagebox = {{ promptStringOnce . "storagebox" "Host Hetzner storagebox"     ""  | quote }}
+  storagebox_user = {{ promptStringOnce . "storagebox_user" "User storagebox"   ""  | quote }}
