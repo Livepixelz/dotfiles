@@ -76,7 +76,7 @@ _dots_status() {
   local repo="$HOME/.local/share/chezmoi"
   dui_header "dots status"
   dui_section "Local"
-  local dirty=$(chezmoi status 2>/dev/null | wc -l | tr -d ' ')
+  local dirty=$(chezmoi status 2>/dev/null | grep -v '^R' | wc -l | tr -d ' ')
   if (( dirty > 0 )); then
     dui_warn "$dirty file(s) modified locally — run ${DUI[b]}dots push${DUI[B]}"
     chezmoi status | sed 's/^/        /'
@@ -115,7 +115,7 @@ _dots_doctor() {
   done
   dui_section "Sync state"
   local repo="$HOME/.local/share/chezmoi"
-  local dirty=$(chezmoi status 2>/dev/null | wc -l | tr -d ' ')
+  local dirty=$(chezmoi status 2>/dev/null | grep -v '^R' | wc -l | tr -d ' ')
   (( dirty > 0 )) && dui_warn "$dirty local change(s)" || dui_ok "source ↔ home in sync"
   git -C "$repo" fetch --quiet 2>/dev/null
   local behind=$(git -C "$repo" rev-list --count HEAD..@{u} 2>/dev/null || echo 0)

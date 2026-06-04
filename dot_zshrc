@@ -249,7 +249,7 @@ _dotfiles_check() {
   (
     git -C "$repo" fetch --quiet origin 2>/dev/null
     local behind=$(git -C "$repo" rev-list --count HEAD..@{u} 2>/dev/null || echo 0)
-    local dirty=$(chezmoi status 2>/dev/null | wc -l | tr -d ' ')
+    local dirty=$(chezmoi status 2>/dev/null | grep -v '^R' | wc -l | tr -d ' ')
     if (( behind > 0 )); then
       print -P "  ${(%):-%F{117}}∙${(%):-%f} dotfiles · $behind behind origin · ${(%):-%F{215}}dots pull${(%):-%f}"
       command -v terminal-notifier >/dev/null 2>&1 && terminal-notifier -title "dotfiles" -message "$behind commit(s) behind origin" -group dots >/dev/null 2>&1
