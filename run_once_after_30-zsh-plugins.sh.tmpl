@@ -8,7 +8,7 @@ clone_if_missing() {
   local url="$1" dest="$2"
   [ -d "$dest" ] && return
   echo "→ cloning $(basename "$dest")..."
-  git clone --depth=1 --quiet "$url" "$dest"
+  git clone --depth=1 --recurse-submodules --shallow-submodules --quiet "$url" "$dest"
 }
 
 clone_if_missing https://github.com/zdharma-continuum/fast-syntax-highlighting "$ZSH_DIR/fast-syntax-highlighting"
