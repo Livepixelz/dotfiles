@@ -1,0 +1,88 @@
+{
+  "proxy": "",
+  "cli_default_open_behavior": "existing_window",
+  "project_panel": {
+    "dock": "right"
+  },
+  "outline_panel": {
+    "dock": "right"
+  },
+  "collaboration_panel": {
+    "dock": "right"
+  },
+  "git_panel": {
+    "dock": "right"
+  },
+  "terminal": {
+    "font_family": "monospace",
+  },
+  "minimap": {
+    "show": "never",
+  },
+  "cursor_blink": true,
+  "buffer_font_size": 16.0,
+  "buffer_font_family": "Fira Code",
+  "auto_indent_on_paste": true,
+  "use_on_type_format": true,
+  "show_edit_predictions": true,
+  "soft_wrap": "editor_width",
+  "session": {
+    "trust_all_worktrees": true,
+  },
+  "icon_theme": {
+    "mode": "light",
+    "light": "Zed (Default)",
+    "dark": "Zed (Default)"
+  },
+  "theme": {
+    "mode": "dark",
+    "light": "One Light",
+    "dark": "Tokyo Night Storm",
+  },
+  "base_keymap": "VSCode",
+  "agent": {
+    "dock": "left",
+    "tool_permissions": {
+      "tools": {
+        "terminal": {
+          "default": "allow"
+        },
+        "create_directory": {
+          "always_allow": [
+            {
+              "pattern": "^hoopmetrics/frontend/app/pages/"
+            }
+          ]
+        }
+      }
+    },
+    "default_model": {
+      "effort": "high",
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-6-latest",
+      "enable_thinking": true,
+    },
+    "favorite_models": [],
+    "model_parameters": [],
+  },
+  "edit_predictions": {
+    "provider": "zed",
+  },
+  "agent_servers": {
+    "mistral-vibe": {
+      "type": "registry"
+    },
+    "github-copilot-cli": {
+      "type": "registry"
+    },
+    "claude-acp": {
+      "type": "registry",
+    },
+  },
+  "context_servers": {
+    "posthog": {
+      "enabled": true,
+      "url": "https://mcp.posthog.com/mcp"
+    }
+  },
+}

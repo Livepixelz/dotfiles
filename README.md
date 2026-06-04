@@ -109,7 +109,20 @@ chezmoi cd              # open the repo
 | `dot_gitconfig.tmpl` | `~/.gitconfig` |
 | `dot_gitignore_global` | `~/.gitignore_global` |
 | `dot_config/starship.toml` | `~/.config/starship.toml` |
+| `dot_config/btop/` | `~/.config/btop/` |
+| `dot_config/zellij/` | `~/.config/zellij/` |
+| `dot_config/posting/config.yaml` | `~/.config/posting/config.yaml` |
+| `dot_config/zed/settings.json` | `~/.config/zed/settings.json` |
 | `dot_zsh/` | `~/.zsh/` |
+
+### 🎨 App themes & preferences
+
+Tracked: **Posting** (HTTP TUI client), **Zed** (editor settings only — not workspace state, extensions cache, or DB).
+
+Not tracked yet (intentionally):
+- **Ghostty** — no custom config yet; add `dot_config/ghostty/config` when needed
+- **Raycast** — state lives in encrypted SQLite + macOS `defaults`. Use a `run_once_` script with `defaults write com.raycast.macos …` instead of versioning the DB
+- **Obsidian** — real settings live in `.obsidian/` per vault, not globally. Version them inside each vault
 
 ---
 
