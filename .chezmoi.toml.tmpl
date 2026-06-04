@@ -21,6 +21,7 @@
   macos_defaults        = {{ promptBoolOnce . "features.macos_defaults"        "Apply opinionated macOS defaults?"          true }}
   direnv_helpers        = {{ promptBoolOnce . "features.direnv_helpers"        "Install direnv helpers (use_doppler etc)?"  true }}
   install_fonts         = {{ promptBoolOnce . "features.install_fonts"         "Install Nerd Fonts via brew?"               true }}
+  scheduled_jobs        = {{ promptBoolOnce . "features.scheduled_jobs"        "Schedule daily update + weekly backup (launchd)?" true }}
 
 [data.atuin]
   sync_address = {{ promptStringOnce . "atuin.sync_address" "Atuin sync server URL" "https://api.atuin.sh" | quote }}

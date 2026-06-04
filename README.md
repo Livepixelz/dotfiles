@@ -127,19 +127,46 @@ chezmoi edit-config
 A unified command center with cohesive Tokyo Night Storm UI. `dots` (or `d`) is your single entry point:
 
 ```bash
-dots             # show help
+# Sync
 dots status      # local drift + remote diff
 dots pull        # fetch + apply
 dots push        # re-add + commit + push (msg arg optional)
-dots doctor      # health check (binaries, plugins, sync)
-dots update      # chezmoi + brew + mise (all in one)
-dots stats       # repo at a glance
-dots backup      # snapshot to ~/Backups/*.tar.zst
-dots welcome     # tour & active features
-dots edit        # edit ~/.config/chezmoi/chezmoi.toml
 dots apply       # chezmoi apply -v
+
+# Health
+dots doctor      # binaries, plugins, sync state
+dots stats       # repo at a glance (onefetch if installed)
+
+# Maintenance
+dots update      # chezmoi + brew + mise (silent, -v for full logs)
+dots backup      # snapshot to ~/Backups/*.tar.zst (keeps last 10)
+dots edit        # fzf-pick a managed file, open in chezmoi edit
+dots config      # edit ~/.config/chezmoi/chezmoi.toml
 dots cd          # cd into the source repo
+
+# Explore
+dots diff        # colored diff source ↔ home (via delta)
+dots search      # fzf fuzzy search across managed files
+dots docs        # render README in glow
+
+# Productivity
+dots focus       # toggle DnD + quit Slack/Discord/Mail
+dots audit       # check permissions on sensitive files + gitleaks scan
+dots bench       # profile zsh startup time (hyperfine)
+
+# Discover
+dots welcome     # tour & active features
 ```
+
+### ⏰ Scheduled jobs (launchd, opt-in via `features.scheduled_jobs`)
+
+| Job | When | What |
+|---|---|---|
+| `dots-update` | daily 9:00 | `chezmoi update` + `brew upgrade` |
+| `dots-backup` | Sunday 3:30 | weekly snapshot to `~/Backups/` |
+| `brewfile-dump` | daily 10:00 | re-dump Brewfile (catch new brews automatically) |
+
+Logs land in `~/.cache/dots-*.log`. Toggle via `dots config`.
 
 Legacy aliases (`dots-status`, `dots-pull`, etc.) still work. macOS-native notifications fire on sync events via `terminal-notifier`.
 

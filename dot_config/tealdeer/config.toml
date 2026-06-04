@@ -1,0 +1,20 @@
+[display]
+compact = false
+use_pager = false
+
+[style.command_name]
+foreground = "blue"
+
+[style.example_text]
+foreground = "cyan"
+
+[style.example_code]
+foreground = "green"
+
+[style.example_variable]
+foreground = "magenta"
+italic = true
+
+[updates]
+auto_update = true
+auto_update_interval_hours = 168

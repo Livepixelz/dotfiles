@@ -38,9 +38,16 @@ dots() {
     stats)   _dots_stats   "$@" ;;
     backup)  _dots_backup  "$@" ;;
     welcome) _dots_welcome "$@" ;;
-    edit)    chezmoi edit-config ;;
+    edit)    _dots_edit    "$@" ;;
+    config)  chezmoi edit-config ;;
     apply)   chezmoi apply -v ;;
     cd)      chezmoi cd ;;
+    diff)    _dots_diff    "$@" ;;
+    search)  _dots_search  "$@" ;;
+    focus)   _dots_focus   "$@" ;;
+    docs)    _dots_docs    "$@" ;;
+    audit)   _dots_audit   "$@" ;;
+    bench)   _dots_bench   "$@" ;;
     help|--help|-h) _dots_help ;;
     *)
       dui_err "unknown command: $cmd"
@@ -63,9 +70,18 @@ _dots_help() {
   print -P "    ${DUI[purple]}stats${DUI[r]}     repo numbers at a glance"
   dui_section "Maintenance"
   print -P "    ${DUI[purple]}update${DUI[r]}    chezmoi + brew + mise (all in one)"
-  print -P "    ${DUI[purple]}backup${DUI[r]}    snapshot ~/.config to ~/Backups"
-  print -P "    ${DUI[purple]}edit${DUI[r]}      open ~/.config/chezmoi/chezmoi.toml"
+  print -P "    ${DUI[purple]}backup${DUI[r]}    snapshot ~/.config to ~/Backups (keeps last 10)"
+  print -P "    ${DUI[purple]}edit${DUI[r]}      fzf-pick a managed file, then chezmoi edit"
+  print -P "    ${DUI[purple]}config${DUI[r]}    open ~/.config/chezmoi/chezmoi.toml"
   print -P "    ${DUI[purple]}cd${DUI[r]}        enter the chezmoi source repo"
+  dui_section "Explore"
+  print -P "    ${DUI[purple]}diff${DUI[r]}      colored diff between source and home"
+  print -P "    ${DUI[purple]}search${DUI[r]}    fuzzy search across managed files"
+  print -P "    ${DUI[purple]}docs${DUI[r]}      render README in glow"
+  dui_section "Productivity"
+  print -P "    ${DUI[purple]}focus${DUI[r]}     toggle DnD + quit distracting apps"
+  print -P "    ${DUI[purple]}audit${DUI[r]}     check permissions on sensitive files"
+  print -P "    ${DUI[purple]}bench${DUI[r]}     profile zsh startup time"
   dui_section "Discover"
   print -P "    ${DUI[purple]}welcome${DUI[r]}   first-run tour & feature summary"
   dui_footer "tip: alias d='dots' for max ergonomics"
@@ -196,11 +212,14 @@ _dots_push() {
 # ── stats / backup / welcome ──────────────────────────────────────────────────
 _dots_stats() {
   local repo="$HOME/.local/share/chezmoi"
+  if command -v onefetch >/dev/null 2>&1; then
+    onefetch "$repo" --no-color-palette --no-art 2>/dev/null
+    return
+  fi
   local managed=$(chezmoi managed 2>/dev/null | wc -l | tr -d ' ')
   local commits=$(git -C "$repo" rev-list --count HEAD 2>/dev/null)
   local last=$(git -C "$repo" log -1 --format='%cr' 2>/dev/null)
   local size=$(du -sh "$repo" 2>/dev/null | awk '{print $1}')
-  local files_in_home=$(chezmoi managed 2>/dev/null | grep -v '^$' | wc -l | tr -d ' ')
   dui_header "dots stats"
   dui_section "Repository"
   dui_info "$commits commits · last update ${DUI[green]}$last${DUI[r]}"
@@ -212,6 +231,7 @@ _dots_stats() {
 
 _dots_backup() {
   local dest="${1:-$HOME/Backups}"
+  local keep="${DOTS_BACKUP_KEEP:-10}"
   local stamp=$(date +%Y%m%d-%H%M%S)
   mkdir -p "$dest"
   local out="$dest/dotfiles-snapshot-$stamp.tar.zst"
@@ -221,8 +241,109 @@ _dots_backup() {
     .config .zshrc .gitconfig .gitignore_global .zsh 2>/dev/null
   local size=$(du -sh "$out" 2>/dev/null | awk '{print $1}')
   dui_info "snapshot size: ${DUI[green]}$size${DUI[r]}"
+  # Retention: keep last N snapshots
+  local pruned=$(ls -1t "$dest"/dotfiles-snapshot-*.tar.zst 2>/dev/null | tail -n +$((keep+1)) | wc -l | tr -d ' ')
+  if (( pruned > 0 )); then
+    ls -1t "$dest"/dotfiles-snapshot-*.tar.zst 2>/dev/null | tail -n +$((keep+1)) | xargs rm -f
+    dui_info "pruned $pruned older snapshot(s) — keeping last $keep"
+  fi
   dui_notify "dotfiles" "backup saved ($size)"
   dui_footer "stored at $out"
+}
+
+# ── Explore ───────────────────────────────────────────────────────────────────
+_dots_diff() {
+  dui_header "dots diff" "source ↔ home"
+  if command -v delta >/dev/null 2>&1; then
+    chezmoi diff "$@" | delta --paging=never
+  else
+    chezmoi diff "$@"
+  fi
+}
+
+_dots_search() {
+  command -v fzf >/dev/null 2>&1 || { dui_err "fzf required"; return 1; }
+  local file=$(chezmoi managed | fzf --prompt="dots ❯ " \
+    --preview="bat --color=always --style=numbers ${HOME}/{} 2>/dev/null || cat ${HOME}/{}" \
+    --preview-window=right:60%:wrap)
+  [ -z "$file" ] && return
+  print -P "  ${DUI[dim]}${HOME}/${file}${DUI[r]}"
+  echo "${HOME}/${file}"
+}
+
+_dots_edit() {
+  local file=$(_dots_search)
+  [ -z "$file" ] && return
+  chezmoi edit "$file"
+}
+
+_dots_docs() {
+  if command -v glow >/dev/null 2>&1; then
+    glow -p "$HOME/.local/share/chezmoi/README.md"
+  else
+    bat "$HOME/.local/share/chezmoi/README.md"
+  fi
+}
+
+# ── Productivity ──────────────────────────────────────────────────────────────
+_dots_focus() {
+  dui_header "dots focus" "DnD + distractions away"
+  if [[ "$OSTYPE" == darwin* ]]; then
+    osascript -e 'tell application "System Events" to keystroke "d" using {control down, option down}' 2>/dev/null || true
+    dui_ok "toggled macOS Focus (DnD)"
+  fi
+  local quit_list=(Slack Discord Messages Mail "Microsoft Teams" Telegram WhatsApp)
+  local killed=0
+  for app in $quit_list; do
+    if pgrep -xq "$app" 2>/dev/null; then
+      osascript -e "tell application \"$app\" to quit" 2>/dev/null && ((killed++))
+    fi
+  done
+  (( killed > 0 )) && dui_ok "quit $killed distracting app(s)" || dui_info "no distracting apps running"
+  dui_notify "focus mode" "minimal mode engaged"
+  dui_footer "deep work · ${DICO[spark]}"
+}
+
+_dots_audit() {
+  dui_header "dots audit" "permissions + secrets check"
+  dui_section "Sensitive paths"
+  for path in ~/.ssh ~/.ssh/config ~/.gnupg ~/.zsh_secrets ~/.aws ~/.config/doppler; do
+    [ ! -e "$path" ] && { dui_info "$path (not present)"; continue; }
+    local perm=$(stat -f "%OLp" "$path" 2>/dev/null || stat -c "%a" "$path" 2>/dev/null)
+    local kind="dir"; [ -f "$path" ] && kind="file"
+    local expected="600"
+    [ "$kind" = "dir" ] && expected="700"
+    if [[ "$perm" == "$expected" || "$perm" == "400" ]]; then
+      dui_ok "$path ${DUI[dim]}($perm)${DUI[r]}"
+    else
+      dui_warn "$path ${DUI[orange]}($perm — expected $expected)${DUI[r]}"
+    fi
+  done
+  dui_section "Secret leaks"
+  if command -v gitleaks >/dev/null 2>&1; then
+    local repo="$HOME/.local/share/chezmoi"
+    if gitleaks detect --source="$repo" --no-banner --redact --exit-code 0 >/dev/null 2>&1; then
+      dui_ok "no secrets in dotfiles repo"
+    else
+      dui_err "gitleaks found suspicious patterns — run: gitleaks detect --source=$repo"
+    fi
+  else
+    dui_warn "gitleaks not installed"
+  fi
+  dui_footer
+}
+
+_dots_bench() {
+  dui_header "dots bench" "zsh startup profiling"
+  if ! command -v hyperfine >/dev/null 2>&1; then
+    dui_warn "hyperfine not installed — falling back to simple timing"
+    for i in 1 2 3; do
+      /usr/bin/time -p zsh -i -c exit 2>&1 | sed 's/^/      /'
+    done
+    return
+  fi
+  hyperfine --warmup 1 --runs 5 'zsh -i -c exit'
+  dui_footer "tip: ZSH_PROFILING=1 exec zsh && zprof | head -30"
 }
 
 _dots_welcome() {
