@@ -233,7 +233,8 @@ if command -v atuin >/dev/null 2>&1; then
   eval "$(atuin init zsh)"
 fi
 
-# ── Dotfiles sync (chezmoi ↔ GitHub) ──────────────────────────────────────────
+# ── Dotfiles ambient check ────────────────────────────────────────────────────
+# Quiet daily check. Notifications via macOS native — no shell clutter.
 _dotfiles_check() {
   local repo="$HOME/.local/share/chezmoi"
   local stamp="$HOME/.cache/dotfiles-check.stamp"
@@ -249,22 +250,26 @@ _dotfiles_check() {
     git -C "$repo" fetch --quiet origin 2>/dev/null
     local behind=$(git -C "$repo" rev-list --count HEAD..@{u} 2>/dev/null || echo 0)
     local dirty=$(chezmoi status 2>/dev/null | wc -l | tr -d ' ')
-    (( behind > 0 )) && print -P "%F{cyan}📥 dotfiles:%f $behind commit(s) behind origin — run %F{yellow}dots-pull%f"
-    (( dirty > 0 )) && print -P "%F{magenta}📤 dotfiles:%f $dirty file(s) modified locally — run %F{yellow}dots-push%f"
+    if (( behind > 0 )); then
+      print -P "  ${(%):-%F{117}}∙${(%):-%f} dotfiles · $behind behind origin · ${(%):-%F{215}}dots pull${(%):-%f}"
+      command -v terminal-notifier >/dev/null 2>&1 && terminal-notifier -title "dotfiles" -message "$behind commit(s) behind origin" -group dots >/dev/null 2>&1
+    fi
+    if (( dirty > 0 )); then
+      print -P "  ${(%):-%F{141}}∙${(%):-%f} dotfiles · $dirty modified locally · ${(%):-%F{215}}dots push${(%):-%f}"
+    fi
   ) &!
 }
 add-zsh-hook precmd _dotfiles_check
 
-alias dots-status='chezmoi status && git -C ~/.local/share/chezmoi fetch --quiet && git -C ~/.local/share/chezmoi status -sb'
-alias dots-pull='chezmoi update -v'
-dots-push() {
-  local repo="$HOME/.local/share/chezmoi"
-  chezmoi re-add || return
-  git -C "$repo" status -s
-  [ -z "$(git -C "$repo" status -s)" ] && { echo "nothing to commit"; return; }
-  local msg="${*:-chore(config): sync from local}"
-  git -C "$repo" add -A && git -C "$repo" commit -m "$msg" && git -C "$repo" push
+# ── First-run welcome (one-shot per machine) ──────────────────────────────────
+_dotfiles_welcome_once() {
+  local mark="$HOME/.cache/dots-welcomed"
+  [ -f "$mark" ] && return
+  command -v dots >/dev/null 2>&1 || return
+  touch "$mark"
+  dots welcome
 }
+add-zsh-hook precmd _dotfiles_welcome_once
 
 # ── Secrets & overrides locaux ────────────────────────────────────────────────
 [ -f "$HOME/.zsh_secrets" ] && source "$HOME/.zsh_secrets"

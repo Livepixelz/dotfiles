@@ -122,14 +122,26 @@ chezmoi edit-config
 | `onepassword` | `op_secret` helper in zsh + use op CLI for secrets | `false` |
 | `atuin_sync` | Enable atuin auto-sync to `atuin.sync_address` | `false` |
 
-### 🩺 Maintenance commands
+### 🎛️ The `dots` command
+
+A unified command center with cohesive Tokyo Night Storm UI. `dots` (or `d`) is your single entry point:
 
 ```bash
-dots-doctor   # health check: binaries, plugins, sync state
-dots-update   # chezmoi update + brew upgrade + mise upgrade
-dots-stats    # quick repo stats (files, commits, size)
-dots-backup   # snapshot ~/.config + dotfiles → ~/Backups/*.tar.zst
+dots             # show help
+dots status      # local drift + remote diff
+dots pull        # fetch + apply
+dots push        # re-add + commit + push (msg arg optional)
+dots doctor      # health check (binaries, plugins, sync)
+dots update      # chezmoi + brew + mise (all in one)
+dots stats       # repo at a glance
+dots backup      # snapshot to ~/Backups/*.tar.zst
+dots welcome     # tour & active features
+dots edit        # edit ~/.config/chezmoi/chezmoi.toml
+dots apply       # chezmoi apply -v
+dots cd          # cd into the source repo
 ```
+
+Legacy aliases (`dots-status`, `dots-pull`, etc.) still work. macOS-native notifications fire on sync events via `terminal-notifier`.
 
 ### 🔁 GitHub sync
 
