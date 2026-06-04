@@ -122,12 +122,18 @@ dots-push     # chezmoi re-add, then commit + push (optional message arg)
 | `dot_zshrc` | `~/.zshrc` |
 | `dot_gitconfig.tmpl` | `~/.gitconfig` |
 | `dot_gitignore_global` | `~/.gitignore_global` |
+| `dot_zsh/` | `~/.zsh/` |
 | `dot_config/starship.toml` | `~/.config/starship.toml` |
 | `dot_config/btop/` | `~/.config/btop/` |
 | `dot_config/zellij/` | `~/.config/zellij/` |
-| `dot_config/posting/config.yaml` | `~/.config/posting/config.yaml` |
+| `dot_config/ghostty/config` | `~/.config/ghostty/config` |
+| `dot_config/bat/` | `~/.config/bat/` |
+| `dot_config/lazygit/config.yml` | `~/.config/lazygit/config.yml` |
+| `dot_config/posting/` | `~/.config/posting/` |
 | `dot_config/zed/settings.json` | `~/.config/zed/settings.json` |
-| `dot_zsh/` | `~/.zsh/` |
+| `private_dot_ssh/private_config.tmpl` | `~/.ssh/config` (600) |
+| `Brewfile` | — (run `brew bundle`) |
+| `run_once_darwin-defaults.sh.tmpl` | — (run once on apply) |
 
 ### 🎨 App themes & preferences — Tokyo Night Storm everywhere
 
@@ -163,6 +169,20 @@ brew bundle dump --file=~/.local/share/chezmoi/Brewfile --force
 ### 🍎 macOS defaults
 
 `run_once_darwin-defaults.sh.tmpl` applies sensible defaults (Dock, Finder, screenshots, keyboard repeat, trackpad) on **first apply only**. Bump the filename to re-run.
+
+### 🔑 SSH config (templated)
+
+`~/.ssh/config` is generated from `private_dot_ssh/private_config.tmpl` using data from `~/.config/chezmoi/chezmoi.toml` (never committed). On a new machine, `chezmoi init` will prompt for:
+
+- `vps1_ip`, `vps2_ip`, `vps_user` — your VPS hosts (leave empty to skip)
+- `storagebox`, `storagebox_user` — Hetzner Storage Box (optional)
+
+To edit values later:
+
+```bash
+chezmoi edit-config       # opens ~/.config/chezmoi/chezmoi.toml
+chezmoi apply             # regenerates ~/.ssh/config
+```
 
 ---
 
