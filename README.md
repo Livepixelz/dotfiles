@@ -99,6 +99,20 @@ chezmoi apply           # apply to home dir
 chezmoi cd              # open the repo
 ```
 
+### 🔁 GitHub sync
+
+Once a day (at terminal startup, debounced via `~/.cache/dotfiles-check.stamp`), zsh checks:
+- **Remote ahead?** → `📥 dotfiles: N commits behind origin — run dots-pull`
+- **Local drifted?** → `📤 dotfiles: N files modified locally — run dots-push`
+
+Commands:
+
+```bash
+dots-status   # show local drift + remote diff
+dots-pull     # chezmoi update (git pull + apply)
+dots-push     # chezmoi re-add, then commit + push (optional message arg)
+```
+
 ---
 
 ## 📁 Tracked files
