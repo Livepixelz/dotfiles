@@ -25,6 +25,35 @@ bash ~/.local/share/chezmoi/install.sh
 
 That's it. The script handles everything — tools, plugins, runtimes, dotfiles.
 
+### 🔧 Initialize the chezmoi config (required for `dots`)
+
+The `dots` command, feature flags, and scheduled jobs all live in templates gated by
+`[data.features]` in `~/.config/chezmoi/chezmoi.toml`. That section is generated from
+[`.chezmoi.toml.tmpl`](.chezmoi.toml.tmpl) **by `chezmoi init`** — not by a plain
+`chezmoi apply`.
+
+If your config predates this section (e.g. created by an older `install.sh`, or only
+holding `name`/`email`), templates fail with `map has no entry for key "features"`,
+`~/.zsh/features.zsh` is never written, and **`dots` is undefined**.
+
+Fix it by (re)generating the config from the template, then applying:
+
+```bash
+# Interactive — prompts for name/email/VPS/feature flags
+chezmoi init
+
+# …or non-interactive, accepting all defaults
+chezmoi init \
+  --promptString name="Your Name",email="you@example.com" \
+  --promptDefaults
+
+chezmoi apply          # now writes ~/.zsh/features.zsh
+exec zsh               # reload the shell → `dots` is available
+```
+
+Verify: `dots doctor` should run, and `chezmoi cat ~/.config/chezmoi/chezmoi.toml`
+should show the `[data.features]` block.
+
 ---
 
 ## 📦 What's inside

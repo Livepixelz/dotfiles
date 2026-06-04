@@ -214,19 +214,15 @@ if [ ! -d "$ZSH_CUSTOM/zsh-autosuggestions" ]; then
     "$ZSH_CUSTOM/zsh-autosuggestions"
 fi
 
-# ── Config chezmoi (nom + email Git) ─────────────────────────────────────────
-if [ ! -f "$HOME/.config/chezmoi/chezmoi.toml" ]; then
-  info "Configuration initiale..."
-  read -rp "Ton nom Git : " git_name
-  read -rp "Ton email Git : " git_email
-  mkdir -p "$HOME/.config/chezmoi"
-  cat > "$HOME/.config/chezmoi/chezmoi.toml" << EOF
-[data]
-  name  = "$git_name"
-  email = "$git_email"
-EOF
-  success "Config chezmoi créée."
-fi
+# ── Config chezmoi (générée depuis .chezmoi.toml.tmpl) ───────────────────────
+# `chezmoi init` lit .chezmoi.toml.tmpl et écrit ~/.config/chezmoi/chezmoi.toml,
+# *y compris* la section [data.features] dont dépendent `dots`, les jobs launchd
+# et tous les templates. NE PAS écrire la config à la main : ça omet [features]
+# et casse `dots` (map has no entry for key "features").
+# Idempotent : les prompt*Once ne re-demandent pas une valeur déjà renseignée.
+info "Initialisation de la config chezmoi (nom, email, feature flags)..."
+chezmoi init
+success "Config chezmoi générée."
 
 # ── Appliquer les dotfiles ────────────────────────────────────────────────────
 info "Application des dotfiles..."
