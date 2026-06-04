@@ -28,7 +28,7 @@ DICO[arrow]="→"
 DICO[dot]="·"
 DICO[bullet]="•"
 DICO[chevron]="❯"
-DICO[heart]="♥"
+DICO[heart]="⏣"
 DICO[spark]="✦"
 
 # ── Output primitives ─────────────────────────────────────────────────────────
