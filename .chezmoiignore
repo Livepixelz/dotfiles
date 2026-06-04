@@ -1,0 +1,7 @@
+README.md
+Brewfile
+install.sh
+assets
+assets/**
+.github
+.github/**
