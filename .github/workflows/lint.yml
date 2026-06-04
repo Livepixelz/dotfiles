@@ -1,0 +1,48 @@
+name: lint
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run shellcheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          severity: warning
+          scandir: '.'
+          additional_files: 'install.sh'
+        env:
+          SHELLCHECK_OPTS: -e SC1091 -e SC2148
+
+  chezmoi-template:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install chezmoi
+        run: sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/bin
+      - name: Validate templates
+        run: |
+          export PATH="$HOME/bin:$PATH"
+          chezmoi execute-template --init \
+            --promptString name=ci --promptString email=ci@example.com \
+            --promptString vps1_ip= --promptString vps2_ip= \
+            --promptString vps_user=root --promptString storagebox= \
+            --promptString storagebox_user= --promptString atuin.sync_address=https://api.atuin.sh \
+            --promptBool features.brew_auto_install=true \
+            --promptBool features.brew_auto_bundle=true \
+            --promptBool features.zsh_plugins_auto=true \
+            --promptBool features.mise_runtimes_auto=true \
+            --promptBool features.onepassword=false \
+            --promptBool features.fzf_tab=true \
+            --promptBool features.zsh_abbr=true \
+            --promptBool features.atuin_sync=false \
+            --promptBool features.global_git_hooks=true \
+            --promptBool features.macos_defaults=true \
+            --promptBool features.direnv_helpers=true \
+            --promptBool features.install_fonts=true \
+            < .chezmoi.toml.tmpl > /dev/null
+          echo "✓ templates parse cleanly"

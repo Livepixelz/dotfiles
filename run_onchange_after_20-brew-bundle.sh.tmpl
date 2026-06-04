@@ -1,0 +1,9 @@
+{{- if and (eq .chezmoi.os "darwin") .features.brew_auto_bundle -}}
+#!/usr/bin/env bash
+# Brewfile hash: {{ include "Brewfile" | sha256sum }}
+set -euo pipefail
+command -v brew >/dev/null 2>&1 || { echo "brew not installed, skipping"; exit 0; }
+echo "→ syncing brew bundle (this can take a minute)..."
+brew bundle --file="{{ .chezmoi.sourceDir }}/Brewfile" --no-upgrade --quiet || true
+echo "✓ brew bundle synced"
+{{- end -}}

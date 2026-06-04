@@ -1,0 +1,12 @@
+{{- if and (eq .chezmoi.os "darwin") .features.install_fonts -}}
+#!/usr/bin/env bash
+set -euo pipefail
+command -v brew >/dev/null 2>&1 || exit 0
+echo "→ installing nerd fonts..."
+brew install --cask --quiet \
+  font-jetbrains-mono-nerd-font \
+  font-fira-code-nerd-font \
+  font-symbols-only-nerd-font \
+  font-inter 2>/dev/null || true
+echo "✓ fonts installed"
+{{- end -}}

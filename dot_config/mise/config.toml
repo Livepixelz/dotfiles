@@ -1,0 +1,10 @@
+[settings]
+experimental = true
+not_found_auto_install = true
+legacy_version_file = true
+trusted_config_paths = ["~/code"]
+
+[tools]
+node = "lts"
+python = "3.12"
+bun = "latest"

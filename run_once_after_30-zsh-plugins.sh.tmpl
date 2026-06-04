@@ -1,0 +1,23 @@
+{{- if .features.zsh_plugins_auto -}}
+#!/usr/bin/env bash
+set -euo pipefail
+ZSH_DIR="$HOME/.zsh"
+mkdir -p "$ZSH_DIR"
+
+clone_if_missing() {
+  local url="$1" dest="$2"
+  [ -d "$dest" ] && return
+  echo "→ cloning $(basename "$dest")..."
+  git clone --depth=1 --quiet "$url" "$dest"
+}
+
+clone_if_missing https://github.com/zdharma-continuum/fast-syntax-highlighting "$ZSH_DIR/fast-syntax-highlighting"
+clone_if_missing https://github.com/zsh-users/zsh-autosuggestions "$ZSH_DIR/zsh-autosuggestions"
+{{ if .features.fzf_tab }}
+clone_if_missing https://github.com/Aloxaf/fzf-tab "$ZSH_DIR/fzf-tab"
+{{- end }}
+{{ if .features.zsh_abbr }}
+clone_if_missing https://github.com/olets/zsh-abbr "$ZSH_DIR/zsh-abbr"
+{{- end }}
+echo "✓ zsh plugins ready"
+{{- end -}}

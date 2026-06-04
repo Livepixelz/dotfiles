@@ -4,6 +4,9 @@
 [core]
 	excludesfile = ~/.gitignore_global
 	pager = delta
+{{- if .features.global_git_hooks }}
+	hooksPath = ~/.config/git/hooks
+{{- end }}
 [init]
 	defaultBranch = master
 [interactive]
@@ -23,6 +26,20 @@
 	autoSetupRemote = true
 [rerere]
 	enabled = true
+[alias]
+	co = checkout
+	st = status -sb
+	br = branch
+	ci = commit
+	cm = commit -m
+	amend = commit --amend --no-edit
+	last = log -1 HEAD --stat
+	lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)' --all
+	unstage = reset HEAD --
+	wip = !git add -A && git commit -m 'wip' --no-verify
+	unwip = reset HEAD~1
+	pushf = push --force-with-lease
+	cleanup = !git branch --merged | grep -v '\\*\\|master\\|main\\|develop' | xargs -n 1 git branch -d
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f

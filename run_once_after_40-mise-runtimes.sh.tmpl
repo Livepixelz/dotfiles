@@ -1,0 +1,10 @@
+{{- if .features.mise_runtimes_auto -}}
+#!/usr/bin/env bash
+set -euo pipefail
+command -v mise >/dev/null 2>&1 || { echo "mise not installed, skipping"; exit 0; }
+echo "→ installing global mise runtimes..."
+mise use -g node@lts >/dev/null
+mise use -g python@3.12 >/dev/null
+mise use -g bun@latest >/dev/null
+echo "✓ mise runtimes installed"
+{{- end -}}

@@ -275,6 +275,7 @@ dots-push() {
 [ -f "$HOME/.zsh/history.zsh" ]      && source "$HOME/.zsh/history.zsh"
 [ -f "$HOME/.zsh/key-bindings.zsh" ] && source "$HOME/.zsh/key-bindings.zsh"
 [ -f "$HOME/.zsh/completion.zsh" ]   && source "$HOME/.zsh/completion.zsh"
+[ -f "$HOME/.zsh/features.zsh" ]     && source "$HOME/.zsh/features.zsh"
 
 # ── Complétion ────────────────────────────────────────────────────────────────
 autoload -Uz compinit

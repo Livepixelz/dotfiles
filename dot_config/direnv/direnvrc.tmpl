@@ -1,0 +1,36 @@
+{{- if .features.direnv_helpers -}}
+# direnv helpers — auto-loaded for every project using direnv
+
+# Load Doppler secrets into env
+# Usage: `use doppler my-project dev` in .envrc
+use_doppler() {
+  local project="${1:?project required}"
+  local config="${2:-dev}"
+  if ! command -v doppler >/dev/null 2>&1; then
+    log_error "doppler CLI not installed"; return 1
+  fi
+  eval "$(doppler secrets download --project "$project" --config "$config" --no-file --format env 2>/dev/null)"
+  watch_file ".doppler.yaml"
+}
+
+# Node version via mise + add node_modules/.bin to PATH
+layout_node() {
+  command -v mise >/dev/null 2>&1 && eval "$(mise env -s bash)"
+  PATH_add node_modules/.bin
+}
+
+# Python venv shortcut
+layout_python_venv() {
+  local venv="${1:-.venv}"
+  [ -d "$venv" ] || python3 -m venv "$venv"
+  source "$venv/bin/activate"
+}
+
+# Load 1Password secrets via op CLI
+# Usage: `use op_secret GITHUB_TOKEN op://Personal/github/token` in .envrc
+use_op_secret() {
+  local var="$1" ref="$2"
+  command -v op >/dev/null 2>&1 || { log_error "op CLI not installed"; return 1; }
+  export "$var=$(op read "$ref" 2>/dev/null)"
+}
+{{- end -}}

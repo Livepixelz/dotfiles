@@ -1,0 +1,7 @@
+{{- if and (eq .chezmoi.os "darwin") .features.brew_auto_install -}}
+#!/usr/bin/env bash
+set -euo pipefail
+command -v brew >/dev/null 2>&1 && exit 0
+echo "→ installing Homebrew..."
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+{{- end -}}

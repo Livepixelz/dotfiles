@@ -1,6 +1,44 @@
+# OS
 *~
 .DS_Store
+Thumbs.db
+.AppleDouble
+.LSOverride
+Icon?
+
+# Editors
+*.swp
+*.swo
+.idea/
+.vscode/
+*.sublime-*
+
+# Env / secrets
+.env
 .env.local
 .env.*.local
+*.pem
+*.key
+.envrc.local
 
+# Build artifacts
+node_modules/
+.next/
+.nuxt/
+.output/
+dist/
+build/
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.python-version
+
+# Direnv / mise
+.direnv/
+
+# Claude / AI
 **/.claude/settings.local.json
+.aider*

@@ -99,6 +99,38 @@ chezmoi apply           # apply to home dir
 chezmoi cd              # open the repo
 ```
 
+### ⚙️ Feature flags (opt-in / opt-out)
+
+Every install step is gated by a boolean in `~/.config/chezmoi/chezmoi.toml` under `[data.features]`. Toggle then `chezmoi apply`:
+
+```bash
+chezmoi edit-config
+```
+
+| Flag | What it does | Default |
+|---|---|---|
+| `brew_auto_install` | Install Homebrew if missing (first apply) | `true` |
+| `brew_auto_bundle` | Run `brew bundle` when `Brewfile` changes | `true` |
+| `zsh_plugins_auto` | Auto-clone fast-syntax-highlighting, autosuggestions, fzf-tab, zsh-abbr | `true` |
+| `mise_runtimes_auto` | Install node@lts, python@3.12, bun@latest globally | `true` |
+| `install_fonts` | Install Nerd Fonts (JetBrains, Fira, Symbols) + Inter | `true` |
+| `macos_defaults` | Apply Dock/Finder/keyboard/trackpad tweaks | `true` |
+| `fzf_tab` | zsh completion through fzf | `true` |
+| `zsh_abbr` | Fish-like abbreviation expansion | `true` |
+| `global_git_hooks` | Activate `~/.config/git/hooks` (gitleaks pre-commit) | `true` |
+| `direnv_helpers` | `use_doppler`, `layout_node`, `use_op_secret` helpers | `true` |
+| `onepassword` | `op_secret` helper in zsh + use op CLI for secrets | `false` |
+| `atuin_sync` | Enable atuin auto-sync to `atuin.sync_address` | `false` |
+
+### 🩺 Maintenance commands
+
+```bash
+dots-doctor   # health check: binaries, plugins, sync state
+dots-update   # chezmoi update + brew upgrade + mise upgrade
+dots-stats    # quick repo stats (files, commits, size)
+dots-backup   # snapshot ~/.config + dotfiles → ~/Backups/*.tar.zst
+```
+
 ### 🔁 GitHub sync
 
 Once a day (at terminal startup, debounced via `~/.cache/dotfiles-check.stamp`), zsh checks:

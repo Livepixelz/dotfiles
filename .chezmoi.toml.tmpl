@@ -1,8 +1,26 @@
 [data]
-  name       = {{ promptStringOnce . "name"       "Ton nom Git" | quote }}
-  email      = {{ promptStringOnce . "email"      "Ton email Git" | quote }}
-  vps1_ip    = {{ promptStringOnce . "vps1_ip"    "IP du VPS1 (prod)"           ""  | quote }}
-  vps2_ip    = {{ promptStringOnce . "vps2_ip"    "IP du VPS2 (staging/CI)"     ""  | quote }}
-  vps_user   = {{ promptStringOnce . "vps_user"   "Utilisateur SSH des VPS"     "root" | quote }}
-  storagebox = {{ promptStringOnce . "storagebox" "Host Hetzner storagebox"     ""  | quote }}
-  storagebox_user = {{ promptStringOnce . "storagebox_user" "User storagebox"   ""  | quote }}
+  name            = {{ promptStringOnce . "name"       "Ton nom Git" | quote }}
+  email           = {{ promptStringOnce . "email"      "Ton email Git" | quote }}
+  vps1_ip         = {{ promptStringOnce . "vps1_ip"    "IP du VPS1 (prod)"           "" | quote }}
+  vps2_ip         = {{ promptStringOnce . "vps2_ip"    "IP du VPS2 (staging/CI)"     "" | quote }}
+  vps_user        = {{ promptStringOnce . "vps_user"   "Utilisateur SSH des VPS"     "root" | quote }}
+  storagebox      = {{ promptStringOnce . "storagebox" "Host Hetzner storagebox"     "" | quote }}
+  storagebox_user = {{ promptStringOnce . "storagebox_user" "User storagebox"        "" | quote }}
+
+# Feature flags — toggle via `chezmoi edit-config` then `chezmoi apply`
+[data.features]
+  brew_auto_install     = {{ promptBoolOnce . "features.brew_auto_install"     "Auto-install Homebrew on bootstrap?"        true }}
+  brew_auto_bundle      = {{ promptBoolOnce . "features.brew_auto_bundle"      "Run brew bundle when Brewfile changes?"     true }}
+  zsh_plugins_auto      = {{ promptBoolOnce . "features.zsh_plugins_auto"      "Auto-clone zsh plugins (syntax/suggest)?"   true }}
+  mise_runtimes_auto    = {{ promptBoolOnce . "features.mise_runtimes_auto"    "Auto-install mise runtimes (node, python)?" true }}
+  onepassword           = {{ promptBoolOnce . "features.onepassword"           "Use 1Password CLI for secrets in zshrc?"    false }}
+  fzf_tab               = {{ promptBoolOnce . "features.fzf_tab"               "Enable fzf-tab (zsh completion in fzf)?"    true }}
+  zsh_abbr              = {{ promptBoolOnce . "features.zsh_abbr"              "Enable zsh-abbr (smart abbreviations)?"     true }}
+  atuin_sync            = {{ promptBoolOnce . "features.atuin_sync"            "Configure atuin sync (self-hosted)?"        false }}
+  global_git_hooks      = {{ promptBoolOnce . "features.global_git_hooks"      "Enable global pre-commit (gitleaks scan)?"  true }}
+  macos_defaults        = {{ promptBoolOnce . "features.macos_defaults"        "Apply opinionated macOS defaults?"          true }}
+  direnv_helpers        = {{ promptBoolOnce . "features.direnv_helpers"        "Install direnv helpers (use_doppler etc)?"  true }}
+  install_fonts         = {{ promptBoolOnce . "features.install_fonts"         "Install Nerd Fonts via brew?"               true }}
+
+[data.atuin]
+  sync_address = {{ promptStringOnce . "atuin.sync_address" "Atuin sync server URL" "https://api.atuin.sh" | quote }}

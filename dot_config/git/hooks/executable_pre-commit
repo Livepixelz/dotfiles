@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Global pre-commit: scan staged changes for secrets via gitleaks.
+# Bypass with `git commit --no-verify` (use sparingly).
+if ! command -v gitleaks >/dev/null 2>&1; then
+  exit 0
+fi
+gitleaks protect --staged --redact --no-banner --exit-code 1 || {
+  echo "✗ gitleaks detected secrets in staged changes. Fix or use --no-verify if false positive."
+  exit 1
+}
