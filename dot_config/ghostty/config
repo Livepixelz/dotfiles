@@ -19,3 +19,5 @@ shell-integration-features = cursor,sudo,title
 mouse-hide-while-typing = true
 copy-on-select = clipboard
 confirm-close-surface = false
+
+# test dots-push
