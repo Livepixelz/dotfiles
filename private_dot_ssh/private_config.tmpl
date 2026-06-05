@@ -31,6 +31,12 @@ Host storagebox
   Port 23
 {{- end }}
 
+Host git.pf.inh.re
+  HostName git.pf.inh.re
+  IdentityFile ~/.ssh/id_unyc
+  IdentitiesOnly yes
+  IdentityAgent none
+
 Host *
   IdentityAgent "${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
   ServerAliveInterval 60
