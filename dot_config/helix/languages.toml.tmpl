@@ -1,0 +1,63 @@
+[[language]]
+name = "vue"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "vue"] }
+language-servers = ["typescript-language-server"]
+
+[language-server.typescript-language-server]
+command = "typescript-language-server"
+args = ["--stdio"]
+timeout = 300
+config.plugins = [
+  { name = "@vue/typescript-plugin", location = "{{ .chezmoi.homeDir }}/.bun/install/global/node_modules/@vue/typescript-plugin", languages = ["vue"] }
+]
+
+[[language]]
+name = "typescript"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+
+[[language]]
+name = "tsx"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+
+[[language]]
+name = "javascript"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "babel"] }
+
+[[language]]
+name = "jsx"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "babel"] }
+
+[[language]]
+name = "json"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "json"] }
+
+[[language]]
+name = "html"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "html"] }
+
+[[language]]
+name = "css"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "css"] }
+
+[[language]]
+name = "scss"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "scss"] }
+
+[[language]]
+name = "markdown"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "markdown"] }
+
+[[language]]
+name = "yaml"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "yaml"] }
