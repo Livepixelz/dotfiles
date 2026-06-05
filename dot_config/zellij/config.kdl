@@ -3,3 +3,20 @@ default_layout "compact"
 pane_frames false
 copy_on_select true
 mouse_mode true
+
+keybinds {
+    shared_except "pane" "locked" {
+        unbind "Ctrl p"
+        bind "Ctrl e" { SwitchToMode "Pane"; }
+    }
+    shared_except "locked" {
+        bind "Alt h" { MoveFocusOrTab "Left"; }
+        bind "Alt l" { MoveFocusOrTab "Right"; }
+        bind "Alt j" { MoveFocus "Down"; }
+        bind "Alt k" { MoveFocus "Up"; }
+        bind "Alt Left" { MoveFocusOrTab "Left"; }
+        bind "Alt Right" { MoveFocusOrTab "Right"; }
+        bind "Alt Down" { MoveFocus "Down"; }
+        bind "Alt Up" { MoveFocus "Up"; }
+    }
+}
