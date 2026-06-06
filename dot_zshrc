@@ -134,6 +134,10 @@ alias o="open ."
 alias l="ls"
 alias ll="ls -alG"
 
+# the fuck alias
+eval $(thefuck --alias)
+eval $(thefuck --alias fuck)
+
 # ls amélioré (eza si dispo)
 if command -v eza >/dev/null 2>&1; then
   alias ls="eza --icons"
@@ -214,6 +218,9 @@ alias aliases='alias | sort | bat --language=zsh --style=plain'
 
 # macOS focus debug
 alias focus="log stream --predicate 'subsystem == \"com.apple.AppKit\"' --style compact | grep -i 'activate\|frontmost\|becomeKey'"
+
+# Meteo
+alias meteo='curl wttr.in'
 
 # Easter egg
 alias 🍺="git checkout -b drunk"
