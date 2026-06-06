@@ -1,56 +1,118 @@
+# =============================================================================
+# Language Servers
+# =============================================================================
+
+[language-server.vue-language-server]
+command = "vue-language-server"
+args = ["--stdio"]
+config.typescript.tsdk = "{{ .chezmoi.homeDir }}/.bun/install/global/node_modules/typescript/lib"
+config.vue.hybridMode = true
+
+[language-server.vtsls]
+command = "vtsls"
+args = ["--stdio"]
+config.vtsls.experimental.completion.enableServerSideFuzzyMatch = true
+config.typescript.tsserver.globalPlugins = [
+  { name = "@vue/typescript-plugin", location = "{{ .chezmoi.homeDir }}/.bun/install/global/node_modules/@vue/typescript-plugin", languages = ["vue"], configNamespace = "typescript", enableForWorkspaceTypeScriptVersions = true }
+]
+config.typescript.preferences.includePackageJsonAutoImports = "on"
+config.typescript.suggest.completeFunctionCalls = true
+config.typescript.inlayHints.parameterNames.enabled = "all"
+config.typescript.inlayHints.variableTypes.enabled = true
+config.typescript.inlayHints.functionLikeReturnTypes.enabled = true
+
+[language-server.tailwindcss]
+command = "tailwindcss-language-server"
+args = ["--stdio"]
+
+[language-server.unocss]
+command = "unocss-language-server"
+args = ["--stdio"]
+
+[language-server.eslint]
+command = "vscode-eslint-language-server"
+args = ["--stdio"]
+config.validate = "on"
+config.experimental = { useFlatConfig = false }
+config.codeAction.disableRuleComment = { enable = true, location = "separateLine" }
+config.codeAction.showDocumentation = { enable = true }
+
+[language-server.emmet]
+command = "emmet-language-server"
+args = ["--stdio"]
+
+[language-server.vscode-json-language-server]
+command = "vscode-json-language-server"
+args = ["--stdio"]
+config = { provideFormatter = true, json = { validate = { enable = true } } }
+
+[language-server.vscode-css-language-server]
+command = "vscode-css-language-server"
+args = ["--stdio"]
+config = { provideFormatter = true, css = { validate = true }, scss = { validate = true } }
+
+[language-server.vscode-html-language-server]
+command = "vscode-html-language-server"
+args = ["--stdio"]
+config = { provideFormatter = true }
+
+# =============================================================================
+# Languages
+# =============================================================================
+
 [[language]]
 name = "vue"
 auto-format = true
 formatter = { command = "prettier", args = ["--parser", "vue"] }
-language-servers = ["typescript-language-server"]
-
-[language-server.typescript-language-server]
-command = "typescript-language-server"
-args = ["--stdio"]
-timeout = 300
-config.plugins = [
-  { name = "@vue/typescript-plugin", location = "{{ .chezmoi.homeDir }}/.bun/install/global/node_modules/@vue/typescript-plugin", languages = ["vue"] }
-]
+language-servers = ["vue-language-server", "vtsls", "tailwindcss", "unocss", "eslint", "emmet"]
 
 [[language]]
 name = "typescript"
 auto-format = true
 formatter = { command = "prettier", args = ["--parser", "typescript"] }
+language-servers = ["vtsls", "eslint"]
 
 [[language]]
 name = "tsx"
 auto-format = true
 formatter = { command = "prettier", args = ["--parser", "typescript"] }
+language-servers = ["vtsls", "tailwindcss", "eslint", "emmet"]
 
 [[language]]
 name = "javascript"
 auto-format = true
 formatter = { command = "prettier", args = ["--parser", "babel"] }
+language-servers = ["vtsls", "eslint"]
 
 [[language]]
 name = "jsx"
 auto-format = true
 formatter = { command = "prettier", args = ["--parser", "babel"] }
-
-[[language]]
-name = "json"
-auto-format = true
-formatter = { command = "prettier", args = ["--parser", "json"] }
+language-servers = ["vtsls", "tailwindcss", "eslint", "emmet"]
 
 [[language]]
 name = "html"
 auto-format = true
 formatter = { command = "prettier", args = ["--parser", "html"] }
+language-servers = ["vscode-html-language-server", "tailwindcss", "emmet"]
 
 [[language]]
 name = "css"
 auto-format = true
 formatter = { command = "prettier", args = ["--parser", "css"] }
+language-servers = ["vscode-css-language-server", "tailwindcss"]
 
 [[language]]
 name = "scss"
 auto-format = true
 formatter = { command = "prettier", args = ["--parser", "scss"] }
+language-servers = ["vscode-css-language-server", "tailwindcss"]
+
+[[language]]
+name = "json"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "json"] }
+language-servers = ["vscode-json-language-server"]
 
 [[language]]
 name = "markdown"

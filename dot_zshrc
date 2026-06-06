@@ -128,6 +128,12 @@ alias starconf="zed ~/.config/starship.toml"
 # ── Aliases — Zellij ─────────────────────────────────────────────────────────
 alias mc='zellij --layout ts-fullstack'
 
+# Helix + Claude Code (layout helix-claude.kdl)
+hxc() {
+  local session_name="hxc-$(basename "$(pwd)")"
+  zellij attach -c "$session_name" options --default-layout helix-claude
+}
+
 # ── Aliases — Shell ───────────────────────────────────────────────────────────
 alias c="clear"
 alias o="open ."

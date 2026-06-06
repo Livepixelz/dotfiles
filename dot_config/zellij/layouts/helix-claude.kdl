@@ -14,9 +14,11 @@ layout {
             pane name="editor" size="65%" focus=true {
                 command "hx"
                 args "."
+                start_suspended false
             }
             pane name="claude" size="35%" {
                 command "claude"
+                start_suspended false
             }
         }
     }
