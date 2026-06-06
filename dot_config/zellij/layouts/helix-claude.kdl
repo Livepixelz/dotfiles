@@ -9,6 +9,7 @@ layout {
         }
     }
 
+    // ── Tab 1: Code (Helix + Claude) ───────────────────────────────────────
     tab name="code" focus=true {
         pane split_direction="vertical" {
             pane name="editor" size="65%" focus=true {
@@ -19,6 +20,64 @@ layout {
             pane name="claude" size="35%" {
                 command "claude"
                 start_suspended false
+            }
+        }
+    }
+
+    // ── Tab 2: Server (dev + logs) ─────────────────────────────────────────
+    tab name="server" {
+        pane split_direction="vertical" {
+            pane name="dev" size="65%" {
+                command "bun"
+                args "dev"
+                start_suspended true
+            }
+            pane name="logs" size="35%"
+        }
+    }
+
+    // ── Tab 3: Tests + Typecheck ───────────────────────────────────────────
+    tab name="tests" {
+        pane split_direction="vertical" {
+            pane name="test-watch" size="50%" {
+                command "bun"
+                args "test" "--watch"
+                start_suspended true
+            }
+            pane name="typecheck" size="50%" {
+                command "bun"
+                args "run" "typecheck"
+                start_suspended true
+            }
+        }
+    }
+
+    // ── Tab 4: Git + GH Dash ───────────────────────────────────────────────
+    tab name="git" {
+        pane split_direction="vertical" {
+            pane name="lazygit" size="50%" {
+                command "lazygit"
+                start_suspended false
+            }
+            pane name="gh-dash" size="50%" {
+                command "gh"
+                args "dash"
+                start_suspended false
+            }
+        }
+    }
+
+    // ── Tab 5: DB (pgcli + Doppler) ────────────────────────────────────────
+    tab name="db" {
+        pane split_direction="vertical" {
+            pane name="pgcli" size="50%" {
+                command "pgcli"
+                start_suspended true
+            }
+            pane name="doppler" size="50%" {
+                command "doppler"
+                args "open" "dashboard"
+                start_suspended true
             }
         }
     }
