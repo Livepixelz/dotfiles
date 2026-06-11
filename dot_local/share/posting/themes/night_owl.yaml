@@ -1,0 +1,45 @@
+name: night_owl
+author: livepixelz
+description: Night Owl — dark theme
+dark: true
+
+background: "#011627"
+surface: "#1d3b53"
+panel: "#0e293f"
+
+primary: "#82aaff"
+secondary: "#c792ea"
+
+warning: "#ecc48d"
+error: "#ef5350"
+success: "#addb67"
+
+accent: "#7fdbca"
+
+url:
+  base: "#d6deeb"
+  protocol: "#82aaff"
+  separator: "dim"
+
+variable:
+  resolved: "#addb67"
+  unresolved: "#ef5350"
+
+method:
+  get: "#addb67"
+  post: "#82aaff"
+  put: "#ecc48d"
+  patch: "#7fdbca"
+  delete: "#ef5350"
+  options: "dim #d6deeb"
+  head: "dim #d6deeb"
+
+text_area:
+  gutter: "#d6deeb"
+  cursor: "bold #82aaff"
+  cursor_line: "#0e293f"
+  cursor_line_gutter: "#0e293f"
+  matched_bracket: "bold #82aaff"
+  selection: "on #1d3b53"
+
+syntax: monokai

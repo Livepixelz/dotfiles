@@ -1,0 +1,45 @@
+name: rose_pine
+author: livepixelz
+description: Rosé Pine — dark theme
+dark: true
+
+background: "#191724"
+surface: "#26233a"
+panel: "#1f1d2e"
+
+primary: "#9ccfd8"
+secondary: "#c4a7e7"
+
+warning: "#f6c177"
+error: "#eb6f92"
+success: "#31748f"
+
+accent: "#ebbcba"
+
+url:
+  base: "#e0def4"
+  protocol: "#9ccfd8"
+  separator: "dim"
+
+variable:
+  resolved: "#9ccfd8"
+  unresolved: "#eb6f92"
+
+method:
+  get: "#9ccfd8"
+  post: "#c4a7e7"
+  put: "#f6c177"
+  patch: "#ebbcba"
+  delete: "#eb6f92"
+  options: "dim #e0def4"
+  head: "dim #e0def4"
+
+text_area:
+  gutter: "#e0def4"
+  cursor: "bold #9ccfd8"
+  cursor_line: "#1f1d2e"
+  cursor_line_gutter: "#1f1d2e"
+  matched_bracket: "bold #9ccfd8"
+  selection: "on #1f1d2e"
+
+syntax: monokai

@@ -25,3 +25,8 @@
 
 [data.atuin]
   sync_address = {{ promptStringOnce . "atuin.sync_address" "Atuin sync server URL" "https://api.atuin.sh" | quote }}
+
+# Theme switcher — change via `theme <name>` then reloads happen automatically.
+# Supported: tokyonight_storm, catppuccin_macchiato, rose_pine, kanagawa, night_owl
+[data.theme]
+  name = {{ promptStringOnce . "theme.name" "Default theme (tokyonight_storm|catppuccin_macchiato|rose_pine|kanagawa|night_owl)" "tokyonight_storm" | quote }}

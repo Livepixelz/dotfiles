@@ -1,0 +1,6 @@
+{{- if eq .theme.name "tokyonight_storm" -}}tokyonight_storm
+{{- else if eq .theme.name "catppuccin_macchiato" -}}catppuccin-macchiato
+{{- else if eq .theme.name "rose_pine" -}}rose-pine
+{{- else if eq .theme.name "kanagawa" -}}kanagawa-wave
+{{- else if eq .theme.name "night_owl" -}}Night Owl
+{{- end -}}

@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+# theme — switch terminal/editor theme across all configured apps
+# Usage: theme [tokyonight_storm|catppuccin_macchiato|rose_pine|kanagawa|night_owl]
+#        theme              # show current
+#        theme --list       # list supported
+
+set -euo pipefail
+
+SUPPORTED=(tokyonight_storm catppuccin_macchiato rose_pine kanagawa night_owl)
+CHEZMOI_CFG="${HOME}/.config/chezmoi/chezmoi.toml"
+
+current_theme() {
+  chezmoi data --format=json | python3 -c 'import json,sys; print(json.load(sys.stdin).get("theme",{}).get("name",""))'
+}
+
+list_themes() {
+  for t in "${SUPPORTED[@]}"; do
+    if [[ "$t" == "$(current_theme)" ]]; then
+      printf "  * %s\n" "$t"
+    else
+      printf "    %s\n" "$t"
+    fi
+  done
+}
+
+is_supported() {
+  local t="$1"
+  for s in "${SUPPORTED[@]}"; do [[ "$s" == "$t" ]] && return 0; done
+  return 1
+}
+
+reload_runtime() {
+  # Live-reload running apps where possible
+  if command -v tmux >/dev/null 2>&1 && tmux info >/dev/null 2>&1; then
+    tmux source-file ~/.tmux.conf 2>/dev/null || true
+  fi
+  if pgrep -x zellij >/dev/null 2>&1; then
+    echo "  → zellij : redémarre tes sessions (Ctrl-q puis relance) pour appliquer"
+  fi
+  if pgrep -f "ghostty" >/dev/null 2>&1; then
+    echo "  → Ghostty : Cmd+Shift+, ou redémarre l'app"
+  fi
+  if pgrep -x hx >/dev/null 2>&1; then
+    echo "  → Helix : :config-reload"
+  fi
+  if pgrep -f "Zed" >/dev/null 2>&1; then
+    echo "  → Zed : recharge auto via watcher"
+  fi
+}
+
+case "${1:-}" in
+  ""|--current)
+    echo "Current theme: $(current_theme)"
+    exit 0
+    ;;
+  -l|--list)
+    list_themes
+    exit 0
+    ;;
+  -h|--help)
+    cat <<EOF
+Usage: theme [<name>|--list|--current]
+
+Switch dotfile theme across:
+  ghostty, zellij, helix, bat, btop, posting, lazygit, zed
+
+Supported themes:
+  ${SUPPORTED[*]}
+EOF
+    exit 0
+    ;;
+esac
+
+target="$1"
+if ! is_supported "$target"; then
+  echo "✗ Theme '$target' not supported." >&2
+  echo "  Supported: ${SUPPORTED[*]}" >&2
+  exit 1
+fi
+
+if [[ "$target" == "$(current_theme)" ]]; then
+  echo "Already on $target."
+  exit 0
+fi
+
+echo "→ Switching to $target..."
+# Update chezmoi config
+python3 - "$CHEZMOI_CFG" "$target" <<'PY'
+import re, sys, pathlib
+cfg = pathlib.Path(sys.argv[1])
+target = sys.argv[2]
+text = cfg.read_text()
+new, n = re.subn(r'(\[data\.theme\][\s\S]*?name\s*=\s*)"[^"]*"', rf'\1"{target}"', text)
+if n == 0:
+    # append section if missing
+    new = text.rstrip() + f'\n\n[data.theme]\n  name = "{target}"\n'
+cfg.write_text(new)
+PY
+
+chezmoi apply
+echo "✓ Theme switched to $target"
+reload_runtime

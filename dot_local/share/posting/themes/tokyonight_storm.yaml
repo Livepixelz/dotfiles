@@ -1,0 +1,45 @@
+name: tokyonight_storm
+author: livepixelz
+description: Tokyo Night Storm — dark theme
+dark: true
+
+background: "#24283b"
+surface: "#1f2335"
+panel: "#1a1b26"
+
+primary: "#7aa2f7"
+secondary: "#bb9af7"
+
+warning: "#e0af68"
+error: "#f7768e"
+success: "#9ece6a"
+
+accent: "#7dcfff"
+
+url:
+  base: "#c0caf5"
+  protocol: "#7aa2f7"
+  separator: "dim"
+
+variable:
+  resolved: "#9ece6a"
+  unresolved: "#f7768e"
+
+method:
+  get: "#9ece6a"
+  post: "#7aa2f7"
+  put: "#e0af68"
+  patch: "#7dcfff"
+  delete: "#f7768e"
+  options: "dim #c0caf5"
+  head: "dim #c0caf5"
+
+text_area:
+  gutter: "#c0caf5"
+  cursor: "bold #7aa2f7"
+  cursor_line: "#1f2335"
+  cursor_line_gutter: "#1f2335"
+  matched_bracket: "bold #7aa2f7"
+  selection: "on #1f2335"
+
+syntax: monokai

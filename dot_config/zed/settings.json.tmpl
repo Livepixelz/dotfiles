@@ -37,7 +37,7 @@
   "theme": {
     "mode": "dark",
     "light": "One Light",
-    "dark": "Tokyo Night Storm",
+    "dark": "{{ if eq .theme.name "tokyonight_storm" }}Tokyo Night Storm{{ else if eq .theme.name "catppuccin_macchiato" }}Catppuccin Macchiato{{ else if eq .theme.name "rose_pine" }}Rosé Pine{{ else if eq .theme.name "kanagawa" }}Kanagawa{{ else if eq .theme.name "night_owl" }}Night Owl{{ end }}",
   },
   "base_keymap": "VSCode",
   "agent": {

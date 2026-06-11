@@ -127,6 +127,7 @@ alias starconf="zed ~/.config/starship.toml"
 
 # ── Aliases — Zellij ─────────────────────────────────────────────────────────
 alias mc='zellij --layout ts-fullstack'
+alias cld="cd ~/code/clutchdata && zellij --layout clutchdata"
 
 # Helix + Claude Code — layout per-project avec fallback
 # Lookup order :

@@ -1,0 +1,45 @@
+name: kanagawa
+author: livepixelz
+description: Kanagawa — dark theme
+dark: true
+
+background: "#1f1f28"
+surface: "#2a2a37"
+panel: "#16161d"
+
+primary: "#7e9cd8"
+secondary: "#957fb8"
+
+warning: "#dca561"
+error: "#e82424"
+success: "#76946a"
+
+accent: "#7fb4ca"
+
+url:
+  base: "#dcd7ba"
+  protocol: "#7e9cd8"
+  separator: "dim"
+
+variable:
+  resolved: "#98bb6c"
+  unresolved: "#e82424"
+
+method:
+  get: "#98bb6c"
+  post: "#7e9cd8"
+  put: "#dca561"
+  patch: "#7fb4ca"
+  delete: "#e82424"
+  options: "dim #dcd7ba"
+  head: "dim #dcd7ba"
+
+text_area:
+  gutter: "#dcd7ba"
+  cursor: "bold #7e9cd8"
+  cursor_line: "#252535"
+  cursor_line_gutter: "#252535"
+  matched_bracket: "bold #7e9cd8"
+  selection: "on #252535"
+
+syntax: monokai

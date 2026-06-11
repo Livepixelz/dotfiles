@@ -1,0 +1,45 @@
+name: catppuccin_macchiato
+author: livepixelz
+description: Catppuccin Macchiato — dark theme
+dark: true
+
+background: "#24273a"
+surface: "#363a4f"
+panel: "#1e2030"
+
+primary: "#8aadf4"
+secondary: "#c6a0f6"
+
+warning: "#eed49f"
+error: "#ed8796"
+success: "#a6da95"
+
+accent: "#8bd5ca"
+
+url:
+  base: "#cad3f5"
+  protocol: "#8aadf4"
+  separator: "dim"
+
+variable:
+  resolved: "#a6da95"
+  unresolved: "#ed8796"
+
+method:
+  get: "#a6da95"
+  post: "#8aadf4"
+  put: "#eed49f"
+  patch: "#8bd5ca"
+  delete: "#ed8796"
+  options: "dim #cad3f5"
+  head: "dim #cad3f5"
+
+text_area:
+  gutter: "#cad3f5"
+  cursor: "bold #8aadf4"
+  cursor_line: "#1e2030"
+  cursor_line_gutter: "#1e2030"
+  matched_bracket: "bold #8aadf4"
+  selection: "on #1e2030"
+
+syntax: monokai
