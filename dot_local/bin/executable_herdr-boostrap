@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+# ============================================================================
+# herdr-bootstrap.sh — recrée tes layouts (équivalent des KDL Zellij)
+#
+# Layout par projet :
+#   Tab 1 "code"    : Helix (gauche) | Claude Code (haut droite) / lazygit (bas droite)
+#   Tab 2 "servers" : front dev server (+ backend en split si défini)
+#   Tab 3 "api"     : Posting
+#
+# Usage :
+#   ./herdr-bootstrap.sh                 # session par défaut
+#   HERDR_SESSION=work ./herdr-bootstrap.sh
+#
+# Idempotent : skip un workspace si son label existe déjà.
+# ============================================================================
+set -euo pipefail
+
+# ── Projets (adapte les chemins) ────────────────────────────────────────────
+CLUTCH_DIR="${CLUTCH_DIR:-$HOME/dev/clutch-data}"
+ATLAS_DIR="${ATLAS_DIR:-$HOME/dev/atlas-ng-app}"
+
+need() { command -v "$1" >/dev/null 2>&1 || { echo "✗ '$1' manquant"; exit 1; }; }
+need herdr
+need jq
+
+# ── Serveur headless si rien ne tourne ──────────────────────────────────────
+if ! herdr status server >/dev/null 2>&1; then
+  echo "→ démarrage du serveur herdr (headless)"
+  (herdr server >/dev/null 2>&1 &)
+  sleep 1
+fi
+
+# ── Intégration Claude Code (états sémantiques natifs working/blocked/done) ─
+if ! herdr integration status 2>/dev/null | grep -qi claude; then
+  echo "→ installation de l'intégration claude"
+  herdr integration install claude
+fi
+
+# Le CLI répond en JSON ; on parse en descente récursive pour rester robuste
+# face aux variations de shape entre versions.
+ws_exists() {
+  herdr workspace list 2>/dev/null \
+    | jq -e --arg l "$1" '[.. | objects | select(.label? == $l)] | length > 0' \
+    >/dev/null 2>&1
+}
+
+# ── Bootstrap d'un projet ───────────────────────────────────────────────────
+# Args : label, dir, front_cmd, back_cmd (optionnel), posting_cmd (optionnel),
+#        wait_match (optionnel : motif attendu dans l'output du front)
+bootstrap_project() {
+  local label="$1" dir="$2" front_cmd="$3"
+  local back_cmd="${4:-}" posting_cmd="${5:-}" wait_match="${6:-}"
+
+  if ws_exists "$label"; then
+    echo "↷ workspace '$label' déjà présent, skip"
+    return 0
+  fi
+  [[ -d "$dir" ]] || { echo "✗ $dir introuvable, skip '$label'"; return 0; }
+
+  echo "→ bootstrap '$label' ($dir)"
+
+  local ws_json ws_id
+  ws_json=$(herdr workspace create --cwd "$dir" --label "$label" --no-focus)
+  ws_id=$(jq -r '[.. | .workspace_id? // empty][0]' <<<"$ws_json")
+  [[ -n "$ws_id" && "$ws_id" != "null" ]] || { echo "✗ workspace_id introuvable dans : $ws_json"; return 1; }
+
+  # Ids publics de panes : <workspace>-<n>, attribués dans l'ordre de création
+  # (cf. docs : `pane split 1-1` → nouveau pane `1-2`). On tient un compteur.
+  local n=1
+  pid() { printf '%s-%s' "$ws_id" "$1"; }
+
+  # ── Tab 1 : code ──────────────────────────────────────────────────────────
+  # NB : si le ratio s'applique au mauvais côté chez toi, inverse (0.38 ↔ 0.62)
+  herdr pane split "$(pid 1)" --direction right --ratio 0.38 --no-focus
+  n=$((n+1)); local p_claude=$n
+  herdr pane split "$(pid "$p_claude")" --direction down --ratio 0.5 --no-focus
+  n=$((n+1)); local p_git=$n
+
+  herdr pane run "$(pid 1)"            "hx ."
+  herdr pane run "$(pid "$p_claude")"  "claude"
+  herdr pane run "$(pid "$p_git")"     "lazygit"
+  herdr pane rename "$(pid 1)"         "code"
+  herdr pane rename "$(pid "$p_git")"  "git"
+
+  # ── Tab 2 : servers ───────────────────────────────────────────────────────
+  herdr tab create --workspace "$ws_id" --cwd "$dir" --label "servers" --no-focus
+  n=$((n+1)); local p_front=$n
+  herdr pane run "$(pid "$p_front")" "$front_cmd"
+  herdr pane rename "$(pid "$p_front")" "front"
+
+  if [[ -n "$back_cmd" ]]; then
+    herdr pane split "$(pid "$p_front")" --direction down --ratio 0.5 --no-focus
+    n=$((n+1)); local p_back=$n
+    herdr pane run "$(pid "$p_back")" "$back_cmd"
+    herdr pane rename "$(pid "$p_back")" "back"
+  fi
+
+  # ── Tab 3 : api (Posting) ─────────────────────────────────────────────────
+  if [[ -n "$posting_cmd" ]]; then
+    herdr tab create --workspace "$ws_id" --cwd "$dir" --label "api" --no-focus
+    n=$((n+1))
+    herdr pane run "$(pid "$n")" "$posting_cmd"
+  fi
+
+  # ── Notification quand le dev server est prêt (best effort) ──────────────
+  if [[ -n "$wait_match" ]]; then
+    (
+      herdr wait output "$(pid "$p_front")" --match "$wait_match" --timeout 60000 >/dev/null 2>&1 \
+        && herdr notification show "$label prêt" --body "dev server up" --sound done
+    ) &
+  fi
+
+  echo "✓ '$label' : workspace $ws_id, $n panes"
+}
+
+# ── Définition des workspaces ───────────────────────────────────────────────
+
+bootstrap_project "clutch-data" "$CLUTCH_DIR" \
+  "pnpm dev" \
+  "uv run uvicorn app.main:app --reload --port 8000" \
+  "posting --collection ./api-collection --env ./envs/local.env" \
+  "Local:"
+
+bootstrap_project "atlas-ng" "$ATLAS_DIR" \
+  "pnpm dev" \
+  "" \
+  "posting --collection ./api-collection --env ./envs/local.env" \
+  "Local:"
+
+echo
+echo "Terminé. Attache-toi avec :  herdr"
