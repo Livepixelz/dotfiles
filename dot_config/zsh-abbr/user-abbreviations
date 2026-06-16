@@ -1,0 +1,92 @@
+# zsh-abbr — global dev abbreviations
+# Expand with space. Edit with `abbr add` / `abbr erase`.
+
+# --- git ---
+abbr -S g="git"
+abbr -S gs="git status -sb"
+abbr -S gd="git diff"
+abbr -S gds="git diff --staged"
+abbr -S ga="git add"
+abbr -S gap="git add -p"
+abbr -S gc="git commit"
+abbr -S gcm="git commit -m"
+abbr -S gca="git commit --amend --no-edit"
+abbr -S gco="git checkout"
+abbr -S gcb="git checkout -b"
+abbr -S gsw="git switch"
+abbr -S gp="git push"
+abbr -S gpf="git push --force-with-lease"
+abbr -S gpl="git pull --rebase"
+abbr -S gl="git log --oneline --graph --decorate -20"
+abbr -S gb="git branch"
+abbr -S gst="git stash"
+abbr -S gstp="git stash pop"
+abbr -S grhh="git reset --hard HEAD"
+abbr -S lg="lazygit"
+
+# --- gh ---
+abbr -S ghpr="gh pr create --fill"
+abbr -S ghprv="gh pr view --web"
+abbr -S ghprc="gh pr checks"
+abbr -S ghprl="gh pr list"
+abbr -S ghd="gh dash"
+
+# --- pnpm / node ---
+abbr -S p="pnpm"
+abbr -S pi="pnpm install"
+abbr -S pa="pnpm add"
+abbr -S pad="pnpm add -D"
+abbr -S pr="pnpm run"
+abbr -S pd="pnpm dev"
+abbr -S pb="pnpm build"
+abbr -S pt="pnpm test"
+abbr -S px="pnpm dlx"
+abbr -S nx="npx"
+
+# --- nuxt ---
+abbr -S nd="pnpm nuxt dev"
+abbr -S nb="pnpm nuxt build"
+abbr -S npr="pnpm nuxt prepare"
+
+# --- python / uv ---
+abbr -S py="python3"
+abbr -S uvr="uv run"
+abbr -S uva="uv add"
+
+# --- docker / infra ---
+abbr -S d="docker"
+abbr -S dc="docker compose"
+abbr -S dcu="docker compose up -d"
+abbr -S dcd="docker compose down"
+abbr -S dcl="docker compose logs -f"
+abbr -S lzd="lazydocker"
+abbr -S k="kubectl"
+
+# --- doppler ---
+abbr -S dop="doppler"
+abbr -S dopr="doppler run --"
+abbr -S dops="doppler secrets"
+
+# --- 1password ---
+abbr -S opr="op run --"
+
+# --- nav / files ---
+abbr -S ll="eza -la --git --icons"
+abbr -S lt="eza --tree --level=2 --icons"
+abbr -S c="code ."
+abbr -S z.="zed ."
+abbr -S ..="cd .."
+abbr -S ...="cd ../.."
+
+# --- pueue (background jobs) ---
+abbr -S bg="pueue add --"
+abbr -S bgs="pueue status"
+abbr -S bgl="pueue log"
+abbr -S bgf="pueue follow"
+abbr -S bgc="pueue clean"
+
+# --- misc ---
+abbr -S h="history"
+abbr -S cls="clear"
+abbr -S rgi="rg -i"
+abbr -S fdh="fd --hidden"

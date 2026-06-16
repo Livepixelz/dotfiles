@@ -16,8 +16,8 @@
 set -euo pipefail
 
 # ── Projets (adapte les chemins) ────────────────────────────────────────────
-CLUTCH_DIR="${CLUTCH_DIR:-$HOME/dev/clutch-data}"
-ATLAS_DIR="${ATLAS_DIR:-$HOME/dev/atlas-ng-app}"
+CLUTCH_DIR="${CLUTCH_DIR:-$HOME/code/clutchdata}"
+ANANSI_DIR="${ATLAS_DIR:-$HOME/code/anansi}"
 
 need() { command -v "$1" >/dev/null 2>&1 || { echo "✗ '$1' manquant"; exit 1; }; }
 need herdr
@@ -116,12 +116,12 @@ bootstrap_project() {
 # ── Définition des workspaces ───────────────────────────────────────────────
 
 bootstrap_project "clutch-data" "$CLUTCH_DIR" \
-  "pnpm dev" \
-  "uv run uvicorn app.main:app --reload --port 8000" \
+  "bun dev:frontend" \
+  "bun dev:backend" \
   "posting --collection ./api-collection --env ./envs/local.env" \
   "Local:"
 
-bootstrap_project "atlas-ng" "$ATLAS_DIR" \
+bootstrap_project "anansi" "$ANANSI_DIR" \
   "pnpm dev" \
   "" \
   "posting --collection ./api-collection --env ./envs/local.env" \

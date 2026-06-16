@@ -1,0 +1,141 @@
+# ~/.aerospace.toml
+# Config AeroSpace — workflow Okend
+# Workspaces par contexte + assignation auto des apps
+#
+# Note AZERTY (Keychron Q6 Max ISO-FR) :
+# AeroSpace identifie les touches par POSITION PHYSIQUE en notation QWERTY.
+# Donc "alt-1" = la touche physique 1/& , ca marche tel quel.
+# Par contre "alt-a" = ta touche physique Q, "alt-q" = ta touche A, etc.
+# Les bindings hjkl ci-dessous sont aux memes positions en AZERTY, aucun souci.
+
+# Lancer AeroSpace au login
+start-at-login = true
+
+# Normalisations recommandees (comportement i3-like propre)
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+# Layout par defaut : tiles (cote a cote). "accordion" possible aussi.
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+# La souris suit le focus quand on change de moniteur
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+# Gaps legers entre fenetres (mets tout a 0 si tu preferes dense)
+[gaps]
+inner.horizontal = 8
+inner.vertical = 8
+outer.left = 8
+outer.bottom = 8
+outer.top = 8
+outer.right = 8
+
+# ──────────────────────────────────────────────
+# MODE PRINCIPAL
+# ──────────────────────────────────────────────
+[mode.main.binding]
+
+# Navigation entre fenetres (vim-style, positions identiques en AZERTY)
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
+
+# Deplacer la fenetre courante
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
+
+# Layouts
+alt-slash = 'layout tiles horizontal vertical'   # toggle orientation
+alt-comma = 'layout accordion horizontal vertical'
+alt-f = 'fullscreen'
+alt-shift-f = 'layout floating tiling'           # toggle float
+
+# Workspaces — chiffres = contextes, lettres = projets perso
+# 1 = Code (Zed) | 2 = Terminal (Ghostty/Zellij) | 3 = Web (Zen) | 4 = Discord
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-c = 'workspace C'    # Clutch (clutch-data / clutch-cards / hoopviz)
+alt-n = 'workspace N'    # aNansi
+alt-m = 'workspace M'    # ATTENTION : touche physique ";" en AZERTY — Media/Spotify
+
+# Envoyer la fenetre vers un workspace
+alt-shift-1 = 'move-node-to-workspace 1'
+alt-shift-2 = 'move-node-to-workspace 2'
+alt-shift-3 = 'move-node-to-workspace 3'
+alt-shift-4 = 'move-node-to-workspace 4'
+alt-shift-c = 'move-node-to-workspace C'
+alt-shift-n = 'move-node-to-workspace N'
+
+# Alterner entre les 2 derniers workspaces (tres utile code <-> terminal)
+alt-tab = 'workspace-back-and-forth'
+
+# Deplacer un workspace entier vers l'autre ecran (si multi-moniteurs)
+alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+# Entrer en mode resize / service
+alt-r = 'mode resize'
+alt-shift-semicolon = 'mode service'   # touche physique ";" QWERTY = "M" en AZERTY
+
+# ──────────────────────────────────────────────
+# MODE RESIZE
+# ──────────────────────────────────────────────
+[mode.resize.binding]
+h = 'resize width -50'
+j = 'resize height +50'
+k = 'resize height -50'
+l = 'resize width +50'
+enter = 'mode main'
+esc = 'mode main'
+
+# ──────────────────────────────────────────────
+# MODE SERVICE (reload config, etc.)
+# ──────────────────────────────────────────────
+[mode.service.binding]
+r = ['reload-config', 'mode main']
+f = ['flatten-workspace-tree', 'mode main']   # reinitialise le layout du workspace
+esc = 'mode main'
+
+# ──────────────────────────────────────────────
+# ASSIGNATION AUTO DES APPS
+# Trouve les bundle IDs avec :  aerospace list-apps
+# ──────────────────────────────────────────────
+
+# Zed -> workspace 1 (Code)
+[[on-window-detected]]
+if.app-id = 'dev.zed.Zed'
+run = 'move-node-to-workspace 1'
+
+# Ghostty -> workspace 2 (Terminal/Zellij)
+[[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'
+run = 'move-node-to-workspace 2'
+
+# Zen Browser -> workspace 3 (Web)
+[[on-window-detected]]
+if.app-id = 'app.zen-browser.zen'
+run = 'move-node-to-workspace 3'
+
+# Discord -> workspace 4 (Comms)
+[[on-window-detected]]
+if.app-id = 'com.hnc.Discord'
+run = 'move-node-to-workspace 4'
+
+# Apple Music -> workspace M
+[[on-window-detected]]
+if.app-id = 'com.apple.Music'
+run = 'move-node-to-workspace M'
+
+# Fenetres utilitaires en flottant (Finder, 1Password...)
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.1password.1password'
+run = 'layout floating'

@@ -148,6 +148,8 @@ hxc() {
   zellij attach -c "$session_name" options --default-layout "$layout"
 }
 
+alias fabric="fabric-ai"
+
 # ── Aliases — Shell ───────────────────────────────────────────────────────────
 alias c="clear"
 alias o="open ."

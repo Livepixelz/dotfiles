@@ -1,0 +1,41 @@
+# Global lefthook config — symlink into projects: lefthook install -c ~/.config/lefthook/lefthook.yml
+# Or copy and extend per-project. Skips silently when tools are absent.
+
+pre-commit:
+  parallel: true
+  commands:
+    typos:
+      run: typos {staged_files}
+      skip:
+        - merge
+        - rebase
+      tags: quality
+      fail_text: "typos found — fix or run `typos -w`"
+
+    biome:
+      glob: "*.{js,jsx,ts,tsx,vue,json,jsonc,css}"
+      run: biome check --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
+      stage_fixed: true
+      tags: lint format
+
+    vue-tsc:
+      glob: "*.{ts,vue}"
+      run: pnpm exec vue-tsc --noEmit 2>/dev/null || npx vue-tsc --noEmit
+      tags: types
+      skip:
+        - merge
+        - rebase
+
+commit-msg:
+  commands:
+    conventional:
+      run: |
+        grep -qE '^(feat|fix|refactor|chore|docs|test|perf|style|build|ci|revert)(\(.+\))?!?: .+' {1} || {
+          echo "commit message must follow conventional commits (feat:, fix:, refactor:, ...)"; exit 1;
+        }
+
+pre-push:
+  commands:
+    knip:
+      run: pnpm exec knip 2>/dev/null || true
+      tags: dead-code
