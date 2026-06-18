@@ -1,14 +1,21 @@
 tap "asmvik/formulae"
 tap "dopplerhq/doppler"
+tap "atlassian-labs/acli"
+tap "atlassian/tap"
+tap "derailed/k9s"
+tap "dopplerhq/cli" keep upstream version)
 tap "dylantientcheu/dylantientcheu"
 tap "felixkratz/formulae", trusted: true
 tap "hashicorp/tap"
 tap "homebrew/services"
 tap "koekeishiya/formulae", "https://github.com/asmvik/homebrew-formulae.git"
+tap "int128/kubelogin"
+tap "jbreckmckye/formulae"
 tap "libsql/sqld"
 tap "localstack/tap"
 tap "nikitabobko/tap"
 tap "popcorn-official/popcorn-desktop", "https://github.com/popcorntime/popcorntime.git"
+tap "microsoft/mssql-release"
 tap "tursodatabase/tap"
 # Run your GitHub Actions locally
 brew "act", args: ["HEAD"]
