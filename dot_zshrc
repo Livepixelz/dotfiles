@@ -16,6 +16,11 @@ export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 export PATH="$HOME/.warden/bin:$PATH"
 command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
 
+# -- kube
+alias kubepreprod='export KUBECONFIG=~/.kube/config.unyc-preprod-oidc && k9s'
+alias kubeprod='export KUBECONFIG=~/.kube/config.unyc-prod-oidc && k9s'
+
+
 # ── 1Password SSH Agent ───────────────────────────────────────────────────────
 
 # ── Histoire ──────────────────────────────────────────────────────────────────
