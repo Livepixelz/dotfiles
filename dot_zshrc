@@ -340,11 +340,13 @@ else
 fi
 zmodload -i zsh/complist
 
-# Remplacer le bloc starship par :
-  if [[ -r "$(brew --prefix 2>/dev/null)/share/powerlevel10k/powerlevel10k.zsh-theme" ]]; then
-    source "$(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme"
-    [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
-  fi
+# ── Powerlevel10k ─────────────────────────────────────────────────────────────
+if [[ -r "$HOME/.zsh/powerlevel10k/powerlevel10k.zsh-theme" ]]; then
+  source "$HOME/.zsh/powerlevel10k/powerlevel10k.zsh-theme"
+elif command -v brew >/dev/null 2>&1 && [[ -r "$(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme" ]]; then
+  source "$(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme"
+fi
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 
 # ── Starship ──────────────────────────────────────────────────────────────────
 #if command -v starship >/dev/null 2>&1; then
