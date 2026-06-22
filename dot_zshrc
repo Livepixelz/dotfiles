@@ -1,5 +1,10 @@
 HOST_NAME=lvpxlz
 
+# ── TERM fallback (VPS sans terminfo ghostty/kitty/wezterm) ──────────────────
+if ! infocmp "$TERM" >/dev/null 2>&1; then
+  export TERM=xterm-256color
+fi
+
 # ── Complétion (doit être en premier) ────────────────────────────────────────
 autoload -Uz compinit
 typeset -i updated_at
@@ -10,6 +15,11 @@ else
   compinit -C -i
 fi
 zmodload -i zsh/complist
+
+# Tout en haut du dot_zshrc (instant prompt p10k)
+  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  fi
 
 # ── PATH ──────────────────────────────────────────────────────────────────────
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
@@ -330,10 +340,16 @@ else
 fi
 zmodload -i zsh/complist
 
+# Remplacer le bloc starship par :
+  if [[ -r "$(brew --prefix 2>/dev/null)/share/powerlevel10k/powerlevel10k.zsh-theme" ]]; then
+    source "$(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme"
+    [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+  fi
+
 # ── Starship ──────────────────────────────────────────────────────────────────
-if command -v starship >/dev/null 2>&1; then
-  eval "$(starship init zsh)"
-fi
+#if command -v starship >/dev/null 2>&1; then
+#  eval "$(starship init zsh)"
+#fi
 
 # ── pipx / envman ─────────────────────────────────────────────────────────────
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
