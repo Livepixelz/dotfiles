@@ -6,5 +6,8 @@ echo "→ installing global mise runtimes..."
 mise use -g node@lts >/dev/null
 mise use -g python@3.12 >/dev/null
 mise use -g bun@latest >/dev/null
+{{- if ne .chezmoi.os "darwin" }}
+mise use -g helix@latest >/dev/null
+{{- end }}
 echo "✓ mise runtimes installed"
 {{- end -}}

@@ -1,0 +1,30 @@
+{{- if .features.mise_runtimes_auto -}}
+#!/usr/bin/env bash
+# Helix language servers — re-runs whenever this package list changes.
+set -euo pipefail
+
+packages=(
+  "@vtsls/language-server"
+  "typescript"
+  "vscode-langservers-extracted"
+  "prettier"
+  "@vue/language-server"
+  "@vue/typescript-plugin"
+  "@tailwindcss/language-server"
+  "@unocss/language-server"
+  "@olrtg/emmet-language-server"
+)
+
+if command -v bun >/dev/null 2>&1; then
+  bun_cmd=(bun)
+elif command -v mise >/dev/null 2>&1; then
+  bun_cmd=(mise exec bun@latest -- bun)
+else
+  echo "bun not found (install mise or bun first), skipping helix language servers"
+  exit 0
+fi
+
+echo "→ installing Helix language servers..."
+"${bun_cmd[@]}" add -g "${packages[@]}"
+echo "✓ Helix language servers installed"
+{{- end -}}
