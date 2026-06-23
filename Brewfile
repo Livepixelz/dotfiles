@@ -3,7 +3,7 @@ tap "dopplerhq/doppler"
 tap "atlassian-labs/acli"
 tap "atlassian/tap"
 tap "derailed/k9s"
-tap "dopplerhq/cli" keep upstream version)
+tap "dopplerhq/cli"
 tap "dylantientcheu/dylantientcheu"
 tap "felixkratz/formulae", trusted: true
 tap "hashicorp/tap"
