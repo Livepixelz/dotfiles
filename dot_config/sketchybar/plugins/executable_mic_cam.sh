@@ -2,8 +2,8 @@
 
 source "$HOME/.config/sketchybar/colors.sh"
 
-CAM_ON=$(lsof 2>/dev/null | grep -ciE "VDCAssistant|AppleCamera|appleh13camerad")
-MIC_ON=$(lsof 2>/dev/null | grep -ciE "AudioCaptureProcess|coreaudiod.*Microphone")
+CAM_ON=$(pgrep -f "VDCAssistant|AppleCameraAssistant|appleh13camerad" | wc -l | tr -d ' ')
+MIC_ON=$(lsof -c coreaudiod 2>/dev/null | grep -ci "AppleHDAEngineInput\|VirtualAudio\|Microphone")
 
 ICONS=""
 if [ "$CAM_ON" -gt 0 ]; then
