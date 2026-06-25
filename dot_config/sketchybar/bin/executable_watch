@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Watch config files and auto-reload on change. Requires `fswatch` (brew install fswatch).
+
+set -e
+CONFIG_DIR="$HOME/.config/sketchybar"
+
+if ! command -v fswatch >/dev/null; then
+  echo "fswatch required: brew install fswatch" >&2
+  exit 1
+fi
+
+echo "⌬ watching $CONFIG_DIR — Ctrl-C to stop"
+fswatch -o \
+  "$CONFIG_DIR/sketchybarrc" \
+  "$CONFIG_DIR/colors.sh" \
+  "$CONFIG_DIR/lib" \
+  "$CONFIG_DIR/items" \
+  "$CONFIG_DIR/plugins" \
+  | while read -r _; do
+      echo "↻ reloading..."
+      "$CONFIG_DIR/bin/reload"
+    done

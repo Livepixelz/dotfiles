@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Fast reload — kills running sketchybar and respawns. Faster than `brew services restart`.
+
+set -e
+
+pkill -x sketchybar 2>/dev/null || true
+sleep 0.2
+nohup sketchybar >/dev/null 2>&1 &
+disown
+echo "✓ sketchybar reloaded"

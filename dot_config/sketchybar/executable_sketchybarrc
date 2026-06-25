@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# Sketchybar config — entry point.
+# See README.md for layout and DX tooling.
+
+export PATH="/opt/homebrew/bin:$PATH"
+
+source "$CONFIG_DIR/colors.sh"
+source "$CONFIG_DIR/lib/helpers.sh"
+
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+FONT="Hack Nerd Font"
+export PLUGIN_DIR FONT
+
+# Order matters: bar/defaults first, then items left → center → right.
+for item in bar appmenu spaces front_app media right; do
+  source "$CONFIG_DIR/items/$item.sh"
+done
+
+sketchybar --update
+
+# Auto-hide (style menubar) — la bar reste cachée et apparaît au hover du haut.
+sketchybar --bar hidden=on
+pkill -f "sketchybar/plugins/autohide.sh" 2>/dev/null
+nohup "$PLUGIN_DIR/autohide.sh" >/dev/null 2>&1 &
+disown

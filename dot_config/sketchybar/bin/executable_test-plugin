@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Run a plugin in isolation with the right env. Usage: test-plugin <name>
+# Example: test-plugin github
+
+set -e
+CONFIG_DIR="$HOME/.config/sketchybar"
+PLUGIN="$CONFIG_DIR/plugins/$1.sh"
+
+if [ -z "$1" ] || [ ! -f "$PLUGIN" ]; then
+  echo "Usage: test-plugin <name>" >&2
+  echo "Available:" >&2
+  ls "$CONFIG_DIR/plugins" | sed 's/\.sh$//' | sed 's/^/  /' >&2
+  exit 1
+fi
+
+source "$CONFIG_DIR/colors.sh"
+export NAME=$1
+export CONFIG_DIR
+echo "→ running $PLUGIN with NAME=$NAME"
+echo "─────"
+bash -x "$PLUGIN"
+echo "─────"
+echo "✓ current item state:"
+sketchybar --query "$1" | python3 -c "import json,sys; d=json.load(sys.stdin); print('  icon: %r' % d['icon']['value']); print('  label: %r' % d['label']['value']); print('  drawing: %s' % d['geometry']['drawing'])" 2>/dev/null || true

@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Pretty-print sketchybar state. Usage: query [item-name] [field]
+# Examples:
+#   query              → list all items
+#   query github       → full JSON for `github`
+#   query github label → just label.value
+
+set -e
+
+if [ $# -eq 0 ]; then
+  sketchybar --query bar | python3 -c "import json,sys; d=json.load(sys.stdin); print('\n'.join(d.get('items',[])))"
+  exit 0
+fi
+
+NAME=$1
+FIELD=$2
+
+if [ -z "$FIELD" ]; then
+  sketchybar --query "$NAME" | python3 -m json.tool
+else
+  sketchybar --query "$NAME" | python3 -c "
+import json, sys
+d = json.load(sys.stdin)
+keys = '$FIELD'.split('.')
+v = d
+for k in keys: v = v.get(k, '<missing>') if isinstance(v, dict) else '<not-dict>'
+print(v if isinstance(v, str) else json.dumps(v, indent=2))
+"
+fi

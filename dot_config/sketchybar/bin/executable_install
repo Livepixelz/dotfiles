@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# Bootstrap deps for this sketchybar config. Idempotent.
+
+set -e
+
+check() {
+  local cmd=$1 brew=${2:-$1}
+  if command -v "$cmd" >/dev/null; then
+    echo "  ✓ $cmd"
+  else
+    echo "  ✗ $cmd → brew install $brew"
+    MISSING+=("$brew")
+  fi
+}
+
+MISSING=()
+
+echo "Required:"
+check sketchybar
+check aerospace nikitabobko/tap/aerospace
+check jq
+check gh
+
+echo
+echo "Optional (features will silently no-op without these):"
+check rsvg-convert librsvg       # SVG → PNG icons
+check fswatch                    # bin/watch
+check nowplaying-cli kirtan-shah/nowplaying-cli/nowplaying-cli  # media plugin fallback
+
+echo
+echo "Font:"
+if fc-list 2>/dev/null | grep -qi "Hack Nerd Font" || ls ~/Library/Fonts /Library/Fonts 2>/dev/null | grep -qi "Hack.*Nerd"; then
+  echo "  ✓ Hack Nerd Font"
+else
+  echo "  ✗ Hack Nerd Font → brew install --cask font-hack-nerd-font"
+  MISSING+=("--cask font-hack-nerd-font")
+fi
+
+if [ ${#MISSING[@]} -gt 0 ]; then
+  echo
+  echo "Install missing:"
+  echo "  brew install ${MISSING[*]}"
+  exit 1
+fi
+
+echo
+echo "✓ all deps ok"
