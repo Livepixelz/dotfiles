@@ -3,6 +3,11 @@
 # OrbStack (Linux VMs locales)
 Include ~/.orbstack/ssh/config
 
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_ed25519
+
 Host gitlab.com
   HostName gitlab.com
   IdentityFile ~/.ssh/id_ed25519
@@ -31,17 +36,10 @@ Host storagebox
   Port 23
 {{- end }}
 
-Host git.pf.inh.re
-  HostName git.pf.inh.re
-  IdentityFile ~/.ssh/id_unyc
-  IdentitiesOnly yes
-  IdentityAgent none
-
 Host *
 {{- if eq .chezmoi.os "darwin" }}
   IdentityAgent "${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
   UseKeychain yes
-  IdentityFile ~/.ssh/id_unyc
 {{- end }}
   ServerAliveInterval 60
   ServerAliveCountMax 3
