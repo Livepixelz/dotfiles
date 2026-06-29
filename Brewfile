@@ -1,19 +1,12 @@
 tap "asmvik/formulae"
-tap "atlassian-labs/acli"
-tap "atlassian/acli"
-tap "atlassian/tap"
-tap "derailed/k9s"
-tap "dopplerhq/cli"
-tap "dopplerhq/doppler"
+tap "dopplerhq/doppler", "https://github.com/DopplerHQ/homebrew-doppler.git"
 tap "dylantientcheu/dylantientcheu"
-tap "felixkratz/formulae", trusted: true
+tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae", trusted: true
 tap "hashicorp/tap"
-tap "int128/kubelogin"
-tap "jbreckmckye/formulae"
+tap "homebrew/services"
 tap "koekeishiya/formulae", "https://github.com/asmvik/homebrew-formulae.git"
 tap "libsql/sqld"
 tap "localstack/tap"
-tap "microsoft/mssql-release"
 tap "nikitabobko/tap"
 tap "popcorn-official/popcorn-desktop", "https://github.com/popcorntime/popcorntime.git"
 tap "tursodatabase/tap"
@@ -21,12 +14,8 @@ tap "tursodatabase/tap"
 brew "act", args: ["HEAD"]
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.14"
 # Email client that runs in your terminal
 brew "aerc"
-# All-in-one AI-Powered CLI Chat & Copilot
-brew "aichat"
 # Codec library for encoding and decoding AV1 video streams
 brew "aom"
 # Improved shell history for zsh, bash, fish and nushell
@@ -55,26 +44,16 @@ brew "librsvg"
 brew "chafa"
 # Manage your dotfiles across multiple diverse machines, securely
 brew "chezmoi"
-# Play, record, convert, and stream select audio and video codecs
-brew "ffmpeg"
 # Tool for emulating mouse and keyboard events
 brew "cliclick"
 # Cloudflare Tunnel client (formerly Argo Tunnel)
 brew "cloudflared"
-# Music player with an ncurses based interface
-brew "cmus"
-# Get a file from an HTTP, HTTPS or FTP server
-brew "curl"
-# ODBC 3 connectivity for UNIX
-brew "unixodbc"
-# Dependency Manager for PHP
-brew "composer"
 # GNU File, Shell, and Text utilities
 brew "coreutils"
 # Apjanke's fork of the classic cowsay project
 brew "cowsay"
-# POSIX-compliant descendant of NetBSD's ash (the Almquist SHell)
-brew "dash-shell"
+# Get a file from an HTTP, HTTPS or FTP server
+brew "curl"
 # Command-line tool for getting & setting the default browser
 brew "defaultbrowser"
 # Load/unload environment variables based on $PWD
@@ -85,6 +64,8 @@ brew "docker", link: false
 brew "docker-compose"
 # Tool for managing dock items
 brew "dockutil"
+# CLI for interacting with Doppler secrets and configuration
+brew "doppler"
 # Disk Usage/Free Utility - a better 'df' alternative
 brew "duf"
 # More intuitive version of du in rust
@@ -97,6 +78,8 @@ brew "fabric-ai"
 brew "fastfetch"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
+# Play, record, convert, and stream select audio and video codecs
+brew "ffmpeg"
 # Fast and simple Node.js version manager
 brew "fnm"
 # Infamous electronic fortune-cookie generator
@@ -123,14 +106,10 @@ brew "git-delta"
 brew "git-lfs"
 # Audit git repos for secrets
 brew "gitleaks"
-# Open-source GitLab command-line tool
-brew "glab"
 # Render markdown on the CLI
 brew "glow"
 # Ping, but with a graph
 brew "gping"
-# Command-line tool for generating regular expressions
-brew "grex"
 # Tool for glamorous shell scripts
 brew "gum"
 # Command-line interface for Hetzner Cloud
@@ -139,8 +118,6 @@ brew "hcloud"
 brew "helix"
 # Agent multiplexer that lives in your terminal
 brew "herdr"
-# CLI email client written in Rust
-brew "himalaya"
 # User-friendly cURL replacement (command-line HTTP client)
 brew "httpie"
 # Command-line benchmarking tool
@@ -171,8 +148,6 @@ brew "libxml2"
 brew "miller"
 # Polyglot runtime manager (asdf rust clone)
 brew "mise"
-# Simple tool to make locally trusted development certificates
-brew "mkcert"
 # AI on the command-line
 brew "mods"
 # Open-source, cross-platform JavaScript runtime environment
@@ -181,24 +156,14 @@ brew "node"
 brew "mongodb-atlas-cli"
 # Remote terminal application
 brew "mosh"
-# Music Player Daemon
-brew "mpd", restart_service: :changed
-# Feature-rich command-line audio/video downloader
-brew "yt-dlp"
-# Media player based on MPlayer and mplayer2
-brew "mpv"
 # Open source relational database management system
 brew "mysql"
 # Interactive cheatsheet tool for the command-line
 brew "navi"
-# Ncurses-based client for the Music Player Daemon
-brew "ncmpcpp"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Retrieves currently playing media, and simulates media actions
 brew "nowplaying-cli"
-# Manage multiple Node.js versions
-brew "nvm"
 # Create, run, and share large language models (LLMs)
 brew "ollama"
 # Command-line Git information tool
@@ -215,10 +180,6 @@ brew "pgcli"
 brew "pipx"
 # Fast, disk space efficient package manager
 brew "pnpm"
-# Object-relational database system
-brew "postgresql@14"
-# Object-relational database system
-brew "postgresql@15", restart_service: :changed
 # Theme for zsh
 brew "powerlevel10k"
 # Terminal slideshow tool
@@ -230,8 +191,6 @@ brew "pueue", restart_service: :changed
 # Python version management
 brew "pyenv"
 # Interpreted, interactive, object-oriented programming language
-brew "python@3.11"
-# Interpreted, interactive, object-oriented programming language
 brew "python@3.12", link: false
 # Rsync for cloud storage
 brew "rclone"
@@ -241,8 +200,6 @@ brew "ripgrep"
 brew "sentry-cli"
 # Command driven spotify player
 brew "spotify_player"
-# Microsoft SQL Server command-line interface
-brew "sqlcmd"
 # Cross-shell prompt for astronauts
 brew "starship"
 # Nodejs-based tool for optimizing SVG vector graphics files
@@ -259,8 +216,6 @@ brew "thefuck"
 brew "tmux"
 # Program that allows you to count code, quickly
 brew "tokei"
-# Upgrade all the things
-brew "topgrade"
 # CLI tool that moves files or folder to the trash
 brew "trash"
 # Source code spell checker
@@ -289,6 +244,8 @@ brew "xh"
 brew "yazi"
 # Process YAML, JSON, XML, CSV and properties documents from the CLI
 brew "yq"
+# Feature-rich command-line audio/video downloader
+brew "yt-dlp"
 # Pluggable terminal workspace, with terminal multiplexer as the base feature
 brew "zellij"
 # Plain text note-taking assistant
@@ -298,11 +255,9 @@ brew "zoxide"
 # UNIX shell (command interpreter)
 brew "zsh"
 # A window border system for macOS
-brew "felixkratz/formulae/borders", trusted: true
+brew "felixkratz/formulae/borders"
 # Custom macOS statusbar with shell plugin, interaction and graph support
-brew "felixkratz/formulae/sketchybar", trusted: true
-# Terraform
-brew "hashicorp/tap/terraform", trusted: true
+brew "felixkratz/formulae/sketchybar"
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Command-line interface for 1Password
@@ -316,11 +271,9 @@ cask "bettertouchtool"
 # Anthropic's official Claude AI desktop app
 cask "claude"
 # Terminal-based AI coding assistant
-cask "claude-code@latest"
+cask "claude-code"
 # Free app that makes your Internet safer
 cask "cloudflare-warp"
-# Write, edit, and chat about your code with AI
-cask "cursor"
 # Voice and text chat software
 cask "discord"
 # Cross-platform Text Expander written in Rust
@@ -330,10 +283,8 @@ cask "figma"
 cask "font-caskaydia-cove-nerd-font"
 cask "font-fira-code-nerd-font"
 cask "font-hack-nerd-font"
-cask "font-inter"
 cask "font-jetbrains-mono-nerd-font"
 cask "font-monaspace-nf"
-cask "font-symbols-only-nerd-font"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
 # Terminal built on web technologies
@@ -376,139 +327,16 @@ cask "spotify"
 cask "telegram"
 # SSH client
 cask "termius"
+# Customizable timing of breaks
+cask "time-out"
 # Multimedia player
 cask "vlc"
 # Rust-based terminal
 cask "warp"
-# GPU-accelerated cross-platform terminal emulator and multiplexer
-cask "wezterm"
 # Multiplayer code editor
 cask "zed"
-vscode "ahmadawais.shades-of-purple"
-vscode "alefragnani.project-manager"
-vscode "alexdima.copy-relative-path"
-vscode "amandeepmittal.pug"
-vscode "amatiasq.sort-imports"
-vscode "anthropic.claude-code"
-vscode "arturock.gitstash"
-vscode "aswinkumar863.smarty-template-support"
-vscode "atlassian.atlascode"
-vscode "batisteo.vscode-django"
-vscode "bierner.comment-tagged-templates"
-vscode "box-of-hats.minify-selection"
-vscode "bradlc.vscode-tailwindcss"
-vscode "burkeholland.simple-react-snippets"
-vscode "christian-kohler.npm-intellisense"
-vscode "christian-kohler.path-intellisense"
-vscode "codezombiech.gitignore"
-vscode "cstrap.flask-snippets"
-vscode "davidanson.vscode-markdownlint"
-vscode "dbaeumer.vscode-eslint"
-vscode "donjayamanne.githistory"
-vscode "donjayamanne.python-environment-manager"
-vscode "donjayamanne.python-extension-pack"
-vscode "dracula-theme.theme-dracula"
-vscode "dsznajder.es7-react-js-snippets"
-vscode "dtoplak.vscode-glsllint"
-vscode "ducfilan.pug-formatter"
-vscode "dzhavat.bracket-pair-toggler"
-vscode "eamodio.gitlens"
-vscode "ecmel.vscode-html-css"
-vscode "editorconfig.editorconfig"
-vscode "enkia.tokyo-night"
-vscode "entuent.fira-code-nerd-font"
-vscode "esbenp.prettier-vscode"
-vscode "file-icons.file-icons"
-vscode "fill-labs.dependi"
-vscode "formulahendry.auto-close-tag"
-vscode "formulahendry.auto-complete-tag"
-vscode "formulahendry.auto-rename-tag"
-vscode "geforcelegend.vscode-glsl"
-vscode "github.codespaces"
-vscode "github.github-vscode-theme"
-vscode "github.vscode-pull-request-github"
-vscode "gitlab.gitlab-workflow"
-vscode "gruntfuggly.todo-tree"
-vscode "hollowtree.vue-snippets"
-vscode "hookyqr.minify"
-vscode "humao.rest-client"
-vscode "jasonn-porch.gitlab-mr"
-vscode "jock.svg"
-vscode "johnsoncodehk.volarjs-labs"
-vscode "kacperbiedka.one-candy-dark"
-vscode "kevinrose.vsc-python-indent"
-vscode "kruemelkatze.vscode-dashboard"
-vscode "liviuschera.noctis"
-vscode "loczek.next-js-ts-snippets"
-vscode "lokalise.i18n-ally"
-vscode "mechatroner.rainbow-csv"
-vscode "miguelsolorio.symbols"
-vscode "mikeburgh.xml-format"
-vscode "mikestead.dotenv"
-vscode "monokai.theme-monokai-pro-vscode"
-vscode "mrmlnc.vscode-apache"
-vscode "mrmlnc.vscode-pugbeautify"
-vscode "ms-azuretools.vscode-containers"
-vscode "ms-azuretools.vscode-docker"
-vscode "ms-ceintl.vscode-language-pack-fr"
-vscode "ms-python.autopep8"
-vscode "ms-python.black-formatter"
-vscode "ms-python.debugpy"
-vscode "ms-python.pylint"
-vscode "ms-python.python"
-vscode "ms-python.vscode-pylance"
-vscode "ms-python.vscode-python-envs"
-vscode "ms-toolsai.jupyter"
-vscode "ms-toolsai.jupyter-keymap"
-vscode "ms-toolsai.jupyter-renderers"
-vscode "ms-vscode-remote.remote-containers"
-vscode "ms-vscode.vscode-speech"
-vscode "ms-vscode.vscode-speech-language-pack-fr-fr"
-vscode "naumovs.color-highlight"
-vscode "nichabosh.minimalist-dark"
-vscode "njpwerner.autodocstring"
-vscode "octref.vetur"
-vscode "orta.vscode-jest"
-vscode "paragdiwan.gitpatch"
-vscode "pmndrs.pmndrs"
-vscode "pnp.polacode"
-vscode "prisma.prisma"
-vscode "redhat.vscode-yaml"
-vscode "richie5um2.vscode-sort-json"
-vscode "rimuruchan.vscode-fix-checksums-next"
-vscode "robbowen.synthwave-vscode"
-vscode "rvest.vs-code-prettier-eslint"
-vscode "sdras.night-owl"
-vscode "sdras.vue-vscode-snippets"
-vscode "seyyedkhandon.firacode"
-vscode "shd101wyy.markdown-preview-enhanced"
-vscode "simonsiefke.svg-preview"
-vscode "slevesque.shader"
-vscode "streetsidesoftware.code-spell-checker"
-vscode "streetsidesoftware.code-spell-checker-french"
-vscode "stylelint.vscode-stylelint"
-vscode "teabyii.ayu"
-vscode "tombonnike.vscode-status-bar-format-toggle"
-vscode "tonka3000.raycast"
-vscode "visualstudioexptteam.intellicode-api-usage-examples"
-vscode "visualstudioexptteam.vscodeintellicode"
-vscode "vitest.explorer"
-vscode "vscode-icons-team.vscode-icons"
-vscode "vue.volar"
-vscode "waderyan.gitblame"
-vscode "wallabyjs.quokka-vscode"
-vscode "whizkydee.material-palenight-theme"
-vscode "wholroyd.jinja"
-vscode "wix.vscode-import-cost"
-vscode "wscats.eno"
-vscode "xabikos.javascriptsnippets"
-vscode "ysemeniuk.emmet-live"
-vscode "yzhang.markdown-all-in-one"
-vscode "zardoy.vetur-extended"
-vscode "zhuangtongfa.material-theme"
+go "github.com/livepixelz-corp/hoopmetrics-cli/cmd/hoopmetrics"
 uv "-"
 uv "-"
 uv "mistral-vibe"
 uv "posting"
-npm "nvm"
-npm "reveal-md"
