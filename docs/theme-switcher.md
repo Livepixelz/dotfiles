@@ -30,6 +30,7 @@ Thèmes supportés : `tokyonight_storm`, `catppuccin_macchiato`, `rose_pine`, `k
 | Posting | `theme: …` dans `~/.config/posting/config.yaml` |
 | Lazygit | palette hex complète dans `config.yml` (inline switch) |
 | Zed | `theme.dark = "…"` dans `settings.json` (inline switch, nom officiel Zed) |
+| Sketchybar | palette hex complète dans `colors.sh` via helper `theme-sketchybar` |
 
 ## ⚠️ Fichiers de thème à installer
 
@@ -67,3 +68,4 @@ Le script reload ce qu'il peut, le reste demande une action manuelle :
 | Posting | watcher actif si `watch_themes: true` |
 | Lazygit | redémarre lazygit |
 | Zed | reload auto (watcher fichier) |
+| Sketchybar | `sketchybar --reload` (déclenché automatiquement par le script) |

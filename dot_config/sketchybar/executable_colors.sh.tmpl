@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Palette générée par chezmoi (theme = {{ .theme.name }})
+{{ template "theme-sketchybar" . }}
+export TRANSPARENT=0x00000000
+
+# --- Roles semantiques ---
+# Utiliser ces noms dans les plugins. Couleurs decoratives = DIM par defaut.
+export SEMANTIC_OK=$GREEN
+export SEMANTIC_WARN=$YELLOW
+export SEMANTIC_ALERT=$RED
+export SEMANTIC_INFO=$BLUE
+export SEMANTIC_NEUTRAL=$DIM
+export SEMANTIC_ACCENT=$ACCENT_COLOR

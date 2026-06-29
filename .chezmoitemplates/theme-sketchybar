@@ -1,0 +1,76 @@
+{{- if eq .theme.name "kanagawa" -}}
+export BAR_COLOR=0xff1f1f28
+export ITEM_BG_COLOR=0xff2a2a37
+export ACCENT_COLOR=0xff7e9cd8
+export WHITE=0xffdcd7ba
+export RED=0xffe46876
+export GREEN=0xff98bb6c
+export BLUE=0xff7fb4ca
+export YELLOW=0xffe6c384
+export ORANGE=0xffffa066
+export PINK=0xffd27e99
+export PURPLE=0xff957fb8
+export GREY=0xff727169
+export DIM=0xff545464
+export SEP_COLOR=0xff3a3a47
+{{- else if eq .theme.name "tokyonight_storm" -}}
+export BAR_COLOR=0xff24283b
+export ITEM_BG_COLOR=0xff292e42
+export ACCENT_COLOR=0xff7aa2f7
+export WHITE=0xffc0caf5
+export RED=0xfff7768e
+export GREEN=0xff9ece6a
+export BLUE=0xff7aa2f7
+export YELLOW=0xffe0af68
+export ORANGE=0xffff9e64
+export PINK=0xffbb9af7
+export PURPLE=0xffbb9af7
+export GREY=0xff565f89
+export DIM=0xff414868
+export SEP_COLOR=0xff1f2335
+{{- else if eq .theme.name "catppuccin_macchiato" -}}
+export BAR_COLOR=0xff24273a
+export ITEM_BG_COLOR=0xff363a4f
+export ACCENT_COLOR=0xff8aadf4
+export WHITE=0xffcad3f5
+export RED=0xffed8796
+export GREEN=0xffa6da95
+export BLUE=0xff8aadf4
+export YELLOW=0xffeed49f
+export ORANGE=0xfff5a97f
+export PINK=0xfff5bde6
+export PURPLE=0xffc6a0f6
+export GREY=0xff6e738d
+export DIM=0xff494d64
+export SEP_COLOR=0xff1e2030
+{{- else if eq .theme.name "rose_pine" -}}
+export BAR_COLOR=0xff191724
+export ITEM_BG_COLOR=0xff26233a
+export ACCENT_COLOR=0xff9ccfd8
+export WHITE=0xffe0def4
+export RED=0xffeb6f92
+export GREEN=0xff31748f
+export BLUE=0xff9ccfd8
+export YELLOW=0xfff6c177
+export ORANGE=0xfff6c177
+export PINK=0xffebbcba
+export PURPLE=0xffc4a7e7
+export GREY=0xff908caa
+export DIM=0xff6e6a86
+export SEP_COLOR=0xff1f1d2e
+{{- else if eq .theme.name "night_owl" -}}
+export BAR_COLOR=0xff011627
+export ITEM_BG_COLOR=0xff0b2942
+export ACCENT_COLOR=0xff82aaff
+export WHITE=0xffd6deeb
+export RED=0xffef5350
+export GREEN=0xffaddb67
+export BLUE=0xff82aaff
+export YELLOW=0xffecc48d
+export ORANGE=0xfff78c6c
+export PINK=0xffc792ea
+export PURPLE=0xffc792ea
+export GREY=0xff637777
+export DIM=0xff5f7e97
+export SEP_COLOR=0xff0e3144
+{{- end -}}
