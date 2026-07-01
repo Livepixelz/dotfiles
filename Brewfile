@@ -1,4 +1,5 @@
 tap "asmvik/formulae"
+tap "charmbracelet/tap", trusted: { formulae: ["mods"] }
 tap "dopplerhq/doppler", "https://github.com/DopplerHQ/homebrew-doppler.git"
 tap "dylantientcheu/dylantientcheu"
 tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae", trusted: true
@@ -9,6 +10,7 @@ tap "libsql/sqld"
 tap "localstack/tap"
 tap "nikitabobko/tap"
 tap "popcorn-official/popcorn-desktop", "https://github.com/popcorntime/popcorntime.git"
+tap "sst/tap", trusted: { formulae: ["opencode"] }
 tap "tursodatabase/tap"
 # Run your GitHub Actions locally
 brew "act", args: ["HEAD"]
@@ -132,6 +134,8 @@ brew "imagemagick"
 brew "jq"
 # Save disk space by cleaning non-essential files from software projects
 brew "kondo"
+# Lazier way to manage everything docker
+brew "lazydocker"
 # Simple terminal UI for git commands
 brew "lazygit"
 # Cross-platform TUI database management tool
@@ -254,6 +258,8 @@ brew "zk"
 brew "zoxide"
 # UNIX shell (command interpreter)
 brew "zsh"
+# A powerful terminal-based AI assistant for developers, providing intelligent coding assistance directly in your terminal.
+brew "charmbracelet/tap/crush", trusted: true
 # A window border system for macOS
 brew "felixkratz/formulae/borders"
 # Custom macOS statusbar with shell plugin, interaction and graph support
@@ -287,6 +293,8 @@ cask "font-jetbrains-mono-nerd-font"
 cask "font-monaspace-nf"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
+# AI-powered notepad for meetings
+cask "granola"
 # Terminal built on web technologies
 cask "hyper"
 # Vector graphics editor
@@ -311,6 +319,8 @@ cask "notion"
 cask "obsidian"
 # Replacement for Docker Desktop
 cask "orbstack"
+# Used to access context-specific actions when text is selected
+cask "popclip"
 # Collaboration platform for API development
 cask "postman"
 # HTTP debugging proxy
