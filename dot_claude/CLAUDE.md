@@ -60,15 +60,15 @@ Privilégie la sécurité du contrat sur la pureté architecturale quand les deu
 
 | Repo | Description | Stack |
 |---|---|---|
-| `clutchdata` | HoopMetrics — app principale NBA analytics (alias interne) | Nuxt 4, Vue 3, TS, UnoCSS, PrimeVue Aura, Reka UI |
-| `hoopmetrics` | Backend + infra | FastAPI (⚠️ jamais Django), PostgreSQL, Redis, Celery |
+| `clutchdata` | App principale NBA analytics (alias interne) | Nuxt 4, Vue 3, TS, UnoCSS, PrimeVue Aura, Reka UI |
+| `clutchdata` | Backend + infra | FastAPI (⚠️ jamais Django), PostgreSQL, Redis, Celery |
 | `bender` | Projet en cours | — |
 | `lp-tools` | Shared libs / outils internes | TS |
 | `infra` | IaC | Terraform, Hetzner |
 | `raycast` | Extensions Raycast perso | TS |
 
 **Org GitHub** : `livepixelz-corp`  
-**Images Docker** : `ghcr.io/livepixelz-corp/hoopmetrics/{backend,frontend}`  
+**Images Docker** : `ghcr.io/livepixelz-corp/clutchdata/{backend,frontend}`  
 **Infra** : 2× VPS Hetzner — VPS1 (CPX32, prod) · VPS2 (CPX32, staging/preview, runners CI)  
 **Secrets** : Doppler (`clutchdata` project, envs dev/preview/stg/prd)  
 **OPS-BOARD** : `~/code/OPS-BOARD.md` — état infra, tâches en cours, Doppler config

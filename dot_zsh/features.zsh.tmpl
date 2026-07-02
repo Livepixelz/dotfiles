@@ -289,8 +289,12 @@ _dots_docs() {
 _dots_focus() {
   dui_header "dots focus" "DnD + distractions away"
   if [[ "$OSTYPE" == darwin* ]]; then
-    osascript -e 'tell application "System Events" to keystroke "d" using {control down, option down}' 2>/dev/null || true
-    dui_ok "toggled macOS Focus (DnD)"
+    local focus_shortcut="Toggle Focus"
+    if shortcuts run "$focus_shortcut" 2>/dev/null; then
+      dui_ok "ran shortcut '$focus_shortcut'"
+    else
+      dui_warn "shortcut '$focus_shortcut' not found — create it in the Shortcuts app"
+    fi
   fi
   local quit_list=(Slack Discord Messages Mail "Microsoft Teams" Telegram WhatsApp)
   local killed=0
