@@ -3,10 +3,9 @@
 # herdr-bootstrap.sh — recrée tes layouts (équivalent des KDL Zellij)
 #
 # Layout par projet :
-#   Tab 1 "code"    : Helix 75% (gauche) | Claude 25% (haut droite) / lazygit (bas droite)
+#   Tab 1 "code"    : Helix (gauche) | Claude Code (haut droite) / lazygit (bas droite)
 #   Tab 2 "servers" : front dev server (+ backend en split si défini)
 #   Tab 3 "api"     : Posting
-#   Tab 4 "monitor" : btop | lazydocker
 #
 # Usage :
 #   ./herdr-bootstrap.sh                 # session par défaut
@@ -71,8 +70,8 @@ bootstrap_project() {
   pid() { printf '%s-%s' "$ws_id" "$1"; }
 
   # ── Tab 1 : code ──────────────────────────────────────────────────────────
-  # Helix 75% (gauche) | Claude 25% (droite). --ratio = taille du nouveau pane.
-  herdr pane split "$(pid 1)" --direction right --ratio 0.25 --no-focus
+  # NB : si le ratio s'applique au mauvais côté chez toi, inverse (0.38 ↔ 0.62)
+  herdr pane split "$(pid 1)" --direction right --ratio 0.38 --no-focus
   n=$((n+1)); local p_claude=$n
   herdr pane split "$(pid "$p_claude")" --direction down --ratio 0.5 --no-focus
   n=$((n+1)); local p_git=$n
@@ -102,16 +101,6 @@ bootstrap_project() {
     n=$((n+1))
     herdr pane run "$(pid "$n")" "$posting_cmd"
   fi
-
-  # ── Tab 4 : monitor (btop | lazydocker) ───────────────────────────────────
-  herdr tab create --workspace "$ws_id" --cwd "$dir" --label "monitor" --no-focus
-  n=$((n+1)); local p_btop=$n
-  herdr pane run "$(pid "$p_btop")" "btop"
-  herdr pane rename "$(pid "$p_btop")" "btop"
-  herdr pane split "$(pid "$p_btop")" --direction right --ratio 0.5 --no-focus
-  n=$((n+1)); local p_lzd=$n
-  herdr pane run "$(pid "$p_lzd")" "lazydocker"
-  herdr pane rename "$(pid "$p_lzd")" "lazydocker"
 
   # ── Notification quand le dev server est prêt (best effort) ──────────────
   if [[ -n "$wait_match" ]]; then

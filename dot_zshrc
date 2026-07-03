@@ -344,9 +344,3 @@ fi
 
 # ── Zoxide (doit rester la toute dernière instruction du fichier) ─────────────
 eval "$(zoxide init --cmd cd zsh)"
-
-# unyc Posting — refresh Keycloak token then launch with shared env
-posting-unyc() {
-  ~/.config/posting/unyc-refresh.sh || return 1
-  posting --env ~/.config/posting/unyc.env "$@"
-}

@@ -1,11 +1,5 @@
 tap "asmvik/formulae"
 tap "charmbracelet/tap", trusted: { formulae: ["mods"] }
-tap "atlassian-labs/acli"
-tap "atlassian/acli"
-tap "atlassian/tap"
-tap "derailed/k9s"
-tap "dopplerhq/cli"
-tap "dopplerhq/doppler"
 tap "dopplerhq/doppler", "https://github.com/DopplerHQ/homebrew-doppler.git"
 tap "dylantientcheu/dylantientcheu"
 tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae", trusted: true
@@ -14,7 +8,6 @@ tap "homebrew/services"
 tap "koekeishiya/formulae", "https://github.com/asmvik/homebrew-formulae.git"
 tap "libsql/sqld"
 tap "localstack/tap"
-tap "microsoft/mssql-release", "https://github.com/Microsoft/homebrew-mssql-release"
 tap "nikitabobko/tap"
 tap "popcorn-official/popcorn-desktop", "https://github.com/popcorntime/popcorntime.git"
 tap "sst/tap", trusted: { formulae: ["opencode"] }
@@ -68,7 +61,7 @@ brew "defaultbrowser"
 # Load/unload environment variables based on $PWD
 brew "direnv"
 # Pack, ship and run any application as a lightweight container
-brew "docker"
+brew "docker", link: false
 # Isolated development environments using Docker
 brew "docker-compose"
 # Tool for managing dock items
@@ -145,8 +138,6 @@ brew "kondo"
 brew "lazydocker"
 # Simple terminal UI for git commands
 brew "lazygit"
-# The lazier way to manage everything docker
-brew "lazydocker"
 # Cross-platform TUI database management tool
 brew "lazysql"
 # Fast and powerful Git hooks manager for any type of projects
@@ -204,17 +195,7 @@ brew "pueue", restart_service: :changed
 # Python version management
 brew "pyenv"
 # Interpreted, interactive, object-oriented programming language
-<<<<<<< Updated upstream
 brew "python@3.12", link: false
-||||||| Stash base
-brew "python@3.11"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.12", link: false
-=======
-brew "python@3.11"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.12"
->>>>>>> Stashed changes
 # Rsync for cloud storage
 brew "rclone"
 # Search tool like grep and The Silver Searcher
@@ -252,7 +233,7 @@ brew "uvicorn", link: false
 # Your CLI home video recorder
 brew "vhs"
 # Next generation frontend tooling. It's fast!
-brew "vite"
+brew "vite", link: false
 # Executes a program periodically, showing output fullscreen
 brew "watch"
 # Execute commands when watched files change
