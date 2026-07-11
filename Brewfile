@@ -4,6 +4,8 @@ brew "bat"
 brew "btop"
 # Manage your dotfiles across multiple diverse machines, securely
 brew "chezmoi"
+# Emulate mouse and keyboard events from the command-line
+brew "cliclick"
 # Apjanke's fork of the classic cowsay project
 brew "cowsay"
 # Modern, maintained replacement for ls
