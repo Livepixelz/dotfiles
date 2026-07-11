@@ -14,6 +14,11 @@ defaults write com.apple.dock tilesize -int 42
 defaults write com.apple.dock show-recents -bool false
 defaults write com.apple.dock minimize-to-application -bool true
 defaults write com.apple.dock mru-spaces -bool false
+defaults write com.apple.dock static-only -bool true          # only running apps in the Dock
+defaults write com.apple.dock persistent-others -array        # drop Downloads/other stacks
+
+# ── Menu bar ──────────────────────────────────────────────────────────────────
+defaults write NSGlobalDomain _HIHideMenuBar -bool true        # auto-hide the top menu bar
 
 # ── Finder ────────────────────────────────────────────────────────────────────
 defaults write com.apple.finder AppleShowAllFiles -bool true
