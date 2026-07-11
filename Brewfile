@@ -22,6 +22,8 @@ brew "fzf"
 brew "git-delta"
 # Git extension for versioning large files
 brew "git-lfs"
+# Agent multiplexer that lives in your terminal
+brew "herdr"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Simple terminal UI for git commands
