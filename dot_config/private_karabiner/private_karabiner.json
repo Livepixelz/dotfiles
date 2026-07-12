@@ -21,6 +21,22 @@
                                 "type": "basic"
                             }
                         ]
+                    },
+                    {
+                        "description": "Option+N → literal tilde (non-dead)",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "n",
+                                    "modifiers": { "mandatory": ["left_option"], "optional": ["any"] }
+                                },
+                                "to": [
+                                    { "key_code": "n", "modifiers": ["left_option"] },
+                                    { "key_code": "spacebar" }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
                     }
                 ]
             },
