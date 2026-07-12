@@ -56,6 +56,8 @@ cask "font-symbols-only-nerd-font"
 cask "ghostty"
 # Control your tools with a few keystrokes
 cask "raycast"
+# Multiplayer code editor written in Rust
+cask "zed"
 # Customizable macOS status bar replacement written in C
 brew "felixkratz/formulae/sketchybar"
 # Draw borders around the focused window on macOS
