@@ -54,6 +54,8 @@ cask "font-jetbrains-mono-nerd-font"
 cask "font-symbols-only-nerd-font"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
+# Keyboard customizer
+cask "karabiner-elements"
 # Control your tools with a few keystrokes
 cask "raycast"
 # Multiplayer code editor written in Rust
