@@ -5,7 +5,7 @@ sketchybar --add item appmenu left \
                 icon.drawing=off \
                 label.drawing=off \
                 background.image="$CONFIG_DIR/icons/livepixelz.png" \
-                background.image.scale=0.6 \
+                background.image.scale=0.11 \
                 background.color=$TRANSPARENT \
                 background.height=36 \
                 padding_left=0 \

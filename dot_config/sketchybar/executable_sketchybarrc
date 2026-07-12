@@ -19,8 +19,7 @@ done
 
 sketchybar --update
 
-# Auto-hide (style menubar) — la bar reste cachée et apparaît au hover du haut.
-sketchybar --bar hidden=on
+# Bar toujours visible. La barre de menu macOS native est en auto-hide et
+# réapparaît au hover du haut (réglage système _HIHideMenuBar).
 pkill -f "sketchybar/plugins/autohide.sh" 2>/dev/null
-nohup "$PLUGIN_DIR/autohide.sh" >/dev/null 2>&1 &
-disown
+sketchybar --bar hidden=off

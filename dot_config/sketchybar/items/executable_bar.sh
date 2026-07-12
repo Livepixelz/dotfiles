@@ -2,6 +2,7 @@
 
 sketchybar --bar \
   position=top \
+  display=all \
   height=36 \
   margin=8 \
   y_offset=6 \

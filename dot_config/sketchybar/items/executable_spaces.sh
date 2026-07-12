@@ -2,20 +2,24 @@
 
 sketchybar --add event aerospace_workspace_change
 
-declare -A WS_ICONS=(
-  [1]="󰅩"    # Code (Zed)
-  [2]="󰆍"    # Terminal (Ghostty)
-  [3]="󰖟"    # Web (Zen)
-  [4]="󰙯"    # Discord
-  [A]="󰧑"    # aNansi (AI)
-  [C]="󰠴"    # Clutch (basketball)
-  [M]="󰝚"    # Music
-  [N]="󰠮"    # Notes
-)
+# macOS ships bash 3.2 (no associative arrays) — use a case instead.
+ws_icon() {
+  case "$1" in
+    1) echo "󰅩" ;;    # Code (Zed)
+    2) echo "󰆍" ;;    # Terminal (Ghostty)
+    3) echo "󰖟" ;;    # Web (Zen)
+    4) echo "󰙯" ;;    # Discord
+    A) echo "󰧑" ;;    # aNansi (AI)
+    C) echo "󰠴" ;;    # Clutch (basketball)
+    M) echo "󰝚" ;;    # Music
+    N) echo "󰠮" ;;    # Notes
+    *) echo "$1" ;;
+  esac
+}
 
 WORKSPACES=($(aerospace list-workspaces --all))
 for ws in "${WORKSPACES[@]}"; do
-  ICON="${WS_ICONS[$ws]:-$ws}"
+  ICON="$(ws_icon "$ws")"
   sketchybar --add item space.$ws left \
              --set space.$ws \
                 icon="$ICON" \
