@@ -1,10 +1,12 @@
+tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae", trusted: true
+tap "nikitabobko/tap"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
 # Manage your dotfiles across multiple diverse machines, securely
 brew "chezmoi"
-# Emulate mouse and keyboard events from the command-line
+# Tool for emulating mouse and keyboard events
 brew "cliclick"
 # Apjanke's fork of the classic cowsay project
 brew "cowsay"
@@ -30,6 +32,10 @@ brew "herdr"
 brew "jq"
 # Simple terminal UI for git commands
 brew "lazygit"
+# Pager program similar to more
+brew "less"
+# Library to render SVG files using Cairo
+brew "librsvg"
 # Polyglot runtime manager (asdf rust clone)
 brew "mise"
 # Manage multiple Node.js versions
@@ -48,21 +54,27 @@ brew "yq"
 brew "zellij"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
+# A window border system for macOS
+brew "felixkratz/formulae/borders", trusted: true
+# Custom macOS statusbar with shell plugin, interaction and graph support
+brew "felixkratz/formulae/sketchybar", trusted: true
+# Command-line interface for 1Password
+cask "1password-cli"
+# AeroSpace is an i3-like tiling window manager for macOS
+cask "nikitabobko/tap/aerospace", trusted: true
+# Anthropic's official Claude AI desktop app
+cask "claude"
+# Terminal-based AI coding assistant
+cask "claude-code"
 cask "font-fira-code-nerd-font"
 cask "font-inter"
 cask "font-jetbrains-mono-nerd-font"
 cask "font-symbols-only-nerd-font"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
-# Keyboard customizer
+# Keyboard customiser
 cask "karabiner-elements"
 # Control your tools with a few keystrokes
 cask "raycast"
-# Multiplayer code editor written in Rust
+# Multiplayer code editor
 cask "zed"
-# Customizable macOS status bar replacement written in C
-brew "felixkratz/formulae/sketchybar"
-# Draw borders around the focused window on macOS
-brew "felixkratz/formulae/borders"
-# AeroSpace is an i3-like tiling window manager for macOS
-cask "nikitabobko/tap/aerospace"
