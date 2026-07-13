@@ -8,8 +8,13 @@
 # Par contre "alt-a" = ta touche physique Q, "alt-q" = ta touche A, etc.
 # Les bindings hjkl ci-dessous sont aux memes positions en AZERTY, aucun souci.
 
+config-version = 2
+
 # Lancer AeroSpace au login
 start-at-login = true
+
+# v2 n'infere plus les workspaces depuis les bindings : on les declare
+persistent-workspaces = ['1', '2', '3', '4', 'C', 'N', 'M']
 
 # Normalisations recommandees (comportement i3-like propre)
 enable-normalization-flatten-containers = true
