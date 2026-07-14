@@ -19,6 +19,7 @@ defaults write com.apple.dock persistent-others -array        # drop Downloads/o
 
 # ── Menu bar ──────────────────────────────────────────────────────────────────
 defaults write NSGlobalDomain _HIHideMenuBar -bool true        # auto-hide the top menu bar
+defaults write com.apple.universalaccess reduceTransparency -bool true   # opaque menu bar over sketchybar
 
 # ── Finder ────────────────────────────────────────────────────────────────────
 defaults write com.apple.finder AppleShowAllFiles -bool true
