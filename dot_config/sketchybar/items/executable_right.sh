@@ -149,10 +149,14 @@ sketchybar --add item hetzner right \
                 script="$PLUGIN_DIR/hetzner.sh" \
            --subscribe hetzner mouse.exited.global front_app_switched
 
-sketchybar --add item hetzner.vps1 popup.hetzner \
-           --set hetzner.vps1 background.padding_left=8 background.padding_right=8 label="vps1 — …"
-sketchybar --add item hetzner.vps2 popup.hetzner \
-           --set hetzner.vps2 background.padding_left=8 background.padding_right=8 label="vps2 — …"
+for vps in vps1 vps2; do
+  sketchybar --add item hetzner.$vps popup.hetzner \
+             --set hetzner.$vps \
+                  background.padding_left=8 \
+                  background.padding_right=8 \
+                  label="$vps — …" \
+                  click_script="open 'https://monitor.clutch-data.com/system/$vps' && sketchybar --set hetzner popup.drawing=off"
+done
 
 right_item discord \
   update_freq=20 \
