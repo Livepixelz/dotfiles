@@ -1,13 +1,21 @@
 #!/usr/bin/env bash
 
+# macOS réserve la bande du notch (safe area) : offset négatif pour coller au
+# top, uniquement quand l'écran principal est le natif du MacBook.
+if system_profiler SPDisplaysDataType 2>/dev/null | grep -A6 'Built-in' | grep -q 'Main Display: Yes'; then
+  Y_OFFSET=-32
+else
+  Y_OFFSET=0
+fi
+
 sketchybar --bar \
   position=top \
   display=all \
   height=36 \
-  margin=8 \
-  y_offset=6 \
-  corner_radius=12 \
-  notch_width=200 \
+  margin=0 \
+  y_offset=$Y_OFFSET \
+  corner_radius=0 \
+  notch_width=250 \
   blur_radius=20 \
   padding_left=8 \
   padding_right=8 \

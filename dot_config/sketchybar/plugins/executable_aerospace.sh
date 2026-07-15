@@ -3,7 +3,7 @@
 source "$HOME/.config/sketchybar/colors.sh"
 
 WS="$1"
-FOCUSED="${FOCUSED_WORKSPACE:-$(aerospace list-workspaces --focused)}"
+FOCUSED="${FOCUSED_WORKSPACE:-$(/opt/homebrew/bin/aerospace list-workspaces --focused)}"
 
 if [ "$WS" = "$FOCUSED" ]; then
   sketchybar --set "$NAME" \

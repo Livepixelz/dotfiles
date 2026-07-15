@@ -33,7 +33,7 @@ for ws in "${WORKSPACES[@]}"; do
                 background.drawing=off \
                 background.corner_radius=8 \
                 background.height=24 \
-                click_script="aerospace workspace $ws" \
+                click_script="/opt/homebrew/bin/aerospace workspace $ws" \
                 script="$PLUGIN_DIR/aerospace.sh $ws" \
              --subscribe space.$ws aerospace_workspace_change
 done

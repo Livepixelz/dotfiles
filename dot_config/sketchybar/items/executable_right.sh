@@ -164,13 +164,14 @@ right_item calendar \
   click_script="open -a Calendar" \
   script="$PLUGIN_DIR/calendar.sh"
 
-right_item weather \
+left_item weather \
   update_freq=900 \
   script="$PLUGIN_DIR/weather.sh"
 
 # --- New items ---
 
-right_item pomodoro \
+# À gauche : la zone droite est trop chargée et déborderait sous le notch.
+left_item pomodoro \
   update_freq=1 \
   click_script="$PLUGIN_DIR/pomodoro.sh" \
   script="$PLUGIN_DIR/pomodoro.sh"

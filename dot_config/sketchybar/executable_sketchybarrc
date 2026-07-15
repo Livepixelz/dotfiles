@@ -13,7 +13,7 @@ FONT="Hack Nerd Font"
 export PLUGIN_DIR FONT
 
 # Order matters: bar/defaults first, then items left → center → right.
-for item in bar appmenu spaces front_app media right; do
+for item in bar appmenu spaces front_app right media; do
   source "$CONFIG_DIR/items/$item.sh"
 done
 
