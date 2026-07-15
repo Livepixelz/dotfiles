@@ -8,13 +8,8 @@
 # Par contre "alt-a" = ta touche physique Q, "alt-q" = ta touche A, etc.
 # Les bindings hjkl ci-dessous sont aux memes positions en AZERTY, aucun souci.
 
-config-version = 2
-
 # Lancer AeroSpace au login
 start-at-login = true
-
-# v2 n'infere plus les workspaces depuis les bindings : on les declare
-persistent-workspaces = ['1', '2', '3', '4', 'C', 'N', 'M']
 
 # Normalisations recommandees (comportement i3-like propre)
 enable-normalization-flatten-containers = true
@@ -33,7 +28,7 @@ inner.horizontal = 8
 inner.vertical = 8
 outer.left = 8
 outer.bottom = 8
-outer.top = 20
+outer.top = 8
 outer.right = 8
 
 # ──────────────────────────────────────────────
@@ -42,50 +37,50 @@ outer.right = 8
 [mode.main.binding]
 
 # Navigation entre fenetres (vim-style, positions identiques en AZERTY)
-ctrl-alt-h = 'focus left'
-ctrl-alt-j = 'focus down'
-ctrl-alt-k = 'focus up'
-ctrl-alt-l = 'focus right'
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
 
 # Deplacer la fenetre courante
-ctrl-alt-shift-h = 'move left'
-ctrl-alt-shift-j = 'move down'
-ctrl-alt-shift-k = 'move up'
-ctrl-alt-shift-l = 'move right'
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
 
 # Layouts
-ctrl-alt-slash = 'layout tiles horizontal vertical'   # toggle orientation
-ctrl-alt-comma = 'layout accordion horizontal vertical'
-ctrl-alt-f = 'fullscreen'
-ctrl-alt-shift-f = 'layout floating tiling'           # toggle float
+alt-slash = 'layout tiles horizontal vertical'   # toggle orientation
+alt-comma = 'layout accordion horizontal vertical'
+alt-f = 'fullscreen'
+alt-shift-f = 'layout floating tiling'           # toggle float
 
 # Workspaces — chiffres = contextes, lettres = projets perso
 # 1 = Code (Zed) | 2 = Terminal (Ghostty/Zellij) | 3 = Web (Zen) | 4 = Discord
-ctrl-alt-1 = 'workspace 1'
-ctrl-alt-2 = 'workspace 2'
-ctrl-alt-3 = 'workspace 3'
-ctrl-alt-4 = 'workspace 4'
-ctrl-alt-c = 'workspace C'    # Clutch (clutch-data / clutch-cards / hoopviz)
-ctrl-alt-n = 'workspace N'    # aNansi
-ctrl-alt-m = 'workspace M'    # ATTENTION : touche physique ";" en AZERTY — Media/Spotify
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-c = 'workspace C'    # Clutch (clutch-data / clutch-cards / hoopviz)
+alt-n = 'workspace N'    # aNansi
+alt-m = 'workspace M'    # ATTENTION : touche physique ";" en AZERTY — Media/Spotify
 
 # Envoyer la fenetre vers un workspace
-ctrl-alt-shift-1 = 'move-node-to-workspace 1'
-ctrl-alt-shift-2 = 'move-node-to-workspace 2'
-ctrl-alt-shift-3 = 'move-node-to-workspace 3'
-ctrl-alt-shift-4 = 'move-node-to-workspace 4'
-ctrl-alt-shift-c = 'move-node-to-workspace C'
-ctrl-alt-shift-n = 'move-node-to-workspace N'
+alt-shift-1 = 'move-node-to-workspace 1'
+alt-shift-2 = 'move-node-to-workspace 2'
+alt-shift-3 = 'move-node-to-workspace 3'
+alt-shift-4 = 'move-node-to-workspace 4'
+alt-shift-c = 'move-node-to-workspace C'
+alt-shift-n = 'move-node-to-workspace N'
 
 # Alterner entre les 2 derniers workspaces (tres utile code <-> terminal)
-ctrl-alt-tab = 'workspace-back-and-forth'
+alt-tab = 'workspace-back-and-forth'
 
 # Deplacer un workspace entier vers l'autre ecran (si multi-moniteurs)
-ctrl-alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
 # Entrer en mode resize / service
-ctrl-alt-r = 'mode resize'
-ctrl-alt-shift-semicolon = 'mode service'   # touche physique ";" QWERTY = "M" en AZERTY
+alt-r = 'mode resize'
+alt-shift-semicolon = 'mode service'   # touche physique ";" QWERTY = "M" en AZERTY
 
 # ──────────────────────────────────────────────
 # MODE RESIZE
