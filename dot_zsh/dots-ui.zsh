@@ -73,7 +73,7 @@ dui_spin() {
     rm -f "$log"; return $rc
   fi
   local spinner_chars="⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
-  ("$@") >"$log" 2>&1 </dev/null &
+  ("$@") >"$log" 2>&1 &
   local pid=$! i=0
   while kill -0 $pid 2>/dev/null; do
     local c="${spinner_chars:$((i % ${#spinner_chars})):1}"

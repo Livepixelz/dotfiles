@@ -46,9 +46,6 @@ reload_runtime() {
   if pgrep -f "Zed" >/dev/null 2>&1; then
     echo "  → Zed : recharge auto via watcher"
   fi
-  if pgrep -x sketchybar >/dev/null 2>&1; then
-    sketchybar --reload >/dev/null 2>&1 && echo "  → Sketchybar : rechargé"
-  fi
 }
 
 case "${1:-}" in
@@ -65,7 +62,7 @@ case "${1:-}" in
 Usage: theme [<name>|--list|--current]
 
 Switch dotfile theme across:
-  ghostty, zellij, helix, bat, btop, posting, lazygit, zed, sketchybar
+  ghostty, zellij, helix, bat, btop, posting, lazygit, zed
 
 Supported themes:
   ${SUPPORTED[*]}

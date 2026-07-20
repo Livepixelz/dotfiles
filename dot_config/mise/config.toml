@@ -8,3 +8,4 @@ trusted_config_paths = ["~/code"]
 node = "lts"
 python = "3.12"
 bun = "latest"
+helix = "latest"
