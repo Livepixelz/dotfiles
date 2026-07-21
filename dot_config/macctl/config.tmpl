@@ -1,0 +1,17 @@
+{{- if dig "features" "remote_control" false . -}}
+# ~/.config/macctl/config — généré par chezmoi, sourcé par `macctl`.
+# Édite via `chezmoi edit-config` (bloc [data.remote]) puis `chezmoi apply`.
+
+# Port d'écoute du daemon HTTP (macctld)
+PORT={{ dig "remote" "port" 8482 . }}
+
+# Interface d'écoute : tailscale | localhost | <adresse IP>
+# "tailscale" = résout l'IP 100.x et n'écoute QUE sur le tailnet (recommandé).
+BIND={{ dig "remote" "bind" "tailscale" . }}
+
+# Wake-on-LAN : adresse MAC du Mac à réveiller (ex: aa:bb:cc:dd:ee:ff).
+# À exécuter depuis un nœud toujours allumé du même LAN (routeur/RPi/autre Mac).
+WOL_MAC={{ dig "remote" "wol_mac" "" . | quote }}
+WOL_BROADCAST={{ dig "remote" "wol_broadcast" "255.255.255.255" . }}
+WOL_PORT={{ dig "remote" "wol_port" 9 . }}
+{{- end -}}

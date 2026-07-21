@@ -22,6 +22,7 @@
   direnv_helpers        = {{ promptBoolOnce . "features.direnv_helpers"        "Install direnv helpers (use_doppler etc)?"  true }}
   install_fonts         = {{ promptBoolOnce . "features.install_fonts"         "Install Nerd Fonts via brew?"               true }}
   scheduled_jobs        = {{ promptBoolOnce . "features.scheduled_jobs"        "Schedule daily update + weekly backup (launchd)?" true }}
+  remote_control        = {{ promptBoolOnce . "features.remote_control"        "Enable macctl remote-control daemon (pilote le Mac depuis l'iPhone)?" false }}
 
 [data.atuin]
   sync_address = {{ promptStringOnce . "atuin.sync_address" "Atuin sync server URL" "https://api.atuin.sh" | quote }}
@@ -30,3 +31,11 @@
 # Supported: tokyonight_storm, catppuccin_macchiato, rose_pine, kanagawa, night_owl
 [data.theme]
   name = {{ promptStringOnce . "theme.name" "Default theme (tokyonight_storm|catppuccin_macchiato|rose_pine|kanagawa|night_owl)" "tokyonight_storm" | quote }}
+
+# Pilotage à distance du Mac (macctl / macctld) — voir docs/remote-control.md
+[data.remote]
+  port          = {{ promptIntOnce . "remote.port" "Port du daemon macctld" 8482 }}
+  bind          = {{ promptStringOnce . "remote.bind" "Bind macctld (tailscale|localhost|<ip>)" "tailscale" | quote }}
+  wol_mac       = {{ promptStringOnce . "remote.wol_mac" "Adresse MAC du Mac pour le Wake-on-LAN (optionnel)" "" | quote }}
+  wol_broadcast = {{ promptStringOnce . "remote.wol_broadcast" "Adresse de broadcast WoL" "255.255.255.255" | quote }}
+  wol_port      = {{ promptIntOnce . "remote.wol_port" "Port WoL" 9 }}

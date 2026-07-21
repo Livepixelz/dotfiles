@@ -1,9 +1,26 @@
-{{- if and (eq .chezmoi.os "darwin") .features.scheduled_jobs -}}
+{{- if and (eq .chezmoi.os "darwin") (or .features.scheduled_jobs (dig "features" "remote_control" false .)) -}}
 #!/usr/bin/env bash
-# hash: {{ include "Library/LaunchAgents/com.livepixelz.dots-update.plist.tmpl" | sha256sum }}{{ include "Library/LaunchAgents/com.livepixelz.dots-backup.plist.tmpl" | sha256sum }}{{ include "Library/LaunchAgents/com.livepixelz.brewfile-dump.plist.tmpl" | sha256sum }}
+# hash: {{ include "Library/LaunchAgents/com.livepixelz.dots-update.plist.tmpl" | sha256sum }}{{ include "Library/LaunchAgents/com.livepixelz.dots-backup.plist.tmpl" | sha256sum }}{{ include "Library/LaunchAgents/com.livepixelz.brewfile-dump.plist.tmpl" | sha256sum }}{{ include "Library/LaunchAgents/com.livepixelz.macctld.plist.tmpl" | sha256sum }}
 set -euo pipefail
-for label in com.livepixelz.dots-update com.livepixelz.dots-backup com.livepixelz.brewfile-dump; do
+
+# Labels à (re)charger selon les feature flags actifs
+labels=()
+{{ if .features.scheduled_jobs -}}
+labels+=(com.livepixelz.dots-update com.livepixelz.dots-backup com.livepixelz.brewfile-dump)
+{{ end -}}
+{{ if dig "features" "remote_control" false . -}}
+labels+=(com.livepixelz.macctld)
+{{ end -}}
+
+# Décharge d'abord TOUS les labels connus (nettoie ceux désactivés depuis)
+for label in com.livepixelz.dots-update com.livepixelz.dots-backup \
+             com.livepixelz.brewfile-dump com.livepixelz.macctld; do
   launchctl bootout "gui/$UID/$label" 2>/dev/null || true
+done
+
+# Recharge uniquement les labels activés
+for label in "${labels[@]:-}"; do
+  [[ -z "$label" ]] && continue
   launchctl bootstrap "gui/$UID" "$HOME/Library/LaunchAgents/$label.plist" 2>/dev/null && \
     echo "✓ scheduled $label"
 done

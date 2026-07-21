@@ -150,6 +150,7 @@ chezmoi edit-config
 | `direnv_helpers` | `use_doppler`, `layout_node`, `use_op_secret` helpers | `true` |
 | `onepassword` | `op_secret` helper in zsh + use op CLI for secrets | `false` |
 | `atuin_sync` | Enable atuin auto-sync to `atuin.sync_address` | `false` |
+| `remote_control` | Run the `macctl` daemon to pilot the Mac from the iPhone (Tailscale) | `false` |
 
 ### 🎛️ The `dots` command
 
@@ -198,6 +199,30 @@ dots welcome     # tour & active features
 Logs land in `~/.cache/dots-*.log`. Toggle via `dots config`.
 
 Legacy aliases (`dots-status`, `dots-pull`, etc.) still work. macOS-native notifications fire on sync events via `terminal-notifier`.
+
+### 📱 Remote control from the iPhone (opt-in via `features.remote_control`)
+
+Pilot the Mac from your phone **anywhere over Tailscale** — sleep, lock, restart,
+shutdown, caffeinate, Wake-on-LAN. One core CLI (`macctl`), two front-ends:
+
+| Interface | Use it for | iPhone side |
+|---|---|---|
+| **SSH** | Safest, nothing exposed | Shortcuts → *Run Script Over SSH* → `macctl lock` |
+| **HTTP** | Tappable widgets | Shortcuts → *Get Contents of URL* → `POST /sleep` |
+
+```bash
+macctl status       # JSON: battery, uptime, caffeinate, tailscale IP
+macctl sleep        # …lock / displaysleep / restart / shutdown / caffeinate
+macctl wake <MAC>   # Wake-on-LAN magic packet (run from an always-on LAN node)
+macctl token        # bearer token to paste into Shortcuts
+```
+
+The `macctld` daemon (launchd, `KeepAlive`) binds **only to the Tailscale IP**
+with a 256-bit bearer token — never the LAN or Internet. Full setup, Shortcuts
+recipes, WoL relay notes and security: **[docs/remote-control.md](docs/remote-control.md)**.
+
+> ⚠️ Wake-on-LAN wakes a **sleeping** Mac, not a powered-off one (Ethernet is most
+> reliable on Apple Silicon). See the doc for the always-on relay pattern.
 
 ### 🔁 GitHub sync
 

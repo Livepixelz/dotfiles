@@ -1,0 +1,234 @@
+#!/usr/bin/env bash
+# macctl — pilote le Mac à distance (veille, verrouillage, redémarrage, WoL…)
+#
+# Pensé pour être appelé :
+#   • en local            : macctl sleep
+#   • via SSH (Shortcuts)  : ssh mac 'macctl lock'
+#   • via HTTP (macctld)   : le daemon route chaque endpoint vers ce script
+#
+# Usage:
+#   macctl status              # état JSON (batterie, uptime, caffeinate, IP tailscale…)
+#   macctl sleep               # met le Mac en veille
+#   macctl displaysleep        # éteint l'écran (sans verrouiller la session)
+#   macctl lock                # verrouille la session (écran de login)
+#   macctl restart             # redémarre proprement (via System Events)
+#   macctl shutdown            # éteint proprement (via System Events)
+#   macctl caffeinate [secs]   # empêche la veille (défaut: illimité)
+#   macctl decaffeinate        # ré-autorise la veille
+#   macctl wake [MAC] [bcast]  # envoie un magic packet Wake-on-LAN
+#   macctl token               # affiche le token HTTP (à coller dans Shortcuts)
+#   macctl serve               # lance le daemon HTTP (macctld)
+#   macctl config              # affiche la config effective (JSON)
+
+set -euo pipefail
+
+CONFIG_FILE="${MACCTL_CONFIG:-$HOME/.config/macctl/config}"
+TOKEN_FILE="${MACCTL_TOKEN_FILE:-$HOME/.config/macctl/token}"
+
+# ── Defaults (surchargés par le fichier de config) ───────────────────────────
+PORT=8482
+BIND=tailscale          # tailscale | localhost | <adresse IP explicite>
+WOL_MAC=""
+WOL_BROADCAST="255.255.255.255"
+WOL_PORT=9
+
+# shellcheck disable=SC1090
+[[ -f "$CONFIG_FILE" ]] && source "$CONFIG_FILE"
+
+die() { printf 'macctl: %s\n' "$*" >&2; exit 1; }
+
+require_darwin() {
+  [[ "$(uname -s)" == "Darwin" ]] || die "commande réservée à macOS"
+}
+
+# ── Token HTTP ───────────────────────────────────────────────────────────────
+ensure_token() {
+  if [[ ! -s "$TOKEN_FILE" ]]; then
+    mkdir -p "$(dirname "$TOKEN_FILE")"
+    # 32 octets aléatoires -> hex ; openssl est présent partout sur macOS
+    if command -v openssl >/dev/null 2>&1; then
+      openssl rand -hex 32 > "$TOKEN_FILE"
+    else
+      head -c32 /dev/urandom | xxd -p -c256 > "$TOKEN_FILE"
+    fi
+    chmod 600 "$TOKEN_FILE"
+  fi
+  cat "$TOKEN_FILE"
+}
+
+# ── IP Tailscale (pour le bind du daemon) ────────────────────────────────────
+tailscale_ip() {
+  local ts=""
+  for bin in tailscale /Applications/Tailscale.app/Contents/MacOS/Tailscale \
+             /opt/homebrew/bin/tailscale; do
+    if command -v "$bin" >/dev/null 2>&1 || [[ -x "$bin" ]]; then
+      ts="$("$bin" ip -4 2>/dev/null | head -1)" || true
+      [[ -n "$ts" ]] && { printf '%s' "$ts"; return 0; }
+    fi
+  done
+  return 1
+}
+
+resolve_bind() {
+  case "$BIND" in
+    tailscale) tailscale_ip || printf '127.0.0.1' ;;
+    localhost) printf '127.0.0.1' ;;
+    *)         printf '%s' "$BIND" ;;
+  esac
+}
+
+# ── Actions ──────────────────────────────────────────────────────────────────
+cmd_sleep()        { require_darwin; pmset sleepnow >/dev/null; echo "sleeping"; }
+cmd_displaysleep() { require_darwin; pmset displaysleepnow >/dev/null; echo "display off"; }
+
+cmd_lock() {
+  require_darwin
+  local cg="/System/Library/CoreServices/Menu Extras/User.menu/Contents/Resources/CGSession"
+  if [[ -x "$cg" ]]; then
+    "$cg" -suspend
+  else
+    # Fallback : verrouillage via raccourci système
+    osascript -e 'tell application "System Events" to keystroke "q" using {control down, command down}' \
+      >/dev/null 2>&1 || die "verrouillage indisponible"
+  fi
+  echo "locked"
+}
+
+cmd_restart() {
+  require_darwin
+  osascript -e 'tell application "System Events" to restart' >/dev/null
+  echo "restarting"
+}
+
+cmd_shutdown() {
+  require_darwin
+  osascript -e 'tell application "System Events" to shut down' >/dev/null
+  echo "shutting down"
+}
+
+cmd_caffeinate() {
+  require_darwin
+  local secs="${1:-0}"
+  pkill -x caffeinate 2>/dev/null || true
+  if [[ "$secs" =~ ^[0-9]+$ ]] && (( secs > 0 )); then
+    caffeinate -dimsu -t "$secs" >/dev/null 2>&1 &
+    echo "caffeinated ${secs}s"
+  else
+    caffeinate -dimsu >/dev/null 2>&1 &
+    echo "caffeinated (illimité)"
+  fi
+}
+
+cmd_decaffeinate() {
+  require_darwin
+  pkill -x caffeinate 2>/dev/null && echo "decaffeinated" || echo "déjà décaféiné"
+}
+
+# Wake-on-LAN : réveille une machine EN VEILLE (pas éteinte) via magic packet.
+# À exécuter depuis un nœud toujours allumé du même LAN (routeur/RPi/autre Mac).
+cmd_wake() {
+  local mac="${1:-$WOL_MAC}"
+  local bcast="${2:-$WOL_BROADCAST}"
+  [[ -n "$mac" ]] || die "aucune adresse MAC (arg 1 ou WOL_MAC dans la config)"
+  command -v python3 >/dev/null 2>&1 || die "python3 requis pour le Wake-on-LAN"
+  python3 - "$mac" "$bcast" "$WOL_PORT" <<'PY'
+import re, socket, sys
+mac = re.sub(r'[^0-9a-fA-F]', '', sys.argv[1])
+if len(mac) != 12:
+    sys.exit(f"MAC invalide: {sys.argv[1]}")
+packet = bytes.fromhex('ff' * 6 + mac * 16)
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+s.sendto(packet, (sys.argv[2], int(sys.argv[3])))
+print(f"magic packet -> {sys.argv[1]} via {sys.argv[2]}:{sys.argv[3]}")
+PY
+}
+
+cmd_status() {
+  require_darwin
+  local ts_ip; ts_ip="$(tailscale_ip || true)"
+  python3 - "$ts_ip" <<'PY'
+import json, subprocess, sys, time
+
+def sh(cmd):
+    try:
+        return subprocess.check_output(cmd, shell=True, text=True,
+                                       stderr=subprocess.DEVNULL).strip()
+    except Exception:
+        return ""
+
+# Batterie
+batt = sh("pmset -g batt")
+pct, charging = None, None
+for tok in batt.replace(";", " ").split():
+    if tok.endswith("%"):
+        pct = tok.rstrip("%")
+tl = batt.lower()
+if "discharging" in tl:
+    charging = False
+elif "charging" in tl or "charged" in tl or "ac power" in tl:
+    charging = True
+
+# Anti-veille actif ?
+caffeinated = "PreventUserIdleSystemSleep    1" in sh("pmset -g assertions")
+
+# Uptime (secondes)
+boot = sh("sysctl -n kern.boottime")
+up_s = None
+if "sec = " in boot:
+    try:
+        up_s = int(time.time()) - int(boot.split("sec = ")[1].split(",")[0])
+    except Exception:
+        pass
+
+out = {
+    "host": sh("scutil --get ComputerName") or sh("hostname -s"),
+    "battery_pct": int(pct) if pct and pct.isdigit() else None,
+    "charging": charging,
+    "caffeinated": caffeinated,
+    "uptime_s": up_s,
+    "load": sh("sysctl -n vm.loadavg").strip("{} "),
+    "tailscale_ip": sys.argv[1] or None,
+    "ts": int(time.time()),
+}
+print(json.dumps(out))
+PY
+}
+
+cmd_config() {
+  python3 - "$PORT" "$(resolve_bind)" "$BIND" "$TOKEN_FILE" "$WOL_MAC" <<'PY'
+import json, sys
+print(json.dumps({
+    "port": int(sys.argv[1]),
+    "bind": sys.argv[2],
+    "bind_mode": sys.argv[3],
+    "token_file": sys.argv[4],
+    "wol_mac": sys.argv[5] or None,
+}))
+PY
+}
+
+cmd_serve() {
+  ensure_token >/dev/null
+  exec macctld
+}
+
+usage() { sed -n '2,25p' "$0" | sed 's/^# \{0,1\}//'; }
+
+# ── Dispatch ─────────────────────────────────────────────────────────────────
+case "${1:-}" in
+  status)              cmd_status ;;
+  sleep)               cmd_sleep ;;
+  displaysleep)        cmd_displaysleep ;;
+  lock)                cmd_lock ;;
+  restart|reboot)      cmd_restart ;;
+  shutdown|poweroff)   cmd_shutdown ;;
+  caffeinate|awake)    shift; cmd_caffeinate "${1:-0}" ;;
+  decaffeinate)        cmd_decaffeinate ;;
+  wake|wol)            shift; cmd_wake "${1:-}" "${2:-}" ;;
+  token)               ensure_token ;;
+  serve)               cmd_serve ;;
+  config)              cmd_config ;;
+  ""|-h|--help|help)   usage ;;
+  *)                   die "commande inconnue: $1 (voir: macctl --help)" ;;
+esac
