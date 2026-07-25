@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Backup restic → Hetzner Storage Box (SFTP, port 23).
+# Setup (une fois le box commandé) :
+#   1. ssh-copy-id -p 23 -s uXXXXXX@uXXXXXX.your-storagebox.de   (activer SSH dans Robot)
+#   2. security add-generic-password -a "$USER" -s restic-storagebox -w "$(openssl rand -base64 32)"
+#      → sauvegarde AUSSI ce mot de passe dans 1Password (perdu = backups illisibles)
+#   3. STORAGEBOX=uXXXXXX restic-backup init
+#   4. restic-backup            # backup
+#      restic-backup snapshots  # ou toute commande restic
+set -euo pipefail
+
+STORAGEBOX="${STORAGEBOX:-}"   # ex: u123456
+[ -z "$STORAGEBOX" ] && { echo "STORAGEBOX non défini (ex: export STORAGEBOX=u123456)"; exit 1; }
+
+export RESTIC_REPOSITORY="sftp://${STORAGEBOX}@${STORAGEBOX}.your-storagebox.de:23/restic"
+export RESTIC_PASSWORD_COMMAND="security find-generic-password -a $USER -s restic-storagebox -w"
+
+if [ $# -gt 0 ]; then
+  exec restic "$@"
+fi
+
+restic backup \
+  "$HOME/code" \
+  "$HOME/.local/share/chezmoi" \
+  --exclude "**/node_modules" \
+  --exclude "**/.venv" \
+  --exclude "**/venv" \
+  --exclude "**/dist" \
+  --exclude "**/.nuxt" \
+  --exclude "**/.output" \
+  --exclude "**/__pycache__" \
+  --exclude "**/.pytest_cache" \
+  --exclude "**/target" \
+  --tag auto
+
+restic forget --keep-daily 7 --keep-weekly 4 --keep-monthly 6 --prune
