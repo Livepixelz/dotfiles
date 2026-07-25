@@ -111,16 +111,88 @@ _dots_status() {
 # ── doctor ────────────────────────────────────────────────────────────────────
 _dots_doctor() {
   dui_header "dots doctor" "health check"
+  local issues=0
+
+  # ── Binaries essentiels ──
   dui_section "Binaries"
   local missing=0
-  for b in chezmoi brew git zsh starship atuin fzf zoxide eza bat fd rg btop lazygit zellij delta mise gh; do
+  for b in chezmoi brew git zsh atuin fzf zoxide eza bat fd rg btop lazygit delta mise gh herdr hx just restic lazydocker tldr jq; do
     if command -v "$b" >/dev/null 2>&1; then
       dui_ok "$b"
     else
       dui_err "$b ${DUI[dim]}(missing — try ${DUI[fg]}brew install $b${DUI[dim]})${DUI[r]}"
-      ((missing++))
+      ((missing++)); ((issues++))
     fi
   done
+
+  # ── Vestiges : config présente, binaire absent ──
+  dui_section "Vestiges (config sans binaire)"
+  local -A binmap=(helix hx tealdeer tldr aerospace aerospace 1Password __skip karabiner __skip raycast __skip zed __skip ghostty __skip fish __skip gh-dash __skip zsh-abbr __skip _archive __skip)
+  local found_vestige=0 d name bin
+  for d in "$HOME/.config"/*(N/); do
+    name="${d:t}"
+    bin="${binmap[$name]:-$name}"
+    [ "$bin" = "__skip" ] && continue
+    if ! command -v "$bin" >/dev/null 2>&1; then
+      dui_warn "$name/ ${DUI[dim]}→ '$bin' introuvable (désinstallé ? archiver dans ~/.config/_archive)${DUI[r]}"
+      ((found_vestige++)); ((issues++))
+    fi
+  done
+  (( found_vestige == 0 )) && dui_ok "aucun vestige"
+
+  # ── Raccourcis morts (alias + abbr → commande absente) ──
+  dui_section "Raccourcis morts"
+  local dead=0 a target abbr_name
+  local -a words
+  for a in ${(k)aliases}; do
+    words=(${(z)aliases[$a]})
+    [[ "${words[1]}" == *=* || "${words[1]}" == \(* ]] && continue
+    if ! whence -- "${words[1]}" >/dev/null 2>&1; then
+      dui_warn "alias $a ${DUI[dim]}→ '${words[1]}' introuvable${DUI[r]}"
+      ((dead++)); ((issues++))
+    fi
+  done
+  if [ -f "$HOME/.config/zsh-abbr/user-abbreviations" ]; then
+    while IFS= read -r line; do
+      [[ "$line" != abbr\ * ]] && continue
+      abbr_name="${${line#abbr -S }%%=*}"
+      target="${${line#*=}//\"/}"
+      words=(${(z)target})
+      if ! whence -- "${words[1]}" >/dev/null 2>&1; then
+        dui_warn "abbr $abbr_name ${DUI[dim]}→ '${words[1]}' introuvable${DUI[r]}"
+        ((dead++)); ((issues++))
+      fi
+    done < "$HOME/.config/zsh-abbr/user-abbreviations"
+  fi
+  (( dead == 0 )) && dui_ok "tous les alias/abbrs pointent sur des commandes réelles"
+
+  # ── LSPs & hooks (stack Vue/TS/Python) ──
+  dui_section "LSPs & hooks"
+  for b in vtsls vue-language-server prettier ruff biome typos; do
+    if command -v "$b" >/dev/null 2>&1; then
+      dui_ok "$b"
+    else
+      dui_err "$b ${DUI[dim]}(Helix/lefthook dégradé)${DUI[r]}"
+      ((issues++))
+    fi
+  done
+
+  # ── Backups restic ──
+  dui_section "Backups"
+  if [ -f /tmp/restic-backup.log ]; then
+    local age=$(( ($(date +%s) - $(stat -f %m /tmp/restic-backup.log)) / 3600 ))
+    if (( age < 48 )); then
+      dui_ok "dernier run il y a ${age}h ${DUI[dim]}(log)${DUI[r]}"
+    else
+      dui_warn "dernier run il y a ${age}h — vérifier le LaunchAgent"
+      ((issues++))
+    fi
+  else
+    dui_warn "aucun log de backup ${DUI[dim]}(/tmp/restic-backup.log)${DUI[r]}"
+    ((issues++))
+  fi
+
+  # ── Zsh plugins ──
   dui_section "Zsh plugins"
   for p in fast-syntax-highlighting zsh-autosuggestions fzf-tab zsh-abbr; do
     if [ -d "$HOME/.zsh/$p" ]; then
@@ -129,15 +201,20 @@ _dots_doctor() {
       dui_warn "$p ${DUI[dim]}(toggle features.zsh_plugins_auto)${DUI[r]}"
     fi
   done
+
+  # ── Sync chezmoi ──
   dui_section "Sync state"
   local repo="$HOME/.local/share/chezmoi"
   local dirty=$(chezmoi status 2>/dev/null | grep -v '^R' | wc -l | tr -d ' ')
-  (( dirty > 0 )) && dui_warn "$dirty local change(s)" || dui_ok "source ↔ home in sync"
+  (( dirty > 0 )) && { dui_warn "$dirty local change(s) ${DUI[dim]}(dots push)${DUI[r]}"; ((issues++)); } || dui_ok "source ↔ home in sync"
   git -C "$repo" fetch --quiet 2>/dev/null
   local behind=$(git -C "$repo" rev-list --count HEAD..@{u} 2>/dev/null || echo 0)
-  (( behind > 0 )) && dui_warn "$behind commit(s) behind origin" || dui_ok "up-to-date with origin"
-  if (( missing > 0 )); then
-    dui_footer "$missing missing binar(y/ies) — see above"
+  local ahead=$(git -C "$repo" rev-list --count @{u}..HEAD 2>/dev/null || echo 0)
+  (( behind > 0 )) && { dui_warn "$behind commit(s) behind origin"; ((issues++)); } || dui_ok "up-to-date with origin"
+  (( ahead > 0 )) && { dui_warn "$ahead commit(s) non poussé(s)"; ((issues++)); }
+
+  if (( issues > 0 )); then
+    dui_footer "$issues point(s) à regarder — see above"
   else
     dui_footer "all clear — your config is healthy"
   fi
