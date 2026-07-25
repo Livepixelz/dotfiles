@@ -66,19 +66,19 @@ ctrl-alt-shift-f = 'layout floating tiling'           # toggle float
 
 # Workspaces — chiffres = contextes, lettres = projets perso
 # 1 = Code (Zed) | 2 = Terminal (Ghostty/Zellij) | 3 = Web (Zen) | 4 = Discord
-ctrl-alt-1 = 'workspace 1'
-ctrl-alt-2 = 'workspace 2'
-ctrl-alt-3 = 'workspace 3'
-ctrl-alt-4 = 'workspace 4'
-ctrl-alt-m = 'workspace M'    # ATTENTION : touche physique ";" en AZERTY — Media/Spotify
-ctrl-alt-o = 'workspace O'    # Obsidian (notes)
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-m = 'workspace M'    # ATTENTION : touche physique ";" en AZERTY — Media/Spotify
+alt-o = 'workspace O'    # Obsidian (notes)
 
 # Envoyer la fenetre vers un workspace
-ctrl-alt-shift-1 = 'move-node-to-workspace 1'
-ctrl-alt-shift-2 = 'move-node-to-workspace 2'
-ctrl-alt-shift-3 = 'move-node-to-workspace 3'
-ctrl-alt-shift-4 = 'move-node-to-workspace 4'
-ctrl-alt-shift-o = 'move-node-to-workspace O'
+alt-shift-1 = 'move-node-to-workspace 1'
+alt-shift-2 = 'move-node-to-workspace 2'
+alt-shift-3 = 'move-node-to-workspace 3'
+alt-shift-4 = 'move-node-to-workspace 4'
+alt-shift-o = 'move-node-to-workspace O'
 
 # Alterner entre les 2 derniers workspaces (tres utile code <-> terminal)
 ctrl-alt-tab = 'workspace-back-and-forth'
