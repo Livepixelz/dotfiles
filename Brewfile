@@ -70,6 +70,18 @@ brew "zoxide"
 brew "felixkratz/formulae/borders", trusted: true
 # Custom macOS statusbar with shell plugin, interaction and graph support
 brew "felixkratz/formulae/sketchybar", trusted: true
+brew "difftastic"
+brew "dive"
+brew "duf"
+brew "dust"
+brew "fx"
+brew "hyperfine"
+brew "just"
+brew "lazydocker"
+brew "lnav"
+brew "restic"
+brew "watchexec"
+brew "xh"
 # Command-line interface for 1Password
 cask "1password-cli"
 # AeroSpace is an i3-like tiling window manager for macOS
@@ -87,6 +99,7 @@ cask "font-symbols-only-nerd-font"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
 cask "obsidian"
+cask "espanso"
 # Keyboard customiser
 cask "karabiner-elements"
 # Control your tools with a few keystrokes
