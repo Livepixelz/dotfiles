@@ -9,7 +9,7 @@
 #      restic-backup snapshots  # ou toute commande restic
 set -euo pipefail
 
-STORAGEBOX="${STORAGEBOX:-}"   # ex: u123456
+STORAGEBOX="${STORAGEBOX:-u586529}"
 [ -z "$STORAGEBOX" ] && { echo "STORAGEBOX non défini (ex: export STORAGEBOX=u123456)"; exit 1; }
 
 export RESTIC_REPOSITORY="sftp://${STORAGEBOX}@${STORAGEBOX}.your-storagebox.de:23/restic"
