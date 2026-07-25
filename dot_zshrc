@@ -308,17 +308,6 @@ add-zsh-hook precmd _dotfiles_welcome_once
 [ -f "$HOME/.zsh/completion.zsh" ]   && source "$HOME/.zsh/completion.zsh"
 [ -f "$HOME/.zsh/features.zsh" ]     && source "$HOME/.zsh/features.zsh"
 
-# ── Complétion ────────────────────────────────────────────────────────────────
-autoload -Uz compinit
-typeset -i updated_at
-updated_at=$(date +'%j' -r ~/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null || echo 0)
-if [ "$(date +'%j')" != "$updated_at" ]; then
-  compinit -i
-else
-  compinit -C -i
-fi
-zmodload -i zsh/complist
-
 # ── Powerlevel10k ─────────────────────────────────────────────────────────────
 if [[ -r "$HOME/.zsh/powerlevel10k/powerlevel10k.zsh-theme" ]]; then
   source "$HOME/.zsh/powerlevel10k/powerlevel10k.zsh-theme"
