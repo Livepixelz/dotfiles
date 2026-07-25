@@ -9,10 +9,8 @@ ws_icon() {
     2) echo "󰆍" ;;    # Terminal (Ghostty)
     3) echo "󰖟" ;;    # Web (Zen)
     4) echo "󰙯" ;;    # Discord
-    A) echo "󰧑" ;;    # aNansi (AI)
-    C) echo "󰠴" ;;    # Clutch (basketball)
     M) echo "󰝚" ;;    # Music
-    N) echo "󰠮" ;;    # Notes
+    O) echo "󰀫" ;;    # Obsidian (notes)
     *) echo "$1" ;;
   esac
 }
@@ -25,7 +23,7 @@ for _ in 1 2 3 4 5; do
   sleep 0.5
   WORKSPACES=($(aerospace list-workspaces --all))
 done
-[ ${#WORKSPACES[@]} -eq 0 ] && WORKSPACES=(1 2 3 4 5 C M N)
+[ ${#WORKSPACES[@]} -eq 0 ] && WORKSPACES=(1 2 3 4 M O)
 for ws in "${WORKSPACES[@]}"; do
   ICON="$(ws_icon "$ws")"
   sketchybar --add item space.$ws left \

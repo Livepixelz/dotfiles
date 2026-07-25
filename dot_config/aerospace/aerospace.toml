@@ -14,7 +14,7 @@ config-version = 2
 start-at-login = true
 
 # v2 n'infere plus les workspaces depuis les bindings : on les declare
-persistent-workspaces = ['1', '2', '3', '4', 'C', 'N', 'M']
+persistent-workspaces = ['1', '2', '3', '4', 'M', 'O']
 
 # Notifie sketchybar pour surligner le workspace actif
 exec-on-workspace-change = ['/bin/bash', '-c',
@@ -70,17 +70,15 @@ ctrl-alt-1 = 'workspace 1'
 ctrl-alt-2 = 'workspace 2'
 ctrl-alt-3 = 'workspace 3'
 ctrl-alt-4 = 'workspace 4'
-ctrl-alt-c = 'workspace C'    # Clutch (clutch-data / clutch-cards / hoopviz)
-ctrl-alt-n = 'workspace N'    # aNansi
 ctrl-alt-m = 'workspace M'    # ATTENTION : touche physique ";" en AZERTY — Media/Spotify
+ctrl-alt-o = 'workspace O'    # Obsidian (notes)
 
 # Envoyer la fenetre vers un workspace
 ctrl-alt-shift-1 = 'move-node-to-workspace 1'
 ctrl-alt-shift-2 = 'move-node-to-workspace 2'
 ctrl-alt-shift-3 = 'move-node-to-workspace 3'
 ctrl-alt-shift-4 = 'move-node-to-workspace 4'
-ctrl-alt-shift-c = 'move-node-to-workspace C'
-ctrl-alt-shift-n = 'move-node-to-workspace N'
+ctrl-alt-shift-o = 'move-node-to-workspace O'
 
 # Alterner entre les 2 derniers workspaces (tres utile code <-> terminal)
 ctrl-alt-tab = 'workspace-back-and-forth'
@@ -140,6 +138,11 @@ run = 'move-node-to-workspace 4'
 [[on-window-detected]]
 if.app-id = 'com.apple.Music'
 run = 'move-node-to-workspace M'
+
+# Obsidian -> workspace O (notes)
+[[on-window-detected]]
+if.app-id = 'md.obsidian'
+run = 'move-node-to-workspace O'
 
 # Fenetres utilitaires en flottant (Finder, 1Password...)
 [[on-window-detected]]
