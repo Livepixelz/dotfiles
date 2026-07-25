@@ -83,6 +83,10 @@ brew "restic"
 brew "tealdeer"
 brew "watchexec"
 brew "xh"
+brew "direnv"
+brew "lefthook"
+brew "pueue"
+brew "uv"
 # Command-line interface for 1Password
 cask "1password-cli"
 # AeroSpace is an i3-like tiling window manager for macOS
