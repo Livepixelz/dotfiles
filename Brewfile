@@ -80,6 +80,7 @@ brew "just"
 brew "lazydocker"
 brew "lnav"
 brew "restic"
+brew "tealdeer"
 brew "watchexec"
 brew "xh"
 # Command-line interface for 1Password

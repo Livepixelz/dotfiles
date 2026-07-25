@@ -1,0 +1,38 @@
+hide	IDE herdr auto (layout selon le dossier)	workspace
+lp-ide	IDE clutchdata complet (7 tabs)	workspace
+herdr	attach la session terminal persistante	workspace
+hx .	Helix dans le projet courant	code
+lazygit	TUI git (aussi: prefix+alt+g dans herdr)	git
+gh dash	dashboard PRs & issues	git
+gh pr create --fill	créer la PR depuis la branche	git
+difft	diff structurel (comprend la syntaxe)	git
+chezmoi re-add	capturer les dotfiles modifiés	dotfiles
+chezmoi apply	appliquer les dotfiles	dotfiles
+cd $(chezmoi source-path)	aller dans le repo dotfiles	dotfiles
+theme	switcher de thème global	dotfiles
+lazydocker	TUI docker/compose (abbr: lzd)	infra
+dive	analyser les layers d'une image docker	infra
+k9s	TUI kubernetes	infra
+doppler run --	commande avec les secrets injectés	infra
+ssh vps1	prod Hetzner (multiplexé)	infra
+ssh vps2	staging/CI Hetzner (multiplexé)	infra
+restic-backup	backup immédiat vers le storagebox	backup
+restic-backup snapshots	lister les snapshots	backup
+restic-backup check	vérifier l'intégrité du repo	backup
+yazi	explorateur de fichiers TUI	files
+dust	qui bouffe l'espace disque (du moderne)	files
+duf	état des volumes (df moderne)	files
+fd	find moderne	files
+rg	grep moderne	files
+posting	client API TUI (sessions/collections)	http
+xh	requête HTTP one-shot lisible	http
+fx	explorer du JSON interactivement	http
+just	lancer une recette du justfile	dx
+watchexec -e ts --	relancer une commande au save	dx
+hyperfine	benchmarker une commande	dx
+tldr	exemples d'usage d'une commande	dx
+btop	monitoring système	monitor
+lnav	viewer de logs (filtres SQL)	monitor
+sketchybar --reload	recharger la barre	ui
+aerospace reload-config	recharger le WM	ui
+obsidian	ouvrir/piloter Obsidian (CLI)	notes

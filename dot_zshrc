@@ -307,6 +307,7 @@ add-zsh-hook precmd _dotfiles_welcome_once
 [ -f "$HOME/.zsh/key-bindings.zsh" ] && source "$HOME/.zsh/key-bindings.zsh"
 [ -f "$HOME/.zsh/completion.zsh" ]   && source "$HOME/.zsh/completion.zsh"
 [ -f "$HOME/.zsh/features.zsh" ]     && source "$HOME/.zsh/features.zsh"
+[ -f "$HOME/.zsh/palette.zsh" ]      && source "$HOME/.zsh/palette.zsh"
 
 # ── Powerlevel10k ─────────────────────────────────────────────────────────────
 if [[ -r "$HOME/.zsh/powerlevel10k/powerlevel10k.zsh-theme" ]]; then
