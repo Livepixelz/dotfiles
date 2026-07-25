@@ -21,22 +21,22 @@ abbr -S ghprc="gh pr checks"
 abbr -S ghprl="gh pr list"
 abbr -S ghd="gh dash"
 
-# --- pnpm / node ---
-abbr -S p="pnpm"
-abbr -S pi="pnpm install"
-abbr -S pa="pnpm add"
-abbr -S pad="pnpm add -D"
-abbr -S pr="pnpm run"
-abbr -S pd="pnpm dev"
-abbr -S pb="pnpm build"
-abbr -S pt="pnpm test"
-abbr -S px="pnpm dlx"
-abbr -S nx="npx"
+# --- bun / node ---
+abbr -S p="bun"
+abbr -S pi="bun install"
+abbr -S pa="bun add"
+abbr -S pad="bun add -d"
+abbr -S pr="bun run"
+abbr -S pd="bun run dev"
+abbr -S pb="bun run build"
+abbr -S pt="bun test"
+abbr -S px="bunx"
+abbr -S nx="bunx"
 
 # --- nuxt ---
-abbr -S nd="pnpm nuxt dev"
-abbr -S nb="pnpm nuxt build"
-abbr -S npr="pnpm nuxt prepare"
+abbr -S nd="bunx nuxt dev"
+abbr -S nb="bunx nuxt build"
+abbr -S npr="bunx nuxt prepare"
 
 # --- python / uv ---
 abbr -S py="python3"

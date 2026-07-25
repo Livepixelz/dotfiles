@@ -185,16 +185,7 @@ alias python="python3"
 alias venv="python3 -m venv .venv && source .venv/bin/activate"
 alias activate="source .venv/bin/activate"
 
-# pnpm / Node
-alias ns='pnpm start'
-alias start='pnpm start'
-alias nr='pnpm run'
-alias run='pnpm run'
-alias ni='pnpm install'
-alias nis='pnpm i -S'
-alias nid='pnpm i -D'
-alias nb='pnpm build'
-alias nd='pnpm dev'
+# Node : full bun — raccourcis dans zsh-abbr (p, pi, pa, pr, pd, pb, pt, px)
 
 # lazygit
 alias lg="lazygit"
@@ -224,10 +215,6 @@ alias gwip='git add -A && git commit -m "wip"'
 alias gs='echo ""; echo "*********************************************"; echo -e "   DO NOT FORGET TO PULL BEFORE COMMITTING"; echo "*********************************************"; echo ""; git status'
 
 # ── Aliases — Infra / DevOps ─────────────────────────────────────────────────
-alias tf='terraform'
-alias tfi='terraform init'
-alias tfp='terraform plan'
-alias tfa='terraform apply'
 
 # ── Aliases — Divers ─────────────────────────────────────────────────────────
 alias aliases='alias | sort | bat --language=zsh --style=plain'

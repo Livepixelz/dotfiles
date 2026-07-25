@@ -73,6 +73,7 @@ brew "felixkratz/formulae/sketchybar", trusted: true
 brew "difftastic"
 brew "dive"
 brew "duf"
+brew "fabric-ai"
 brew "dust"
 brew "fx"
 brew "hyperfine"
