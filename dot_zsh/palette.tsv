@@ -32,6 +32,21 @@ just	lancer une recette du justfile	dx
 watchexec -e ts --	relancer une commande au save	dx
 hyperfine	benchmarker une commande	dx
 tldr	exemples d'usage d'une commande	dx
+ffmpeg -i	convertir/trim audio-vidéo	média
+ffmpeg -i in.mp4 -vn -acodec libmp3lame out.mp3	extraire l'audio d'une vidéo	média
+sox	traiter des samples audio (trim, normalize)	média
+yt-dlp -x --audio-format mp3	récupérer l'audio d'une URL	média
+magick	convertir/redimensionner des images	média
+cloudflared tunnel --url http://localhost:3000	exposer le dev en public (démo client)	réseau
+qrencode -t ansiutf8	QR code dans le terminal (tester sur mobile)	réseau
+gping	ping en graphe	réseau
+trip	traceroute TUI	réseau
+croc send	envoyer un fichier chiffré P2P	partage
+rclone	syncer/monter le storagebox & cloud	partage
+age -p	chiffrer un fichier avec une passphrase	partage
+onefetch	carte d'identité d'un repo git	dx
+tokei	stats de code du projet	dx
+glow	lire du markdown joliment	dx
 btop	monitoring système	monitor
 lnav	viewer de logs (filtres SQL)	monitor
 sketchybar --reload	recharger la barre	ui
