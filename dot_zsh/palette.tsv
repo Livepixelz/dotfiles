@@ -6,6 +6,7 @@ lazygit	TUI git (aussi: prefix+alt+g dans herdr)	git
 gh dash	dashboard PRs & issues	git
 gh pr create --fill	créer la PR depuis la branche	git
 difft	diff structurel (comprend la syntaxe)	git
+dots doctor	health check complet du setup	dotfiles
 chezmoi re-add	capturer les dotfiles modifiés	dotfiles
 chezmoi apply	appliquer les dotfiles	dotfiles
 cd $(chezmoi source-path)	aller dans le repo dotfiles	dotfiles
