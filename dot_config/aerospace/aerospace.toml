@@ -38,7 +38,7 @@ inner.horizontal = 8
 inner.vertical = 8
 outer.left = 8
 outer.bottom = 8
-outer.top = 20
+outer.top = [{ monitor."LG HDR 4K" = 42 }, 12]
 outer.right = 8
 
 # ──────────────────────────────────────────────

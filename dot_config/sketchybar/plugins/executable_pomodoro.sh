@@ -69,4 +69,6 @@ case "$status" in
     ;;
 esac
 
-sketchybar --set "$NAME" icon="$ICON" icon.color="$COLOR" label="$LABEL"
+# Tick chaque seconde uniquement quand le timer tourne.
+FREQ=$([ "$status" = "running" ] && echo 1 || echo 60)
+sketchybar --set "$NAME" icon="$ICON" icon.color="$COLOR" label="$LABEL" update_freq="$FREQ"

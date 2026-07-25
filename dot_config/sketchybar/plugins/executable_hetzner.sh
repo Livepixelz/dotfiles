@@ -7,8 +7,11 @@ probe() {
   ssh -o ConnectTimeout=3 -o BatchMode=yes "$host" "uptime" 2>/dev/null
 }
 
-V1=$(probe vps1)
-V2=$(probe vps2)
+# Probes en parallèle (÷2 la latence du refresh)
+TMP1=$(mktemp) TMP2=$(mktemp)
+probe vps1 >"$TMP1" & probe vps2 >"$TMP2" & wait
+V1=$(<"$TMP1") V2=$(<"$TMP2")
+rm -f "$TMP1" "$TMP2"
 
 parse_load() {
   echo "$1" | awk -F'load average[s]*: ' '{print $2}' | awk -F',' '{print $1}' | tr -d ' '

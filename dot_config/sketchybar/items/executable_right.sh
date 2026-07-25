@@ -75,13 +75,44 @@ right_item doppler \
   script="$PLUGIN_DIR/doppler.sh"
 
 right_item github \
-  update_freq=120 \
+  update_freq=300 \
   click_script="open https://github.com/pulls" \
   script="$PLUGIN_DIR/github.sh"
 
+sketchybar --add item claude right \
+           --set claude \
+                update_freq=120 \
+                background.color=$ITEM_BG_COLOR \
+                background.height=28 \
+                background.corner_radius=10 \
+                popup.background.color=$ITEM_BG_COLOR \
+                popup.background.corner_radius=10 \
+                popup.background.border_width=1 \
+                popup.background.border_color=0xff3a3a47 \
+                popup.horizontal=off \
+                popup.align=right \
+                popup.y_offset=4 \
+                click_script="sketchybar --set claude popup.drawing=toggle" \
+                script="$PLUGIN_DIR/claude.sh" \
+           --subscribe claude mouse.exited.global front_app_switched
+
+for row in session weekly opus; do
+  sketchybar --add item claude.$row popup.claude \
+             --set claude.$row background.padding_left=8 background.padding_right=8
+done
+
+sketchybar --add item claude.link popup.claude \
+           --set claude.link \
+                icon="󰖟" \
+                icon.color=$BLUE \
+                label="Ouvrir la page usage" \
+                background.padding_left=8 \
+                background.padding_right=8 \
+                click_script="open https://claude.ai/settings/usage && sketchybar --set claude popup.drawing=off"
+
 sketchybar --add item docker right \
            --set docker \
-                update_freq=15 \
+                update_freq=30 \
                 background.color=$ITEM_BG_COLOR \
                 background.height=28 \
                 background.corner_radius=10 \
@@ -103,7 +134,7 @@ done
 
 sketchybar --add item deploy right \
            --set deploy \
-                update_freq=60 \
+                update_freq=300 \
                 background.color=$ITEM_BG_COLOR \
                 background.height=28 \
                 background.corner_radius=10 \
@@ -112,7 +143,7 @@ sketchybar --add item deploy right \
 
 sketchybar --add item gh_runs right \
            --set gh_runs \
-                update_freq=30 \
+                update_freq=120 \
                 background.color=$ITEM_BG_COLOR \
                 background.height=28 \
                 background.corner_radius=10 \
@@ -134,7 +165,7 @@ done
 
 sketchybar --add item hetzner right \
            --set hetzner \
-                update_freq=60 \
+                update_freq=120 \
                 background.color=$ITEM_BG_COLOR \
                 background.height=28 \
                 background.corner_radius=10 \

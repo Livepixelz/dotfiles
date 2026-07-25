@@ -16,10 +16,10 @@ else
 fi
 zmodload -i zsh/complist
 
-# Tout en haut du dot_zshrc (instant prompt p10k)
-  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-  fi
+# Instant prompt p10k (p10k est le prompt actif ; starship est commenté plus bas)
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
 # ── PATH ──────────────────────────────────────────────────────────────────────
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
@@ -64,23 +64,6 @@ if ! command -v starship >/dev/null 2>&1; then
   autoload -Uz add-zsh-hook
   add-zsh-hook precmd print_before_the_prompt
   PROMPT="$EMOJI > "
-fi
-
-# ── Fun ───────────────────────────────────────────────────────────────────────
-if command -v fortune >/dev/null 2>&1; then
-  tip=$(fortune sports 2>/dev/null)
-  if [[ -n "$tip" ]]; then
-    width=60
-    line=$(printf '─%.0s' {1..$width})
-    echo ""
-    echo "  \033[1;33m🏀 Tip-off du jour\033[0m"
-    echo "  \033[0;90m┌${line}┐\033[0m"
-    echo "$tip" | expand | fold -s -w $width | while IFS= read -r l; do
-      printf "  \033[0;90m│\033[0m %-${width}s \033[0;90m│\033[0m\n" "$l"
-    done
-    echo "  \033[0;90m└${line}┘\033[0m"
-    echo ""
-  fi
 fi
 
 # ── Fonctions ─────────────────────────────────────────────────────────────────
@@ -140,27 +123,26 @@ alias profile="zed ~/.zshrc"
 alias sprofile="source ~/.zshrc"
 alias starconf="zed ~/.config/starship.toml"
 
-# ── Aliases — Zellij ─────────────────────────────────────────────────────────
-alias mc='zellij --layout ts-fullstack'
-alias cld="cd ~/code/clutchdata && zellij --layout clutchdata"
+# ── Aliases — Herdr ──────────────────────────────────────────────────────────
+lp-ide()  { command "$HOME/.config/herdr/templates/lp-ide.sh" "$@"; }
 
-# Helix + Claude Code — layout per-project avec fallback
-# Lookup order :
-#   1. ./.zellij/layout.kdl (committable dans le repo)
-#   2. ~/.config/zellij/layouts/<dirname>.kdl
-#   3. helix-claude (default)
-hxc() {
-  local project="$(basename "$(pwd)")"
-  local session_name="hxc-${project}"
-  local layout="helix-claude"
-
-  if [[ -f "./.zellij/layout.kdl" ]]; then
-    layout="$(pwd)/.zellij/layout.kdl"
-  elif [[ -f "$HOME/.config/zellij/layouts/${project}.kdl" ]]; then
-    layout="$project"
+# hide [layout] [dir] — lance un workspace herdr depuis un template.
+# Sans argument : auto-pick par nom de dossier (clutchdata→lp-ide,
+# sinon <dossier>.sh, sinon helix-claude).
+hide() {
+  local tpl="$HOME/.config/herdr/templates" layout="${1:-}" dir="${2:-$PWD}"
+  if [[ -z "$layout" ]]; then
+    local p="$(basename "$PWD")"
+    if [[ "$p" == "clutchdata" ]]; then layout="lp-ide"
+    elif [[ -f "$tpl/$p.sh" ]]; then layout="$p"
+    else layout="helix-claude"; fi
   fi
-
-  zellij attach -c "$session_name" options --default-layout "$layout"
+  if [[ ! -f "$tpl/$layout.sh" ]]; then
+    echo "layout inconnu: $layout"
+    echo "dispo: $(ls "$tpl"/*.sh | xargs -n1 basename | grep -v '^_' | sed 's/.sh$//' | tr '\n' ' ')"
+    return 1
+  fi
+  command "$tpl/$layout.sh" "$dir"
 }
 
 alias fabric="fabric-ai"
@@ -172,8 +154,10 @@ alias l="ls"
 alias ll="ls -alG"
 
 # the fuck alias
-eval $(thefuck --alias)
-eval $(thefuck --alias fuck)
+if command -v thefuck >/dev/null 2>&1; then
+  eval $(thefuck --alias)
+  eval $(thefuck --alias fuck)
+fi
 
 # ls amélioré (eza si dispo)
 if command -v eza >/dev/null 2>&1; then
@@ -211,11 +195,6 @@ alias nis='pnpm i -S'
 alias nid='pnpm i -D'
 alias nb='pnpm build'
 alias nd='pnpm dev'
-
-# zellij
-alias t="zellij"
-alias ta="zellij attach || zellij"
-alias tl="zellij list-sessions"
 
 # lazygit
 alias lg="lazygit"

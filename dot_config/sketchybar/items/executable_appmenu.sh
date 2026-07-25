@@ -5,10 +5,10 @@ sketchybar --add item appmenu left \
                 icon.drawing=off \
                 label.drawing=off \
                 background.image="$CONFIG_DIR/icons/livepixelz.png" \
-                background.image.scale=0.11 \
+                background.image.scale=0.06 \
                 background.color=$TRANSPARENT \
                 background.height=36 \
-                padding_left=0 \
+                padding_left=12 \
                 padding_right=8 \
                 popup.background.color=$ITEM_BG_COLOR \
                 popup.background.corner_radius=10 \
@@ -17,7 +17,7 @@ sketchybar --add item appmenu left \
                 popup.horizontal=off \
                 popup.align=left \
                 popup.y_offset=4 \
-                update_freq=60 \
+                update_freq=300 \
                 script="$PLUGIN_DIR/appmenu.sh" \
                 click_script="$PLUGIN_DIR/appmenu_click.sh" \
            --subscribe appmenu mouse.exited.global front_app_switched

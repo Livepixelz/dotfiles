@@ -10,6 +10,10 @@ brew "chezmoi"
 brew "cliclick"
 # Apjanke's fork of the classic cowsay project
 brew "cowsay"
+# Pack, ship and run any application as a lightweight container
+brew "docker"
+# CLI for interacting with Doppler secrets and configuration
+brew "doppler"
 # Modern, maintained replacement for ls
 brew "eza"
 # Like neofetch, but much faster because written mostly in C
@@ -22,10 +26,16 @@ brew "fnm"
 brew "fortune"
 # Command-line fuzzy finder written in Go
 brew "fzf"
+# GitHub command-line tool
+brew "gh"
 # Syntax-highlighting pager for git and diff output
 brew "git-delta"
 # Git extension for versioning large files
 brew "git-lfs"
+# Render markdown on the CLI
+brew "glow"
+# Post-modern modal text editor
+brew "helix"
 # Agent multiplexer that lives in your terminal
 brew "herdr"
 # Lightweight and flexible command-line JSON processor
@@ -46,6 +56,10 @@ brew "pyenv"
 brew "ripgrep"
 # Cross-shell prompt for astronauts
 brew "starship"
+# Programmatically correct mistyped console commands
+brew "thefuck"
+# Next generation frontend tooling. It's fast!
+brew "vite"
 # Blazing fast terminal file manager written in Rust, based on async I/O
 brew "yazi"
 # Process YAML, JSON, XML, CSV and properties documents from the CLI
@@ -66,6 +80,8 @@ cask "nikitabobko/tap/aerospace", trusted: true
 cask "claude"
 # Terminal-based AI coding assistant
 cask "claude-code"
+# Voice and text chat software
+cask "discord"
 cask "font-fira-code-nerd-font"
 cask "font-inter"
 cask "font-jetbrains-mono-nerd-font"

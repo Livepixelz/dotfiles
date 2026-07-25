@@ -43,4 +43,7 @@ Host *
 {{- end }}
   ServerAliveInterval 60
   ServerAliveCountMax 3
+  ControlMaster auto
+  ControlPath ~/.ssh/control-%r@%h:%p
+  ControlPersist 600
   AddKeysToAgent yes

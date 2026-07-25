@@ -17,7 +17,15 @@ ws_icon() {
   esac
 }
 
+# Au boot, le serveur AeroSpace n'est pas toujours prêt → retry court,
+# puis fallback sur la liste connue (les events recaleront le focus ensuite).
 WORKSPACES=($(aerospace list-workspaces --all))
+for _ in 1 2 3 4 5; do
+  [ ${#WORKSPACES[@]} -gt 0 ] && break
+  sleep 0.5
+  WORKSPACES=($(aerospace list-workspaces --all))
+done
+[ ${#WORKSPACES[@]} -eq 0 ] && WORKSPACES=(1 2 3 4 5 C M N)
 for ws in "${WORKSPACES[@]}"; do
   ICON="$(ws_icon "$ws")"
   sketchybar --add item space.$ws left \
