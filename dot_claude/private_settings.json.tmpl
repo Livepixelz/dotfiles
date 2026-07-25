@@ -231,6 +231,7 @@
     ],
     "defaultMode": "default"
   },
+  "model": "claude-fable-5[1m]",
   "hooks": {
     "Notification": [
       {
@@ -346,6 +347,16 @@
         ]
       }
     ],
+    "StopFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/bin/sh -c '[ -x \"$HOME/.vibe-island/bin/vibe-island-bridge\" ] && \"$HOME/.vibe-island/bin/vibe-island-bridge\" --source claude; exit 0'"
+          }
+        ]
+      }
+    ],
     "SubagentStart": [
       {
         "hooks": [
@@ -393,45 +404,41 @@
       }
     }
   },
-  "effortLevel": "low",
+  "effortLevel": "medium",
+  "tui": "fullscreen",
   "inputNeededNotifEnabled": false,
-  "theme": "tokyo-night-storm",
+  "agentPushNotifEnabled": true,
   "customColors": {
-    "background": "#24283b",
-    "foreground": "#c0caf5",
-    "cursor": "#c0caf5",
-    "selection": "#364a82",
-
-    "black": "#1d202f",
-    "red": "#f7768e",
-    "green": "#9ece6a",
-    "yellow": "#e0af68",
-    "blue": "#7aa2f7",
-    "magenta": "#bb9af7",
-    "cyan": "#7dcfff",
-    "white": "#a9b1d6",
-
-    "brightBlack": "#414868",
-    "brightRed": "#f7768e",
-    "brightGreen": "#9ece6a",
-    "brightYellow": "#e0af68",
-    "brightBlue": "#7aa2f7",
-    "brightMagenta": "#bb9af7",
-    "brightCyan": "#7dcfff",
-    "brightWhite": "#c0caf5",
-
-    "diffAdded": "#1f3b25",
-    "diffRemoved": "#3b1f25",
-    "diffAddedText": "#9ece6a",
-    "diffRemovedText": "#f7768e",
-
     "accent": "#7aa2f7",
+    "background": "#24283b",
+    "black": "#1d202f",
+    "blue": "#7aa2f7",
+    "border": "#414868",
+    "brightBlack": "#414868",
+    "brightBlue": "#7aa2f7",
+    "brightCyan": "#7dcfff",
+    "brightGreen": "#9ece6a",
+    "brightMagenta": "#bb9af7",
+    "brightRed": "#f7768e",
+    "brightWhite": "#c0caf5",
+    "brightYellow": "#e0af68",
+    "cursor": "#c0caf5",
+    "cyan": "#7dcfff",
+    "diffAdded": "#1f3b25",
+    "diffAddedText": "#9ece6a",
+    "diffRemoved": "#3b1f25",
+    "diffRemovedText": "#f7768e",
+    "error": "#f7768e",
+    "foreground": "#c0caf5",
+    "green": "#9ece6a",
+    "info": "#7dcfff",
+    "magenta": "#bb9af7",
+    "muted": "#565f89",
+    "red": "#f7768e",
+    "selection": "#364a82",
     "success": "#9ece6a",
     "warning": "#e0af68",
-    "error": "#f7768e",
-    "info": "#7dcfff",
-    "muted": "#565f89",
-    "border": "#414868"
-  },
-  "tui": "fullscreen"
+    "white": "#a9b1d6",
+    "yellow": "#e0af68"
+  }
 }
