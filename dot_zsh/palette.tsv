@@ -42,9 +42,11 @@ qrencode -t ansiutf8	QR code dans le terminal (tester sur mobile)	réseau
 gping	ping en graphe	réseau
 trip	traceroute TUI	réseau
 croc send	envoyer un fichier chiffré P2P	partage
-rclone lsd storagebox:	lister le storagebox	partage
-rclone copy storagebox:	récupérer depuis le storagebox	partage
-rclone mount storagebox: ~/mnt	monter le storagebox comme un dossier	partage
+rclone ncdu storagebox:	explorer le storagebox en TUI	partage
+rclone lsd storagebox:	lister les dossiers du storagebox	partage
+rclone copy storagebox:backups ./	rapatrier depuis le storagebox	partage
+rclone sync ~/Documents storagebox:docs	synchroniser un dossier vers le storagebox	partage
+rclone about storagebox:	espace libre sur le storagebox	partage
 age -p	chiffrer un fichier avec une passphrase	partage
 onefetch	carte d'identité d'un repo git	dx
 tokei	stats de code du projet	dx
