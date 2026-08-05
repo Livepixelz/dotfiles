@@ -1,3 +1,4 @@
+tap "anomalyco/tap"
 tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae", trusted: true
 tap "nikitabobko/tap"
 # Simple, modern, secure file encryption
@@ -134,6 +135,8 @@ brew "yq"
 brew "yt-dlp"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
+# The AI coding agent built for the terminal.
+brew "anomalyco/tap/opencode", trusted: true
 # A window border system for macOS
 brew "felixkratz/formulae/borders", trusted: true
 # Custom macOS statusbar with shell plugin, interaction and graph support
@@ -164,3 +167,7 @@ cask "obsidian"
 cask "raycast"
 # Multiplayer code editor
 cask "zed"
+uv "-"
+uv "-"
+uv "-"
+uv "mistral-vibe"
