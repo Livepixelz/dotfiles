@@ -1,4 +1,5 @@
 tap "anomalyco/tap"
+tap "asmvik/formulae", "https://github.com/asmvik/homebrew-formulae.git"
 tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae", trusted: true
 tap "nikitabobko/tap"
 # Simple, modern, secure file encryption
@@ -7,6 +8,8 @@ brew "age"
 brew "bat"
 # Toolchain of the web
 brew "biome"
+# Secure and free password manager for all of your devices
+brew "bitwarden-cli"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
 # Manage your dotfiles across multiple diverse machines, securely
@@ -67,6 +70,8 @@ brew "herdr"
 brew "hyperfine"
 # Tools and libraries to manipulate images in select formats
 brew "imagemagick"
+# Alternative to the official immich-CLI command written in Go
+brew "immich-go"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Handy way to save and run project-specific commands
@@ -87,8 +92,14 @@ brew "lnav"
 brew "mise"
 # Manage multiple Node.js versions
 brew "nvm"
+# Create, run, and share large language models (LLMs)
+brew "ollama", restart_service: :changed
 # Command-line Git information tool
 brew "onefetch"
+# Execute binaries from Python packages in isolated environments
+brew "pipx"
+# Cross-platform library for audio I/O
+brew "portaudio"
 # Modern API client that lives in your terminal
 brew "posting"
 # Command-line tool for managing long-running shell commands
@@ -125,6 +136,8 @@ brew "uv"
 brew "vite"
 # Execute commands when watched files change
 brew "watchexec"
+# Port of OpenAI's Whisper model in C/C++
+brew "whisper-cpp"
 # Friendly and fast tool for sending HTTP requests
 brew "xh"
 # Blazing fast terminal file manager written in Rust, based on async I/O
@@ -145,6 +158,10 @@ brew "felixkratz/formulae/sketchybar", trusted: true
 cask "1password-cli"
 # AeroSpace is an i3-like tiling window manager for macOS
 cask "nikitabobko/tap/aerospace", trusted: true
+# Desktop password and login vault
+cask "bitwarden"
+# Virtual Audio Driver
+cask "blackhole-2ch"
 # Anthropic's official Claude AI desktop app
 cask "claude"
 # Terminal-based AI coding assistant
