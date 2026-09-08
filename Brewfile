@@ -1,5 +1,5 @@
 tap "anomalyco/tap"
-tap "asmvik/formulae", "https://github.com/asmvik/homebrew-formulae.git"
+tap "derailed/k9s"
 tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae", trusted: true
 tap "nikitabobko/tap"
 # Simple, modern, secure file encryption
@@ -8,8 +8,6 @@ brew "age"
 brew "bat"
 # Toolchain of the web
 brew "biome"
-# Secure and free password manager for all of your devices
-brew "bitwarden-cli"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
 # Manage your dotfiles across multiple diverse machines, securely
@@ -46,6 +44,8 @@ brew "fastfetch"
 brew "fd"
 # Play, record, convert, and stream select audio and video codecs
 brew "ffmpeg"
+# Fast and simple Node.js version manager
+brew "fnm"
 # Infamous electronic fortune-cookie generator
 brew "fortune"
 # Terminal JSON viewer
@@ -65,13 +65,11 @@ brew "gping"
 # Post-modern modal text editor
 brew "helix"
 # Agent multiplexer that lives in your terminal
-brew "herdr"
+brew "herdr", restart_service: :changed
 # Command-line benchmarking tool
 brew "hyperfine"
 # Tools and libraries to manipulate images in select formats
 brew "imagemagick"
-# Alternative to the official immich-CLI command written in Go
-brew "immich-go"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Handy way to save and run project-specific commands
@@ -92,14 +90,10 @@ brew "lnav"
 brew "mise"
 # Manage multiple Node.js versions
 brew "nvm"
-# Create, run, and share large language models (LLMs)
-brew "ollama", restart_service: :changed
 # Command-line Git information tool
 brew "onefetch"
-# Execute binaries from Python packages in isolated environments
-brew "pipx"
-# Cross-platform library for audio I/O
-brew "portaudio"
+# General-purpose scripting language
+brew "php"
 # Modern API client that lives in your terminal
 brew "posting"
 # Command-line tool for managing long-running shell commands
@@ -136,8 +130,6 @@ brew "uv"
 brew "vite"
 # Execute commands when watched files change
 brew "watchexec"
-# Port of OpenAI's Whisper model in C/C++
-brew "whisper-cpp"
 # Friendly and fast tool for sending HTTP requests
 brew "xh"
 # Blazing fast terminal file manager written in Rust, based on async I/O
@@ -146,10 +138,14 @@ brew "yazi"
 brew "yq"
 # Feature-rich command-line audio/video downloader
 brew "yt-dlp"
+# Pluggable terminal workspace, with terminal multiplexer as the base feature
+brew "zellij"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # The AI coding agent built for the terminal.
 brew "anomalyco/tap/opencode", trusted: true
+# Kubernetes CLI To Manage Your Clusters In Style!
+brew "derailed/k9s/k9s", trusted: true
 # A window border system for macOS
 brew "felixkratz/formulae/borders", trusted: true
 # Custom macOS statusbar with shell plugin, interaction and graph support
@@ -160,8 +156,6 @@ cask "1password-cli"
 cask "nikitabobko/tap/aerospace", trusted: true
 # Desktop password and login vault
 cask "bitwarden"
-# Virtual Audio Driver
-cask "blackhole-2ch"
 # Anthropic's official Claude AI desktop app
 cask "claude"
 # Terminal-based AI coding assistant
@@ -170,6 +164,8 @@ cask "claude-code"
 cask "discord"
 # Cross-platform Text Expander written in Rust
 cask "espanso"
+# Collaborative team software
+cask "figma"
 cask "font-fira-code-nerd-font"
 cask "font-inter"
 cask "font-jetbrains-mono-nerd-font"
@@ -178,8 +174,12 @@ cask "font-symbols-only-nerd-font"
 cask "ghostty"
 # Keyboard customiser
 cask "karabiner-elements"
+# Meet, chat, call, and collaborate in just one place
+cask "microsoft-teams"
 # Knowledge base that works on top of a local folder of plain text Markdown files
 cask "obsidian"
+# Replacement for Docker Desktop
+cask "orbstack"
 # Control your tools with a few keystrokes
 cask "raycast"
 # Multiplayer code editor
