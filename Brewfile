@@ -184,7 +184,4 @@ cask "orbstack"
 cask "raycast"
 # Multiplayer code editor
 cask "zed"
-uv "-"
-uv "-"
-uv "-"
 uv "mistral-vibe"
