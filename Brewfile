@@ -1,4 +1,3 @@
-tap "anomalyco/tap"
 tap "derailed/k9s"
 tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae", trusted: true
 tap "nikitabobko/tap"
@@ -92,6 +91,10 @@ brew "mise"
 brew "nvm"
 # Command-line Git information tool
 brew "onefetch"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# AI coding agent, built for the terminal
+brew "opencode"
 # General-purpose scripting language
 brew "php"
 # Modern API client that lives in your terminal
@@ -106,8 +109,6 @@ brew "qrencode"
 brew "rclone"
 # Fast, efficient and secure backup program
 brew "restic"
-# Search tool like grep and The Silver Searcher
-brew "ripgrep"
 # Extremely fast Python linter, written in Rust
 brew "ruff"
 # SOund eXchange: universal sound sample translator
@@ -142,8 +143,6 @@ brew "yt-dlp"
 brew "zellij"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
-# The AI coding agent built for the terminal.
-brew "anomalyco/tap/opencode", trusted: true
 # Kubernetes CLI To Manage Your Clusters In Style!
 brew "derailed/k9s/k9s", trusted: true
 # A window border system for macOS
