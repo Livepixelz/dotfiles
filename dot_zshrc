@@ -1,4 +1,4 @@
-HOST_NAME=lvpxlz
+:HOST_NAME=lvpxlz
 
 # ── TERM fallback (VPS sans terminfo ghostty/kitty/wezterm) ──────────────────
 if ! infocmp "$TERM" >/dev/null 2>&1; then
