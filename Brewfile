@@ -162,6 +162,8 @@ cask "nikitabobko/tap/aerospace", trusted: true
 cask "bitwarden"
 # Virtual Audio Driver
 cask "blackhole-2ch"
+# Utility that prevents the system from going to sleep
+cask "caffeine"
 # Anthropic's official Claude AI desktop app
 cask "claude"
 # Terminal-based AI coding assistant
@@ -182,6 +184,8 @@ cask "karabiner-elements"
 cask "obsidian"
 # Control your tools with a few keystrokes
 cask "raycast"
+# Multimedia player
+cask "vlc"
 # Multiplayer code editor
 cask "zed"
 uv "mistral-vibe"
